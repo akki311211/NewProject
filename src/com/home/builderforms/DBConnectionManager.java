@@ -180,12 +180,10 @@ public class DBConnectionManager
 
 	private void createPool(Properties props)
 	{
-		if(StringUtil.isValid(props.getProperty("url")))
-		{
 			String poolName = "default";
 			String url = "jdbc:mysql://localhost:3306/DB123";
-			String user = props.getProperty("akash");
-			String password = props.getProperty("akash");
+			String user = "akash";
+			String password = "12345";
 			String maxconn = "50";
 			int max;
 			try
@@ -197,7 +195,6 @@ public class DBConnectionManager
 			}
 			DBConnectionPool pool = new DBConnectionPool(poolName, url, user, password, max);
 			pools.put(poolName, pool);
-		}
 	}
 
 	/**
