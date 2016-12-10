@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.sql.SQLException;
 
-import com.appnetix.app.util.*;
+import com.home.builderforms.*;
 import com.home.builderforms.sqlqueries.ResultSet;
  
 import com.home.builderforms.Info;
@@ -44,7 +44,6 @@ public class BaseWebImpl implements java.io.Serializable {
 				return dao.getCollection(psArrFieldsToFetch, pParamMap, pageSize, page,orderBy);
 
 		}catch(Exception e){
-			logger.error("Exception: ", e);
 		}
 		return null;
 	}
@@ -68,7 +67,6 @@ public class BaseWebImpl implements java.io.Serializable {
 				return dao.getCollection(psArrFieldsToFetch, pParamMap);
 
 		}catch(Exception e){
-			logger.error("Exception: ", e);
 		}
 		return null;
 	}
@@ -93,7 +91,6 @@ public class BaseWebImpl implements java.io.Serializable {
 				return dao.getCollection(psArrFieldsToFetch, pParamMap,orderBy);
 
 		}catch(Exception e){
-			logger.error("Exception ", e);
 		}
 		return null;
 	}

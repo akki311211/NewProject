@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-//import com.appnetix.app.util.DataReport;
+//import com.home.builderforms.DataReport;
 import com.home.builderforms.DateTime;
 import com.home.builderforms.IntConstants;
 import com.home.builderforms.SequenceMap;
@@ -172,7 +172,6 @@ public class Info implements java.io.Serializable
 		{
 			if (object instanceof Timestamp)
 			{
-				logger.info("date instance");
                 if(convertToDisplaydate) //for check DisplayDateFormat BBEH_FOR_SMC_OPTIMIZATION starts
 				  ret = DateTime.getDisplayDate((Timestamp)object);
                 else{

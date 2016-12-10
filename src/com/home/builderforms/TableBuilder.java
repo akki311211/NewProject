@@ -10,16 +10,14 @@ package com.home.builderforms;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-import com.appnetix.app.util.*;
-import com.appnetix.app.util.DBConnectionManager;
+import com.home.builderforms.*;
+import com.home.builderforms.DBConnectionManager;
 import com.home.builderforms.Info;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;//TSTE-20150204-004
 import com.home.BuilderFormFieldNames;
 
-import org.apache.log4j.Logger;
 
 public class TableBuilder extends BaseBuilder{
-    static Logger logger	= 		com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(TableBuilder.class);
     
     protected String tmpDirectory;
     String menuName1 = "";

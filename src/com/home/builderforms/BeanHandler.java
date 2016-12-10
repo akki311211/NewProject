@@ -4,7 +4,7 @@ import org.springframework.beans.factory.BeanFactory;
 
 import com.appnetix.app.control.web.FCInitHandlerServlet;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.util.SpringUtil;
+import com.home.builderforms.SpringUtil;
 
 /**
  * <code>BeanHandler<code> is a helper, which avails bean from the corresponding <code>BeanFactory</code> of spring framework.

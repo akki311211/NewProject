@@ -4,12 +4,11 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 
 import com.appnetix.app.components.builderformmgr.manager.BuilderFormsMgr;
 import com.appnetix.app.struts.actions.AbstractAppAction;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.SequenceMap;
 import com.home.builderforms.Info;
 
 /**
@@ -20,7 +19,6 @@ import com.home.builderforms.Info;
  */
 public class BuilderFormSummaryAction extends AbstractAppAction{
 	//HttpServletRequest request;
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderFormSummaryAction.class);
 	public String execute() throws Exception {
 		Info info = null;
 		SequenceMap sMap = getBuilderFormsMgr().getBuilderFormFieldsDAO().getFullData(null,null);

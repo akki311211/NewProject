@@ -64,7 +64,6 @@ public class BaseDAO
 			SQLUtil.beginTransaction(connectionName);
 		}catch(Exception e)
 		{
-			logger.info("Exception : in Begin transaction");
 		}
 	}
 
@@ -75,7 +74,6 @@ public class BaseDAO
 			SQLUtil.rollbackTransaction(connectionName);
 		}catch(Exception e)
 		{
-			logger.info("Exception : in rollback transaction");
 		}
 	}
 
@@ -86,7 +84,6 @@ public class BaseDAO
 			SQLUtil.commitTransaction(connectionName);
 		}catch(Exception e)
 		{
-			logger.info("Exception :in commitTransaction ");
 		}
 	}
 
@@ -133,7 +130,6 @@ public class BaseDAO
 			return info.getIDObject();
 		}catch(com.mysql.jdbc.MysqlDataTruncation e)
 		{
-			logger.error("Exception in creating record" + e);
 			return info.getIDObject();
 
 		}catch(SQLException e)
@@ -144,7 +140,6 @@ public class BaseDAO
 				createHelper(info, ++count);
 			}else
 			{
-				logger.error("Exception in creating record");
 				throw e;
 			}
 		}
@@ -162,7 +157,6 @@ public class BaseDAO
 			SQLUtil.modifyRecord(getFieldMappings(), info);
 		}catch(Exception e)
 		{
-			logger.error("BaseDAO :modifyingRecord ", e);
 		}
 	}
 
@@ -174,7 +168,6 @@ public class BaseDAO
 			SQLUtil.modifyRecord(getFieldMappings(), info, paramMap);
 		}catch(Exception e)
 		{
-			logger.error("BaseDAO :modifyingRecord ", e);
 		}
 	}
 
@@ -188,7 +181,6 @@ public class BaseDAO
 			SQLUtil.replaceRecord(getFieldMappings(), info);
 		}catch(Exception e)
 		{
-			logger.error("BaseDAO :modifyingRecord ", e);
 		}
 
 	}
@@ -223,10 +215,8 @@ public class BaseDAO
 			info = SQLUtil.getDetailsInfo(getFieldMappings(), id);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("getDetailsInfo ", e);
 		}
 		return info;
 	}
@@ -239,10 +229,8 @@ public class BaseDAO
 			info = SQLUtil.getDetailsInfo(getFieldMappings(), id);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("getDetailsInfo ", e);
 		}
 		return info;
 	}
@@ -255,10 +243,8 @@ public class BaseDAO
 			info = SQLUtil.getDetailsInfo(getFieldMappings(), map);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("getDetailsInfo ", e);
 		}
 		return info;
 	}
@@ -290,10 +276,8 @@ public class BaseDAO
 			return SQLUtil.getCollection(getFieldMappings(), fieldNames, params, orderBy);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -305,7 +289,6 @@ public class BaseDAO
 			return getCollection(getFieldMappings().getAllFieldNames(), params, orderBy);
 		}catch(Exception e)
 		{
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -316,10 +299,8 @@ public class BaseDAO
 			return SQLUtil.getCollection(getFieldMappings(), fieldNames, params, pageSize, page,orderBy);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -331,10 +312,8 @@ public class BaseDAO
 			return SQLUtil.getCollection(getFieldMappings(), fieldNames, params);
 		}catch(RecordNotFoundException rnfe)
 		{
-			logger.info("Record not found");
 		}catch(Exception e)
 		{
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}

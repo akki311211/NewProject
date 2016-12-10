@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.sql.SQLException;
 
-import com.appnetix.app.util.*;
+import com.home.builderforms.*;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.FieldMappings;
 import com.home.builderforms.Info;
@@ -14,7 +14,6 @@ import com.home.builderforms.BuilderFormMgr;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 
 /**
  *This class is the web-tier representation of the Data.
@@ -28,7 +27,6 @@ BOEFLY_INTEGRATION		21/08/2014		Veerpal Singh			Enh				A third party integration
 -------------------------------------------------------------------------------------------------------------------------------
 */
 public final class BuilderFormWebImpl implements java.io.Serializable {
-	static Logger logger	= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderFormWebImpl.class);
     private HttpSession session;
 	private BuilderFormMgr form		= null;
 	private static BuilderFormWebImpl impl	= null;
@@ -57,7 +55,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().getBuilderFormList(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -67,7 +64,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().getQuickFormField(tableanchor);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -77,7 +73,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			getBuilderFormMgr().getBuilderFormDAO().setBuilderFormAddOrUpdate(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			//return false;
 		}
 	}
@@ -87,7 +82,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().setBuilderFormAddOrUpdateSection(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -97,7 +91,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().setBuilderFormAddOrUpdateDocument(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -107,7 +100,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		 	return getBuilderFormMgr().getBuilderFormDAO().getRadioOrComboOptionsMap(name, tableAnchor);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -116,7 +108,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().deleteRadioOrComboOptions(name, tableAnchor);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -150,7 +141,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 				return getBuilderFormMgr().getBuilderFormDAO().insertComboOptionsMap(name, options, tableAnchor, statusValue, dependentValue,optionValues);//SMC-20140213-378 Ends //BB-20150203-259 (Dynamic Response based on parent field response)  //Alleg-20160615-349 ends
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -160,7 +150,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().removeBuilderFormField(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -170,7 +159,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().removeBuilderFormSection(request);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -184,7 +172,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return getBuilderFormMgr().getBuilderFormDAO().getPiiFieldPasswordMap(formID);
 		}
 		catch (Exception e){
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -192,7 +179,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderTable(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -201,7 +187,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderFields(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -210,7 +195,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderFieldsMap(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -219,7 +203,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderFieldsAllMap(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -228,7 +211,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderFieldsAllTablesMap(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -236,7 +218,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getBuilderSectionCount(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -244,7 +225,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderSectionMap(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -253,7 +233,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getBuilderTabDataMapFromXMl(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -263,7 +242,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getConfiguredTab(subModuleName);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -273,7 +251,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getConfiguredTabByInternalNames(subModuleName);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -283,7 +260,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderSectionMapping(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -297,7 +273,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getTabularSummaryFieldsMap(request, tableAnchor);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -306,7 +281,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getBuilderSectionMapping(tableAnchor);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -315,7 +289,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().addModifyFimFormBuilderFieldsOrder(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -324,7 +297,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().addModifyFimFormBuilderSectionsOrder(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -334,7 +306,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().addModifyTabOrderData(request);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -343,7 +314,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFieldMappings(tableAnchor);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -352,7 +322,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAOforCm().getBuilderFormListCM();
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -361,7 +330,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAOforCm().getCmFormBuilderFields(formId);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -370,7 +338,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAOforCm().getViewCmBuilderFields(formId,tableName,columnName,foreignId);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -379,7 +346,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAOforCm().getCmDisplayBuilderFields(formId);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -388,7 +354,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().checkForSkipValue(flds, sDBTableName, fldName);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -413,7 +378,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getFimFormBuilderFieldsInfo(fldName, tableName, value, parentValue);//SMC-20140213-378 Ends //BB-20150203-259 (Dynamic Response based on parent field response)
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -422,7 +386,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getRadioOrComboOptionsValueForId(fldName, tableName, id);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -430,7 +393,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().getCheckboxOptionsValueForIds(fldName, tableName, id);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return null;
 		}
 	}
@@ -449,7 +411,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().checkColumnValueInputInTable(tableName, fldName, hMap,OrderNo);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -457,7 +418,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().checkColumnValueForCMFileField(sFieldName);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -465,7 +425,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().checkColumnValueInputInAuditTable(tableName, fldName);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -478,7 +437,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().isDataExistForFimDocument(fieldPrefix, checkForData);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -493,7 +451,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().isDataExistForCmDocument(fieldPrefix, checkForData);
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 			return false;
 		}
 	}
@@ -506,7 +463,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().isDataExistForFsDocument(fieldPrefix);
 		} catch(Exception e) {
-			logger.error("Exception in isDataExistForFsDocument====>>>"+e);
 			return false;
 		}
 	}
@@ -520,7 +476,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 				return (Info)obj;
 			}
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 		}
 		return null;
 	}
@@ -537,7 +492,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 				return (Info)obj;
 			}
 		} catch (Exception e) {
-			logger.error("Exception ", e);
 		}
 		return null;
 	}
@@ -551,7 +505,6 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 			return isSuccess;
 		} catch (Exception e) 
 		{
-			logger.error("Exception ", e);
 		}
 		return false;
 	}

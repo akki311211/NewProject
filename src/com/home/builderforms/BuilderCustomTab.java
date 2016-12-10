@@ -13,25 +13,24 @@ import java.util.Iterator;
 import com.appnetix.app.control.web.multitenancy.resources.constants.BuilderFormConstants;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 
-import org.apache.log4j.Logger;
 
 import com.home.BuilderFormFieldNames;
 import com.home.ExportModules;
-import com.appnetix.app.util.BaseUtils;
-import com.appnetix.app.util.Constants;
-import com.appnetix.app.util.DBUtil;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.ModuleUtil;
-import com.appnetix.app.util.ModuleUtil.MODULE_NAME;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.TabUtil;
-import com.appnetix.app.util.database.FieldMappings;
-import com.appnetix.app.util.database.ForeignTable;
-import com.appnetix.app.util.database.LinkField;
+import com.home.builderforms.BaseUtils;
+import com.home.builderforms.Constants;
+import com.home.builderforms.DBUtil;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.ModuleUtil;
+import com.home.builderforms.ModuleUtil.MODULE_NAME;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.TabUtil;
+import com.home.builderforms.FieldMappings;
+import com.home.builderforms.ForeignTable;
+import com.home.builderforms.LinkField;
 import com.home.builderforms.Info;
-import com.appnetix.app.util.tabs.Tab;
-import com.appnetix.app.util.xmldao.TableXMLDAO;
+import com.home.builderforms.tabs.Tab;
+import com.home.builderforms.TableXMLDAO;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
@@ -40,7 +39,6 @@ public class BuilderCustomTab
 {
 	static private final String DB_TABLE = "db-table";
 
-	static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderCustomTab.class);
 	
 	public static BuilderCustomTab newInstance()
 	{
@@ -72,7 +70,6 @@ public class BuilderCustomTab
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception in getAllTabsMap ::::"+e);
 		}
 		
 		return _constants.tabGeneratorMap;
@@ -233,7 +230,6 @@ public class BuilderCustomTab
 					}
 				}
 			}catch(Exception ex){
-				logger.error("Error in getCustomTabObject===",ex);
 			}
 		}
 		return returnTab;
@@ -275,7 +271,6 @@ public class BuilderCustomTab
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception in getAllTabMappings ::::"+e);
 		}
 		return customMappings;
 	}
@@ -368,7 +363,6 @@ public class BuilderCustomTab
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception in processMapWithCustomTab ::::"+e);
 		}
 	}
 	
@@ -475,7 +469,6 @@ public class BuilderCustomTab
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception in processMapWithCustomTab ::::"+e);
 		}
 		
 	}
@@ -581,7 +574,6 @@ public class BuilderCustomTab
 					}
 				}
 			}catch(Exception ex){
-				logger.error("Error in getCustomTabObject===",ex);
 			}
 		}
 		return returnTab;

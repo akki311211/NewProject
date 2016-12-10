@@ -59,7 +59,6 @@ public class DBUtil
 		HashMap tabularSectionMappings=new HashMap();
 		if (tableMappings == null)
 		{
-			logger.info("DBUtil : initializing tableMappings");
 			try
 			{
 				String tableMappingsURL 	= Constants.XML_DIRECTORY + "tablemappings.xml";
@@ -93,7 +92,6 @@ public class DBUtil
 			}
 			catch(Exception e)
 			{
-				logger.error("DBUtil loadingTableMappings ", e);
 			}
 			//AUDIT_ENHANCEMENT_CHANGES starts
 			finally
@@ -121,7 +119,6 @@ public class DBUtil
 			}
 			catch(Exception e)
 			{
-				logger.error("DBUtil getTableVsUrlMappings ", e);
 			}
 		}
 		if (tableVsUrlMappings != null) {
@@ -145,7 +142,6 @@ public class DBUtil
 			}
 			catch(Exception e)
 			{
-				logger.error("DBUtil getTableVsUrlMappings ", e);
 			}
 		}
 		return tableVsUrlMappings;
@@ -163,17 +159,14 @@ public class DBUtil
 			{
 				String loc		= (String)getTableMappings().get(tableAnchor);
 				String location = Constants.XML_DIRECTORY + loc;
-				logger.info("Loading from " + location);
 				fieldMappings = TableXMLDAO.getFieldMappings(location);
 				getTableFieldMappings().put(tableAnchor,fieldMappings);
 			}
 			catch(Exception e)
 			{
-			  logger.error("DBUtil loadingFieldMappings ", e);
 			}
 		}
 		if(fieldMappings == null){
-			logger.error("Unable to get fieldmappings "+tableAnchor);
 		}
 		return fieldMappings;
 
@@ -188,17 +181,14 @@ public class DBUtil
 			{
 				String loc		= (String)getTableMappings().get(tableAnchor);
 				String location = xmPath;
-				logger.info("Loading from " + location);
 				fieldMappings = TableXMLDAO.getFieldMappings(location);
 				getTableFieldMappings().put(tableAnchor,fieldMappings);
 			}
 			catch(Exception e)
 			{
-			  logger.error("DBUtil loadingFieldMappings ", e);
 			}
 		}
 		if(fieldMappings == null){
-			logger.error("Unable to get fieldmappings "+tableAnchor);
 		}
 		return fieldMappings;
 
@@ -359,12 +349,10 @@ public class DBUtil
 	public FieldMappings getValidationFieldMappings(String[] mainTableAnchor , String[] childTableAnchor , int noOfChilds)
     {
 		FieldMappings fieldMappings = null;
-		logger.info("loading from getValidationFieldMappings");
 		try
 		{
 			String loc		= (String)getTableMappings().get(mainTableAnchor[0]);
 			String location = Constants.XML_DIRECTORY + loc;
-			logger.info("Loading from " + location);
 			fieldMappings = TableXMLDAO.getFieldMappings(location);
 				
 			if(noOfChilds > 0 )
@@ -372,7 +360,6 @@ public class DBUtil
 				for(int i = 0; i < noOfChilds; i++) {
 					loc		= (String)getTableMappings().get(childTableAnchor[i]);
 					location = _baseConstants.XML_DIRECTORY + loc;
-					logger.info("Loading from child table :" + location);
 					fieldMappings = 	TableXMLDAO.getValidationFieldMappings(location,childTableAnchor[i],fieldMappings,i);
 					
 				}					
@@ -380,11 +367,9 @@ public class DBUtil
 		}
 		catch(Exception e)
 		{
-		  logger.error("DBUtil loadingFieldMappings ", e);
 		}
 		
 		if(fieldMappings == null){
-			logger.error("Unable to get fieldmappings: "+mainTableAnchor[0]);
 		}
 		return fieldMappings;
 
@@ -434,7 +419,6 @@ public class DBUtil
 
 		if (sqlQueriesMap == null || bFromXML)
 		{
-			logger.info("DBUtil : initializing sqlQueriesMap "+mgrName);
 			String url = null;
 			try
 			{
@@ -442,7 +426,6 @@ public class DBUtil
 			}
 			catch (Exception e)
 			{
-				logger.error("DBUtil: initializing SQLQueries exception: ", e);
 			}
 			sqlQueriesMap = SQLQueriesXMLDAO.getSQLQueries(url);
             MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.SQLQueriesMapKey+mgrName,sqlQueriesMap);
@@ -458,20 +441,16 @@ public class DBUtil
 		SQLQuery sqlQuery = getSQLQuery(mgrName, sqlQueryName);
 		if (sqlQuery==null)
 		{
-			logger.error("No mapping for sqlQuery : "+sqlQueryName);
 			return null;
 		}
-		logger.info("Getting result for sqlQuery ="+sqlQuery.getString());
 		return SQLUtil.getResultList(sqlQuery,params);
 	}
 
 	public ResultList getResultList(SQLQuery sqlQuery, Object[] params) throws SQLException{
 		if (sqlQuery==null)
 		{
-			logger.error("No mapping for sqlQuery : "+sqlQuery);
 			return null;
 		}
-		logger.info("Getting result for sqlQuery ="+sqlQuery.getString());
 		return SQLUtil.getResultList(sqlQuery,params);
 	}
 
@@ -624,7 +603,6 @@ public class DBUtil
             }
         }catch(Exception e)
         {
-            logger.error("Exception in setEntityOrder()===>",e);
         }
     }
 
@@ -705,7 +683,6 @@ public class DBUtil
         }
         catch(Exception e)
         {
-            logger.error("Exception in getKeywordString()===>", e);
         }
         return keywordString.toString();
     }
@@ -740,7 +717,6 @@ public class DBUtil
         }
         catch(Exception e)
         {
-            logger.error("Exception in getAddressData()===>", e);
             return null;
         }
         finally
@@ -777,7 +753,6 @@ public class DBUtil
         }
         catch(Exception e)
         {
-            logger.error("Exception in getOwnerEmployeeData()===>", e);
             return null;
         }
         finally
@@ -805,7 +780,6 @@ public class DBUtil
 					try {
 						getTableFieldMappings().remove(tableAnchor);
 					} catch(Exception e) {
-						logger.error(e);
 					}
 				}
     		}

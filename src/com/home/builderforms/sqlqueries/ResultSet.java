@@ -3,8 +3,8 @@ package com.home.builderforms.sqlqueries;
 import java.sql.SQLException;
 import java.util.*;
 
-import com.appnetix.app.util.DateUtil;
-import com.appnetix.app.util.database.*;
+import com.home.builderforms.DateUtil;
+import com.home.builderforms.*;
 
 /*
  * DATE_FORMAT_CHANGE          Ravindra Verma                         For internationalization of date form
@@ -159,7 +159,7 @@ public class ResultSet
 //			//added by vikas to nullify the result set
 			result=null;
 			
-			//com.appnetix.app.util.QueryUtil.releaseResultSet(result);
+			//com.home.builderforms.QueryUtil.releaseResultSet(result);
 
 		}
 

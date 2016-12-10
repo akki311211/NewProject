@@ -1,15 +1,15 @@
 /**
 
- * $Header: com.appnetix.app.util.toolbar
+ * $Header: com.home.builderforms.toolbar
  * $Author: tomcat $
  * $Version: 1.1 $
  * $Date: 2014/07/14 10:10:18 $
  *
 **/
 
-package com.appnetix.app.util.tabs;
+package com.home.builderforms.tabs;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 import java.util.ArrayList;
 
 public class TabGroup

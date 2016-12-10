@@ -22,8 +22,7 @@ import java.util.HashMap;
 
 
 import com.home.builderforms.Info;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-
+import com.home.builderforms.sqlqueries.ColumnList;
 import java.util.Map;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
@@ -35,7 +34,6 @@ import com.home.builderforms.sqlqueries.ResultSet;
 
 public class SQLUtil {
 
-    static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(SQLUtil.class);
 
     public static ResultList getResultList(SQLQuery sqlQuery, Object[] params) throws SQLException {
         String sqlQueryString = sqlQuery.getString();
@@ -116,7 +114,6 @@ public class SQLUtil {
             params2.put(idFields[i], id[i]);
         }
         String queryString = SQLQueryGenerator.getCollectionQueryString(fieldMappings, fieldNames, params);
-        logger.info("Excecuting query " + queryString);
         ResultSet result = SQLUtilHelper.getResultSet(queryString, params2, fieldMappings.getConnectionName());
         if (!result.next()) {
             throw new RecordNotFoundException(fieldMappings.getTableName() + " : " + id);
@@ -143,10 +140,8 @@ Methods to control transaction.
 
     public static void createRecord(FieldMappings fieldMappings, Info info, boolean insertID) throws SQLException {
         if (fieldMappings == null) {
-            logger.error("No fieldmappings sent, aborting");
             return;
         }
-        logger.info("Creating record: " + fieldMappings.getConnectionName() + " " + insertID);
         String queryString = SQLQueryGenerator.getCreateQueryString(fieldMappings, insertID);
         Field[] allFields = null;
         if (insertID) {
@@ -156,14 +151,12 @@ Methods to control transaction.
         }
         SequenceMap params = new SequenceMap();
         SQLException e = null;
-        logger.info("Getting all fields, " + fieldMappings.getIdField() + " = " + info.getIDs());
         for (int i = 0; i < allFields.length; i++) {
             if (!allFields[i].fieldAllowedInMain()) {
                 continue;
             }
             String fieldName = allFields[i].getFieldName();
             Object value = info.getObject(fieldName);
-            logger.info(fieldName + " = " + value);
             params.put(allFields[i], value);
         }
         //System.out.println("\n\n Executing query " + queryString +" with"+(params==null?"No Params":params.toString()));
@@ -177,7 +170,6 @@ Methods to control transaction.
             }
         }
         if (!inserted) {
-            logger.error("Exception ", e);
             throw e;
         }
     }
@@ -192,11 +184,9 @@ Methods to control transaction.
 	 */
     public static void createDataRecord(FieldMappings fieldMappings, Info[] info, boolean insertID) throws SQLException {
         if (fieldMappings == null) {
-            logger.error("No fieldmappings sent, aborting");
             return;
         }
         if (info == null || info.length == 0) {
-            logger.error("No info array sent, aborting");
             return;
         }
         String queryString = SQLQueryGenerator.getCreateQueryString(fieldMappings, insertID);
@@ -229,7 +219,6 @@ Methods to control transaction.
             }
         }
         if (!inserted) {
-            logger.error("Exception ", e);
             throw e;
         }
     }
@@ -238,7 +227,6 @@ Methods to control transaction.
         Integer[] id = new Integer[1];
         id[0] = new Integer(-1);
         if (fieldMappings == null) {
-            logger.error("No fieldmappings sent, aborting");
             return null;
         }
         String queryString = SQLQueryGenerator.getCreateAndFetchQueryString(fieldMappings);
@@ -263,7 +251,6 @@ Methods to control transaction.
             }
         }
         if (!inserted) {
-            logger.error("Exception ", e);
             throw e;
         }
         info.setID(id);
@@ -302,7 +289,6 @@ Methods to control transaction.
             if (info.isIdField(fieldName)) continue;
             Field field = fieldMappings.getField(fieldName);
             if (field == null) {
-                logger.info("Field ='" + fieldName + "' invalid1, skipping");
                 continue;
             }
             dbFieldList.add(field.getDbField());
@@ -314,7 +300,6 @@ Methods to control transaction.
             params.put(idFields[loop], idObject[loop]);
         }
         String queryString = SQLQueryGenerator.getModifyQueryString((String[]) dbFieldList.toArray(new String[0]), fieldMappings);
-        logger.info("Executing query " + queryString + "with info " + info);
         SQLUtilHelper.update(queryString, params, fieldMappings.getConnectionName());
     }
 
@@ -328,7 +313,6 @@ Methods to control transaction.
             if (info.isIdField(fieldName)) continue;
             Field field = fieldMappings.getField(fieldName);
             if (field == null) {
-                logger.info("Field ='" + fieldName + "' invalid, skipping");
                 continue;
             }
             dbFieldsList.add(field.getDbField());
@@ -340,7 +324,6 @@ Methods to control transaction.
             String fieldName = (String) it.next();
             Field field = fieldMappings.getField(fieldName);
             if (field == null) {
-                logger.info("Field ='" + fieldName + "' invalid, skipping");
                 continue;
             }
             whereMap.put(field, paramMap.get(fieldName));
@@ -361,7 +344,6 @@ Methods to control transaction.
 
     public static void deleteRecords(FieldMappings fieldMappings, Integer[] ids) throws SQLException {
         if (ids == null || ids.length == 0) {
-            logger.info("deleteRecords : null or empty ids array");
             return;
         }
         String queryString = SQLQueryGenerator.getMultipleDeleteQueryString(fieldMappings, ids.length);
@@ -440,9 +422,6 @@ Methods to control transaction.
             fieldNamesInList.add(idFieldNames[i]);
         }
         fieldNamesIn = CollectionUtil.getStringArray(fieldNamesInList);
-        logger.info("::fieldMappings::" + fieldMappings);
-        logger.info("::fieldNamesIn::" + fieldNamesIn);
-        logger.info("::paramMap::" + paramMap);
         StringBuffer limitString=new  StringBuffer();
         limitString.append(" ");
         if (pageSize != null) {
@@ -452,7 +431,6 @@ Methods to control transaction.
 			try {
 				page = Integer.parseInt(pageId);
 			} catch (NumberFormatException e) {
-				logger.error("NumberFormatException: ", e);
 			}
 
 			if (page > 1) {
@@ -469,7 +447,6 @@ Methods to control transaction.
         	orderByString.append(" ORDER BY ").append(orderBy);
         }
         String queryString = SQLQueryGenerator.getCollectionQueryString(fieldMappings, fieldNamesIn, paramMap)+orderByString+" "+limitString;
-        logger.info("::queryString::" + queryString);
         ResultSet result = getResultSetForQuery(queryString, fieldMappings, paramMap);
         if (result == null) {
             return null;
@@ -498,11 +475,7 @@ Methods to control transaction.
             fieldNamesInList.add(idFieldNames[i]);
         }
         fieldNamesIn = CollectionUtil.getStringArray(fieldNamesInList);
-        logger.info("::fieldMappings::" + fieldMappings);
-        logger.info("::fieldNamesIn::" + fieldNamesIn);
-        logger.info("::paramMap::" + paramMap);
         String queryString = SQLQueryGenerator.getCollectionQueryString(fieldMappings, fieldNamesIn, paramMap);
-        logger.info("::queryString::" + queryString);
         ResultSet result = getResultSetForQuery(queryString, fieldMappings, paramMap);
         if (result == null) {
             return null;
@@ -556,25 +529,20 @@ Methods to control transaction.
         try {
             con = conMgr.getConnection(connectionName);
             String callProc = "{Call " + procedureName + "(" + StringUtil.toNtimes("?", params.length) + ")}";
-            logger.info("Calling Procedure " + callProc);
-            logger.info("with params ");
             cstmt = con.prepareCall(callProc);
             for (int i = 0; i < params.length; i++) {
                 if (params[i] != null) {
-                    logger.info(params[i].getClass().getName() + " = " + params[i]);
                 }
                 cstmt.setObject(i + 1, params[i]);
             }
             cstmt.execute();
         } catch (Exception e) {
-            logger.error("Exception ", e);
         } finally {
             if (cstmt != null) {
                 try {
                     cstmt.close();
                     cstmt = null;
                 } catch (Exception e) {
-                    logger.info("Exception : " + e);
                 }
             }
             conMgr.freeConnection(connectionName, con);
@@ -648,7 +616,6 @@ Methods to control transaction.
             try {
                 QueryUtil.executeInsert(query.toString(), parameters);
             } catch (Exception ae) {
-                logger.info("Exception in insertTableData function in BaseNewPortalUtils: " + ae);
             }
         }
     }
@@ -683,7 +650,6 @@ Methods to control transaction.
             try {
                 QueryUtil.update(query.toString(), parameters);
             } catch (AppException ae) {
-                logger.info("Exception in deleteTabData function in BaseNewPortalUtils: " + ae);
             }
         }
     }
@@ -720,7 +686,6 @@ Methods to control transaction.
             try {
                 QueryUtil.update(query.toString(), parameters);
             } catch (AppException ae) {
-                logger.info("Exception in deleteTabData function in BaseNewPortalUtils: " + ae);
             }
         }
     }
@@ -769,7 +734,6 @@ Methods to control transaction.
                 return map;
             }
         } catch (Exception e) {
-            logger.error("Exception occured in getMultipleColumns ::", e);
         } finally {
             if (result != null) {
                 result.release();
@@ -821,7 +785,6 @@ Methods to control transaction.
                 returnValue = result.getString(columnName);
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::", e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -869,7 +832,6 @@ Methods to control transaction.
                 info.set(result.getString(columnName1), applyLanguageUtil ? LanguageUtil.getString(result.getString(columnName2)) : result.getString(columnName2));
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::" , e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -896,7 +858,6 @@ Methods to control transaction.
             	tableMap.put(result.getString(columnName1),result.getString(columnName2));
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::" , e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -914,7 +875,7 @@ Methods to control transaction.
     public static Info getInfoFromQuery(String keyColumn, String valueColumn, String query, boolean applyLanguageUtil) {
         Info dataInfo = new Info();
         if (StringUtil.isValid(query)) {
-            com.appnetix.app.util.sqlqueries.ResultSet result = null;
+            com.home.builderforms.sqlqueries.ResultSet result = null;
             try {
                 result = QueryUtil.getResult(query, null);
                 if (result != null) {
@@ -923,7 +884,6 @@ Methods to control transaction.
                     }
                 }
             } catch (Exception e) {
-                logger.error("Exception in getMapFromQuery", e);
             } finally {
                 QueryUtil.releaseResultSet(result);
             }
@@ -933,7 +893,7 @@ Methods to control transaction.
 
     public static boolean isPrimaryKeyExist(String tableName, String primaryKeyColumnName, String primaryKey) {
         boolean isPrimaryKeyExist = false;
-        com.appnetix.app.util.sqlqueries.ResultSet result = null;
+        com.home.builderforms.sqlqueries.ResultSet result = null;
         String query = null;
         try {
             query = " SELECT " + primaryKeyColumnName + " FROM " + tableName + " WHERE " + primaryKeyColumnName + " = '" + primaryKey + "'";
@@ -961,7 +921,6 @@ Methods to control transaction.
                 itemName = rs.getString(1);
             }
         } catch (Exception e) {
-            logger.info("Exception in getItemNameById");
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -974,7 +933,6 @@ Methods to control transaction.
             try {
                 if (con != null) DBConnectionManager.getInstance().freeConnection(con);
             } catch (Exception e) {
-                logger.error("Exception ", e);
             }
         }
         if (StringUtil.isValid(itemName)) {
@@ -991,7 +949,6 @@ Methods to control transaction.
                 return result.getString(requiredColumn);
             }
         } catch (Exception e) {
-            logger.error("Exception in getQueryResult ::", e);
             return null;
         } finally {
             if (result != null) {
@@ -1013,7 +970,7 @@ Methods to control transaction.
             }
             sbQuery.append(" FROM ").append(tableName).append(" WHERE ");
             sbQuery.append(keyColumn).append("=?");
-            com.appnetix.app.util.sqlqueries.ResultSet rs = null;
+            com.home.builderforms.sqlqueries.ResultSet rs = null;
             String[] paramArray = { keyColumnValue };
             try {
                 rs = QueryUtil.getResult(sbQuery.toString(), paramArray);
@@ -1023,7 +980,6 @@ Methods to control transaction.
                     }
                 }
             } catch (Exception e) {
-                logger.error("Exception in getSingleRowInfo", e);
             } finally {
                 if (rs != null) {
                     rs.release();
@@ -1056,7 +1012,7 @@ Methods to control transaction.
             }
             sbQuery.append(" FROM ").append(tableName).append(" WHERE ");
             sbQuery.append(keyColumn).append("=?");
-            com.appnetix.app.util.sqlqueries.ResultSet rs = null;
+            com.home.builderforms.sqlqueries.ResultSet rs = null;
             String[] paramArray = { keyColumnValue };
             try {
                 rs = QueryUtil.getResult(sbQuery.toString(), paramArray);
@@ -1066,7 +1022,6 @@ Methods to control transaction.
                     }
                 }
             } catch (Exception e) {
-                logger.error("Exception in getSingleRowInfo", e);
             } finally {
                 QueryUtil.releaseResultSet(rs);
                 columns = null;
@@ -1121,7 +1076,6 @@ Methods to control transaction.
         try {
             QueryUtil.update(query.toString(), new String[] {});
         } catch (Exception e) {
-            logger.error(e,e);
             e.printStackTrace();
         }
     }
@@ -1136,14 +1090,13 @@ Methods to control transaction.
         if (StringUtil.isValid(whereClause)) {
             query += " WHERE " + whereClause;
         }
-        com.appnetix.app.util.sqlqueries.ResultSet result = null;
+        com.home.builderforms.sqlqueries.ResultSet result = null;
         try {
             result = QueryUtil.getResult(query, null);
             if (result != null && result.next()) {
                 dataAvailable = true;
             }
         } catch (Exception e) {
-            logger.error("Exception in isDataAvailable", e);
         } finally {
             QueryUtil.releaseResultSet(result);
         }
@@ -1158,7 +1111,7 @@ Methods to control transaction.
     public static SequenceMap<String, String> getSequenceMapFromQuery(String keyColumn, String valueColumn, String query) {
         SequenceMap dataMap = new SequenceMap<String, String>();
         if (StringUtil.isValid(query)) {
-            com.appnetix.app.util.sqlqueries.ResultSet result = null;
+            com.home.builderforms.sqlqueries.ResultSet result = null;
             try {
                 result = QueryUtil.getResult(query, null);
                 if (result != null) {
@@ -1167,7 +1120,6 @@ Methods to control transaction.
                     }
                 }
             } catch (Exception e) {
-                logger.error("Exception in getMapFromQuery", e);
             } finally {
                 QueryUtil.releaseResultSet(result);
             }
@@ -1222,7 +1174,7 @@ Methods to control transaction.
             tempQuery.append(orderBy);
             query = tempQuery.toString();
         }
-        com.appnetix.app.util.sqlqueries.ResultSet result = null;
+        com.home.builderforms.sqlqueries.ResultSet result = null;
         try {
             result = QueryUtil.getResult(query, null);
             if (result != null) {
@@ -1231,7 +1183,6 @@ Methods to control transaction.
                 }
             }
         } catch (Exception e) {
-            logger.error("Error in getDataMap", e);
             e.printStackTrace();
         } finally {
             QueryUtil.releaseResultSet(result);
@@ -1288,7 +1239,6 @@ Methods to control transaction.
                 }
                 QueryUtil.update(updateQuery.toString(), valueArray);
             } catch (Exception e) {
-                logger.error("Exception in NewPortalUtils ::: method ::: updateTableData::::" , e);
             } finally {
                 updateQuery = null;
                 tableName = null;
@@ -1341,7 +1291,6 @@ Methods to control transaction.
                     if (StringUtil.isValid(returncolumnValue)) returncolumnValue = returncolumnValue + "," + result.getString(requiredColumn); else returncolumnValue = result.getString(requiredColumn);
                 }
             } catch (Exception e) {
-                logger.error("ERROR: exception in getColumnFromTableUsingLikeAllCases ::" , e);
             } finally {
                 if (result != null) {
                     result = null;
@@ -1368,19 +1317,15 @@ Methods to control transaction.
             QueryUtil.update(queryBuffer.toString(), new String[]{insertColValue});
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
     public static void deleteRecord(String tableName, String colName, String colVal) {
         try {
             String query = "DELETE FROM " + tableName + " WHERE " + colName + "  = ?";
-            logger.info("\n>>>>>>>>>>>>>>>>>delete query in newPortalUtils is" + query);
-            logger.info("\n>>>>>>>>>>>>>>>>>id is" + colVal);
             QueryUtil.update(query, new String[] { colVal });
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1390,7 +1335,6 @@ Methods to control transaction.
             QueryUtil.update(query, Constants.EMPTY_STRING_ARRAY);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1409,7 +1353,6 @@ Methods to control transaction.
             QueryUtil.update(queryBuffer.toString(), new String[] {});
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1443,7 +1386,6 @@ Methods to control transaction.
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         } finally {
             QueryUtil.releaseResultSet(rs);
         }
@@ -1454,11 +1396,9 @@ Methods to control transaction.
         StringBuffer queryBuffer = new StringBuffer();
         try {
             queryBuffer.append("UPDATE  ").append(tableName).append(" SET  ").append(insertColName).append(" = '").append(insertColValue).append("'  WHERE  ").append(whereClause);
-            logger.info("queryBuffer.toString()-------------------->>>>>>@@@>>>>" + queryBuffer.toString());
             QueryUtil.update(queryBuffer.toString(), new String[] {});
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1478,7 +1418,6 @@ Methods to control transaction.
             QueryUtil.update(queryBuffer.toString(), new String[] {});
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1516,7 +1455,6 @@ Methods to control transaction.
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         } finally {
             QueryUtil.releaseResultSet(rs);
         }
@@ -1557,7 +1495,6 @@ Methods to control transaction.
                 }
             }
         } catch (Exception e) {
-            logger.error("Exception in getLastResult ::", e);
         } finally {
             QueryUtil.releaseResultSet(result);
         }
@@ -1578,7 +1515,6 @@ Methods to control transaction.
                 }
             }
         } catch (Exception e) {
-            logger.error("Exception in getValidColumnInClause:", e);
         } finally {
             if (result != null) {
                 result.release();
@@ -1629,7 +1565,6 @@ Methods to control transaction.
                 }
             }
         } catch (Exception e) {
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -1682,7 +1617,6 @@ Methods to control transaction.
             }
             dataMap.put("rowCount", i);
         } catch (Exception e) {
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -1722,7 +1656,6 @@ Methods to control transaction.
             int result = QueryUtil.executeInsert(queryBuffer.toString(), values);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1745,7 +1678,6 @@ Methods to control transaction.
             int result = QueryUtil.update(queryBuffer.toString(), new String[] {});
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error(e,e);
         }
     }
 
@@ -1783,7 +1715,6 @@ Methods to control transaction.
                 info.set(result.getString(columnName1), applyLanguageUtil ? LanguageUtil.getString(result.getString(columnName2)) : result.getString(columnName2));
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::" , e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -1818,7 +1749,6 @@ Methods to control transaction.
             	returnValue = result.getString(columnName);
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::" , e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -1856,7 +1786,6 @@ Methods to control transaction.
                 queryBuilder.append(" AND ");
             }
             queryBuilder.append(" 1=1");
-            logger.info("\n>>>>>>>>>>>>query in get coulmnValue"+queryBuilder);
             rs = QueryUtil.getResult(queryBuilder.toString(), keyColumns);
             if (rs!=null && rs.next())
             {
@@ -1866,7 +1795,6 @@ Methods to control transaction.
         } catch (Exception e) {
      	   rs = null;
             queryBuilder = null;
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -1904,7 +1832,6 @@ Methods to control transaction.
         } catch (Exception e) {
      	   rs = null;
             queryBuilder = null;
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -1940,7 +1867,6 @@ Methods to control transaction.
                 returnValue = result.getString(columnName);
             }
         } catch (Exception e) {
-            logger.error("ERROR: exception in getColumnValue ::", e);
             e.printStackTrace();
         } finally {
             if (result != null) {
@@ -1975,7 +1901,6 @@ Methods to control transaction.
                 queryBuilder.append(" "+operator[i]);
             }
             queryBuilder.append("AND 1=1");
-              logger.info("\n>>>>>>>>>>>>query in get coulmnValue"+queryBuilder);
             rs = QueryUtil.getResult(queryBuilder.toString(), null);
             if (rs!=null && rs.next()) {
                 dataMap = new HashMap();
@@ -1984,7 +1909,6 @@ Methods to control transaction.
         } catch (Exception e) {
      	   rs = null;
             queryBuilder = null;
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -2033,7 +1957,6 @@ Methods to control transaction.
     				}
     			}
     		} catch (Exception e) {
-    			logger.error("Exception in getMultipleRowsInfo", e);
     		} finally {
     			if (rs != null) {
     				rs.release();
@@ -2081,7 +2004,6 @@ Methods to control transaction.
                 else
              		   queryBuilder.append("'"+keyColumns[i]+"'");
             }
-              logger.info("\n>>>>>>>>>>>>query in get coulmnValue"+queryBuilder);
             rs = QueryUtil.getResult(queryBuilder.toString(), null);
             if (rs!=null && rs.next()) {
                 dataMap = new HashMap();
@@ -2090,7 +2012,6 @@ Methods to control transaction.
         } catch (Exception e) {
      	   rs = null;
             queryBuilder = null;
-            logger.error(e,e);
             e.printStackTrace();
         } finally {
             rs = null;
@@ -2125,7 +2046,6 @@ Methods to control transaction.
          		queryBuilder.append(" WHERE ");
          		queryBuilder.append(" 1=1 ");
          		queryBuilder.append(" AND "+Column+" = ? ");
-            logger.info("\n>>>>>>>>>>>>query in get coulmnValue"+queryBuilder);
            		rs = QueryUtil.getResult(queryBuilder.toString(), new String[]{key});
 	         while(rs!=null && rs.next()) 
 	         {
@@ -2138,8 +2058,6 @@ Methods to control transaction.
 	        	 		counter++;
 	        }
 	     } catch (Exception e) {
-	    	 logger.error("\n>>>>>>>>>>>>Error"+queryBuilder);
-	    	 logger.error(e,e);
 	     }
     	 return smap;
     }
@@ -2223,7 +2141,6 @@ Methods to control transaction.
 		}
 		catch(Exception e)
 		{
-			logger.error("Exception in updateColumnWithCurrentDBTime in SQLUtil.java class",e);
 		}
 	}
 
@@ -2245,7 +2162,6 @@ Methods to control transaction.
 				}
 	       
 		 }catch(Exception e){
-			 logger.error(e,e);
 		 }
 			finally{
 				QueryUtil.releaseResultSet(result);

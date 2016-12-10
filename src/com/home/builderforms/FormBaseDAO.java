@@ -14,7 +14,7 @@ ENH_PW_SMART_QUESTIONS    11/08/2015      Rohit Jain   Add new functionality or 
 ecsc-20160603-007         09/06/2016      Kirti Kumar    Audit form got removed once question added(Special Character in case of PPT)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 **/
-package com.appnetix.app.components.builderformmgr.manager.dao;
+package com.home.builderforms;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -37,18 +37,18 @@ import com.appnetix.app.exception.AppException;
 import com.home.builderforms.BuilderFormFieldNames;
 import com.home.builderforms.BaseFormFactory;
 import com.home.builderforms.BuilderCustomTab;
-import com.appnetix.app.util.BaseUtils;
-import com.appnetix.app.util.Constants;
-import com.appnetix.app.util.DBUtil;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.IDGenerator;
-import com.appnetix.app.util.IntConstants;
-import com.appnetix.app.util.ModuleUtil;
-import com.appnetix.app.util.QueryUtil;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.database.Field;
-import com.appnetix.app.util.database.FieldMappings;
+import com.home.builderforms.BaseUtils;
+import com.home.builderforms.Constants;
+import com.home.builderforms.DBUtil;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.IDGenerator;
+import com.home.builderforms.IntConstants;
+import com.home.builderforms.ModuleUtil;
+import com.home.builderforms.QueryUtil;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.Field;
+import com.home.builderforms.FieldMappings;
 import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.DBColumn;
 import com.home.builderforms.sqlqueries.DBQuery;
@@ -56,7 +56,7 @@ import com.home.builderforms.sqlqueries.RecordNotFoundException;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLQueryGenerator;
 import com.home.builderforms.sqlqueries.SQLUtil;
-import com.appnetix.app.util.xmldao.TableXMLDAO;
+import com.home.builderforms.TableXMLDAO;
 
 
 public class FormBaseDAO{
@@ -143,7 +143,6 @@ public class FormBaseDAO{
 		try{
 			SQLUtil.beginTransaction(connectionName);
 		}catch(Exception  e){
-			logger.info("Exception : in Begin transaction");
 		}
 	}
 
@@ -151,7 +150,6 @@ public class FormBaseDAO{
 		try{
 			SQLUtil.rollbackTransaction(connectionName);
 		}catch(Exception  e){
-			logger.info("Exception : in rollback transaction");
 		}
 	}
 
@@ -159,7 +157,6 @@ public class FormBaseDAO{
 		try{
 			SQLUtil.commitTransaction(connectionName);
 		}catch(Exception  e){
-			logger.info("Exception :in commitTransaction ");
 		}
 	}
 
@@ -228,13 +225,11 @@ public class FormBaseDAO{
 			SQLUtil.createRecord(getFieldMappings(tableAnchor),info,true);
 			return info.getIDObject();
 		} catch(com.mysql.jdbc.MysqlDataTruncation e) {		 
-		 	logger.error("Exception in creating record"+e);
 			return info.getIDObject();
 		} catch(SQLException e) {
 			if (count < 5) {
 				createHelper(tableAnchor, info,++count);
 			}else{
-				logger.error("Exception in creating record");
 				throw e;
 			}
 		}
@@ -275,7 +270,6 @@ public class FormBaseDAO{
 			if (count < 5) {
 				createDataHelper(tableAnchor, info,++count);
 			}else{
-				logger.error("Exception in creating record(s)");
 				throw e;
 			}
 		}
@@ -289,7 +283,6 @@ public class FormBaseDAO{
 		try{
 			SQLUtil.modifyRecord(getFieldMappings(tableAnchor),info);
 		} catch(Exception e){
-			logger.error("FormBaseDAO :modifyingRecord ", e);
 		}
 	}
 	
@@ -301,7 +294,6 @@ public class FormBaseDAO{
 			setNullIntsToDefault(info, true);
 			SQLUtil.modifyRecord(getFieldMappings(tableAnchor),info, paramMap);
 		} catch(Exception e){
-			logger.error("FormBaseDAO :modifyingRecord ", e);
 		}
 	}
 	public void replace(Info info) {
@@ -313,7 +305,6 @@ public class FormBaseDAO{
 			setNullIntsToDefault(info);
 			SQLUtil.replaceRecord(getFieldMappings(tableAnchor),info);
 		} catch(Exception e) {
-			logger.error("FormBaseDAO :modifyingRecord ", e);
 		}
 	}
 
@@ -350,9 +341,7 @@ public class FormBaseDAO{
 		try{
 			info = SQLUtil.getDetailsInfo(getFieldMappings(tableAnchor),id);
 		} catch(RecordNotFoundException rnfe){
-			logger.info("Record not found");
 		} catch(Exception e){
-			logger.error("getDetailsInfo ", e);
 		}
 		return info ;
 	}
@@ -365,9 +354,7 @@ public class FormBaseDAO{
 		try {
 			info= SQLUtil.getDetailsInfo(getFieldMappings(tableAnchor), map);
 		} catch(RecordNotFoundException rnfe){
-			logger.info("Record not found");
 		} catch(Exception e){
-			logger.error("getDetailsInfo ", e);
 		}
 		return info ;
 	}
@@ -396,9 +383,7 @@ public class FormBaseDAO{
 		try {
 			return SQLUtil.getCollection(getFieldMappings(),fieldNames,params,orderBy);
 		} catch(RecordNotFoundException rnfe){
-			logger.info("Record not found");
 		} catch(Exception e){
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -406,7 +391,6 @@ public class FormBaseDAO{
 		try{
 			return getCollection(getFieldMappings().getAllFieldNames(),params,orderBy);
 		} catch(Exception e){
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -415,9 +399,7 @@ public class FormBaseDAO{
 		try {
 			return SQLUtil.getCollection(getFieldMappings(),fieldNames,params);
 		} catch(RecordNotFoundException rnfe) {
-			logger.info("Record not found");
 		} catch(Exception e){
-			logger.error("Error in getting collection", e);
 		}
 		return null;
 	}
@@ -512,7 +494,6 @@ public class FormBaseDAO{
 //				}
 //			}
 //		}catch(Exception e){
-//			logger.error(e,e);
 //		}
 //		return convertedInfo;
 //	}
@@ -534,7 +515,6 @@ public class FormBaseDAO{
 //				}
 //			}
 //		}catch(Exception e){
-//			logger.error(e,e);
 //		}
 //		return convertedInfo;
 //	}
@@ -570,7 +550,6 @@ public class FormBaseDAO{
 //               QueryUtil.executeInsert(insertQuery.toString(),params);
 //           }
 //        }catch(Exception e){
-//                logger.error(e,e);
 //        }
 //	}
     /**
@@ -1015,7 +994,6 @@ public class FormBaseDAO{
 			
 			int count = QueryUtil.alterDBTable(queryStr);
 		} catch(Exception e) {
-			logger.info("Exception while alter table data : "+e);
 			return false;
 		}
 		return true;
@@ -1042,7 +1020,6 @@ public class FormBaseDAO{
 			
 			int count = QueryUtil.alterDBTable(queryStr);
 		} catch(Exception e) {
-			logger.info("Exception while alter table data : "+e);
 			return false;
 		}
 		return true;
@@ -1076,7 +1053,6 @@ public class FormBaseDAO{
 			}
             int count = QueryUtil.alterDBTable(queryStr);
 		} catch(Exception e) {
-			logger.info("Exception while alter table data : "+e);
 			return false;
 		}
 		return true;
@@ -1218,7 +1194,6 @@ public class FormBaseDAO{
 			StringBuffer updateQuery  = new StringBuffer("UPDATE FIM_DOCUMENTS SET DOCUMENT_FIM_TITLE='").append(value).append("' WHERE FIELD_PREFIX=").append(key).append(" AND TAB_NAME='").append("Contract Signing'");	
 			QueryUtil.executeInsert(updateQuery.toString());
 		} catch(Exception e) {
-			logger.info("Exception while upadte the column display name in FIM_DOCUMENTS modifyDocumentFieldValue : "+e);
 			return false;
 		}
 		return true;
@@ -1351,7 +1326,6 @@ public class FormBaseDAO{
 				int count = QueryUtil.alterDBTable(queryStr);
 			}
 		} catch(Exception e) {
-			logger.info("Exception while alter table data : "+e);
 			return false;
 		}
 		return true;
@@ -1375,7 +1349,6 @@ public class FormBaseDAO{
 				return false;
 			}
 		} catch(Exception e) {
-			logger.info("Exception while alter table data : "+e);
 			return false;
 		}
 		return true;

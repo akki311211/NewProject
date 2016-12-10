@@ -47,22 +47,18 @@ import com.home.builderforms.sqlqueries.ResultSet;
 		int i = 0; 
 		try{
 		while(isPrimaryKeyExist && i++<tryCount){
-			logger.info("Attempt No. " + i + " To Obtain A Primary Key For Table = " + tableName);
 			primaryKey = new Integer(Math.abs(random.nextInt())).toString();
 			//isPrimaryKeyExist = PortalUtils.isPrimaryKeyExist(tableName, primaryKeyColumnName, primaryKey);	
 			isPrimaryKeyExist = SQLUtil.isPrimaryKeyExist(tableName, primaryKeyColumnName, primaryKey);    //For Product_Seperation_BL By Amar Singh.
 			if(isPrimaryKeyExist){
-				logger.info("primary key(" + primaryKey + ") already exist in " + tableName);
 			}else{
 				if("FS_LEAD".equals(tableName)){
 					QueryUtil.executeInsert("INSERT INTO FS_LEAD VALUES("+primaryKey+")");
 				}
-				logger.info("primary key(" + primaryKey + ") Generation Successfull ");
 				break;
 			}
 		}
 		}catch(Exception e){
-			logger.info("Exception inside getNextKey()",e);
 		}
 		return primaryKey;
 	}//ClockWork-20141201-680 ends
@@ -110,7 +106,6 @@ import com.home.builderforms.sqlqueries.ResultSet;
 			int attemptNo = 0;
 			try{
 				while(generatedKeyExist && attemptNo++ < 50) {
-					logger.info("Attempt No. " + attemptNo + " To Obtain A Primary Key For Table = " + tableName);
 					
 					//existingMaxKey = PortalUtils.getMaxIntKey(tableName, keyColumnName);
 					existingMaxKey = BaseUtils.getMaxIntKey(tableName, keyColumnName);  //For Product_Seperation_BL By Amar Singh.
@@ -119,13 +114,10 @@ import com.home.builderforms.sqlqueries.ResultSet;
 					generatedKeyExist = SQLUtil.isPrimaryKeyExist(tableName, keyColumnName, String.valueOf(newMaxKey)); //For Product_Seperation_BL By Amar Singh.
 					
 					if(generatedKeyExist){
-						logger.info("unique sequential key(" + newMaxKey + ") already exist in " + tableName);
 					}else{
-						logger.info("unique sequential key(" + newMaxKey + ") Generation Successfull ");
 					}
 				}
 			}catch(Exception e){
-				logger.info("Exception Occured while generating key...");
 				throw new Exception("Exception Occured while generating key...");
 			}
 		}else{
@@ -153,7 +145,6 @@ import com.home.builderforms.sqlqueries.ResultSet;
         	QueryUtil.executeInsert("INSERT INTO SUPP_PURCHASEORDER_NO (PURCHASEORDER_NO) VALUES("+poNo+")");
         	
         }catch(Exception e){
-        	logger.info("Exception in getPurchaseOrderNo function "+e);
         }
         return poNo;
 	}

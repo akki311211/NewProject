@@ -23,7 +23,6 @@ public class SpringUtil
     	}
     	catch(Exception ex)
     	{
-    		logger.error("Exception in preparing BeanFactory",ex);
     	}
     	
         return _beanFactory;
@@ -43,7 +42,6 @@ public class SpringUtil
 		}
 		catch (Exception ex) 
 		{
-			logger.error("Exception in getting Bean for class "+classObj,ex);
 		}
 		
 		return _beanObj;

@@ -1,16 +1,8 @@
-package com.appnetix.app.util.sqlqueries;
+package com.home.builderforms.sqlqueries;
 
 
 
-import com.appnetix.app.util.DBUtil;
-
-import com.appnetix.app.util.SequenceMap;
-
- 
-
-import com.appnetix.app.util.Constants;
-
-import com.appnetix.app.util.database.*;
+import com.home.builderforms.*;
 
 
 

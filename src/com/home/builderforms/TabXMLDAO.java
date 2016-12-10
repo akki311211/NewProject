@@ -1,19 +1,17 @@
-package com.appnetix.app.util.xmldao;
+package com.home.builderforms;
 
 import java.io.File;
 
 import org.apache.commons.digester.Digester;
-import org.apache.log4j.Logger;
 
 import com.appnetix.app.control.web.ParamResolver;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.tabs.TabGroup;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.tabs.TabGroup;
 
 public class TabXMLDAO
 {
-	private static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(TabXMLDAO.class);
 
 	private static TabXMLDAO _instance = null;
 
@@ -121,7 +119,6 @@ public class TabXMLDAO
 
 		}catch(Exception e)
 		{
-			logger.error("TabXMLDAO.parse(): Ex=" + e);
 		}
 	}
 

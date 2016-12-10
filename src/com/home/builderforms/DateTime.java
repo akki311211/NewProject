@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
 
 import com.home.builderforms.BaseDateTime;
 /**

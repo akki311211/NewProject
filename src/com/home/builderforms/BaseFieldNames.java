@@ -84,7 +84,7 @@ package com.home.builderforms;
 
 import java.lang.reflect.Field;
 
-import com.appnetix.app.util.FieldNames;
+import com.home.builderforms.FieldNames;
 
 public class BaseFieldNames
 {

@@ -1,7 +1,6 @@
-package com.appnetix.app.util.xmldao;
+package com.home.builderforms;
 
 import java.io.*;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -26,7 +25,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import org.apache.xml.serialize.*;
-import com.appnetix.app.util.Debug;
+import com.home.builderforms.Debug;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,18 +46,16 @@ import java.util.Map;
 
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 
 import com.home.builderforms.Constants;
-import com.appnetix.app.util.FieldNames;
+import com.home.builderforms.FieldNames;
 import com.home.builderforms.SequenceMap;
-import com.appnetix.app.util.StringUtil;
+import com.home.builderforms.StringUtil;
 import com.home.builderforms.Info;
 
 public class XMLUtil
 {
 
-	static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(XMLUtil.class);
 
 	public static Element loadDocument(String location)
 	{
@@ -68,7 +65,6 @@ public class XMLUtil
 			root = getDocument(location).getDocumentElement();
 		}catch(Exception ex)
 		{
-			logger.error("Exception in getting XML document for file " + location, ex);
 		}
 		return root;
 	}
@@ -91,7 +87,6 @@ public class XMLUtil
 			doc = parser.parse(xmlInp);
 		}catch(Exception ex)
 		{
-			logger.error("Exception in getting XML document for file " + location, ex);
 		}finally
 		{
 			try
@@ -99,7 +94,6 @@ public class XMLUtil
 				inputFiles.close();
 			}catch(Exception e)
 			{
-				logger.error("Exceptation while clearing resources", e);
 			}
 		}
 		return doc;
@@ -132,10 +126,8 @@ public class XMLUtil
 			doc = parser.parse(xmlInp);
 		}catch(SAXParseException err)
 		{
-			logger.error("Exception while getting XML document for Url " + location, err);
 		}catch(Exception ex)
 		{
-			logger.error("Exception while getting XML document for Url " + location, ex);
 		}finally
 		{
 			if(in != null)
@@ -146,7 +138,6 @@ public class XMLUtil
 					in = null;
 				}catch(Exception e)
 				{
-					logger.error("Exceptation while clearing resources", e);
 				}
 			}
 		}
@@ -270,7 +261,6 @@ public class XMLUtil
 
 		else if(listLength > 1)
 		{
-			logger.info("XMLUtil: " + name + " defined more than once");
 		}
 
 		return list.item(0);
@@ -347,7 +337,6 @@ public class XMLUtil
 					fos = null;
 				}catch(Exception e)
 				{
-					logger.error("Exceptation while creating XML file",e);
 				}
 			}
 		}
@@ -384,7 +373,6 @@ public class XMLUtil
 
 		}catch(IOException e)
 		{
-			logger.error("Exceptation while creating XML file",e);
 			throw e;
 		}finally
 		{
@@ -396,7 +384,6 @@ public class XMLUtil
 					fileOutStr = null;
 				}catch(Exception e)
 				{
-					logger.error("Exceptation while clearing resources",e);
 				}
 			}
 		}
@@ -455,7 +442,6 @@ public class XMLUtil
 			}
 		}catch(Exception e)
 		{
-			logger.error("Exception while getting XML node attributes", e);
 
 		}finally
 		{
@@ -478,7 +464,6 @@ public class XMLUtil
 				boolean success = (new File(tempDirPath)).mkdirs();
 				if(!success)
 				{
-					logger.error("Error while creating file"+tempDirPath);
 					return "Error_creating File.";
 				}
 			}
@@ -490,7 +475,6 @@ public class XMLUtil
 			return filePath;
 		}catch(Exception e)
 		{
-			logger.error("Error while creating file",e);
 			return FieldNames.EMPTY_STRING;
 		}
 

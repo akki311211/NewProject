@@ -1,4 +1,4 @@
-package com.appnetix.app.components.builderformmgr.manager.dao;
+package com.home.builderforms;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,7 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.appnetix.app.util.database.*;
+import com.home.builderforms.*;
 import com.appnetix.app.control.SystemVariableManager;
 import com.appnetix.app.control.web.FCInitHandlerServlet;
 import com.appnetix.app.control.web.ParamResolver;
@@ -51,43 +50,43 @@ import com.home.builderforms.BuilderConstants;
 import com.home.builderforms.BuilderCustomTab;
 import com.home.builderforms.BuilderFormTimerTask;
 import com.home.i18n.Language;
-import com.appnetix.app.util.BaseUtils;
+import com.home.builderforms.BaseUtils;
 import com.appnetix.app.portal.role.UserRoleMap;
-import com.appnetix.app.util.BuilderFormUtil;
-import com.appnetix.app.util.Constants;
-import com.appnetix.app.util.DBUtil;
-import com.appnetix.app.util.DateUtil;
-import com.appnetix.app.util.Debug;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.FileUtil;
-import com.appnetix.app.util.IDGenerator;
-import com.appnetix.app.util.LanguageUtil;
-import com.appnetix.app.util.ModuleUtil;
-import com.appnetix.app.util.StrutsUtil;
-//import com.appnetix.app.util.NewPortalUtils;
-import com.appnetix.app.util.QueryUtil;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.TableAnchors;
-//import com.appnetix.app.util.base.BaseNewPortalUtils;
-import com.appnetix.app.util.database.DependentTable;
-import com.appnetix.app.util.database.DocumentMap;
-import com.appnetix.app.util.database.Documents;
-import com.appnetix.app.util.database.Field;
-import com.appnetix.app.util.database.FieldMappings;
-import com.appnetix.app.util.database.HeaderField;
-import com.appnetix.app.util.database.HeaderMap;
-import com.appnetix.app.util.database.LinkField;
-import com.appnetix.app.util.database.TableField;
-import com.appnetix.app.util.i18n.UserLanguageLocal;
+import com.home.builderforms.BuilderFormUtil;
+import com.home.builderforms.Constants;
+import com.home.builderforms.DBUtil;
+import com.home.builderforms.DateUtil;
+import com.home.builderforms.Debug;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.FileUtil;
+import com.home.builderforms.IDGenerator;
+import com.home.builderforms.LanguageUtil;
+import com.home.builderforms.ModuleUtil;
+import com.home.builderforms.StrutsUtil;
+//import com.home.builderforms.NewPortalUtils;
+import com.home.builderforms.QueryUtil;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.TableAnchors;
+//import com.home.builderforms.base.BaseNewPortalUtils;
+import com.home.builderforms.DependentTable;
+import com.home.builderforms.DocumentMap;
+import com.home.builderforms.Documents;
+import com.home.builderforms.Field;
+import com.home.builderforms.FieldMappings;
+import com.home.builderforms.HeaderField;
+import com.home.builderforms.HeaderMap;
+import com.home.builderforms.LinkField;
+import com.home.builderforms.TableField;
+import com.home.builderforms.i18n.UserLanguageLocal;
 import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.DBColumn;
 import com.home.builderforms.sqlqueries.DBQuery;
 import com.home.builderforms.sqlqueries.RecordNotFoundException;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLQueryGenerator;
-import com.appnetix.app.util.xmldao.TableXMLDAO;
-import com.appnetix.app.util.xmldao.XMLUtil;
+import com.home.builderforms.TableXMLDAO;
+import com.home.builderforms.XMLUtil;
 import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
@@ -115,7 +114,6 @@ import com.appnetix.app.exception.AppException;
  ZCUB-20160210-230			18/03/2016     Madhusudan Singh    Add Field in CM Campaign Contact Filter section
  **/
 public class BuilderFormDAO extends FormBaseDAO {
-    private static final  Logger LOGGER = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderFormDAO.class);
     /**
      * fields in heatMeterDependentFieldsArr are used in creating the heat meter, so here it is required to change the flag for corresponding.
      */
@@ -155,21 +153,18 @@ public class BuilderFormDAO extends FormBaseDAO {
             try {
                 docBuilder = factory.newDocumentBuilder();
             } catch(Exception e) {
-                LOGGER.error("Erro getting Document Builder Instance");
             }
         }
         if(transfac == null) {
             try {
                 transfac = TransformerFactory.newInstance();
             } catch(Exception e) {
-                LOGGER.error("Erro getting TransformerFactory Instance");
             }
         }
         if(trans == null) {
             try {
                 trans = transfac.newTransformer();
             } catch(Exception e) {
-                LOGGER.error("Erro getting Transformer Instance");
             }
         }
     }
@@ -194,7 +189,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             return resultMap;
             //ENH_MODULE_CUSTOM_TABS ends
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         }
     }
@@ -299,7 +293,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 return false;
             }
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             tableAnchor = null;
@@ -410,7 +403,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 return false;
             }
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             tableAnchor = null;
@@ -535,7 +527,6 @@ public class BuilderFormDAO extends FormBaseDAO {
         try {
             return getRadioOrComboOptionsInfo(fldName,tableName,value, parentValue);//SMC-20140213-378 Ends //BB-20150203-259 (Dynamic Response based on parent field response)
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         }
     }
@@ -628,7 +619,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 						dropCmFilterColumnData(fld.getFieldName());
                     }
                 } catch(Exception e) {
-                    LOGGER.info("Exception while alter table data : "+e);
                 }
                 if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
                     removeFieldMappings(TableAnchors.FRANCHISEE);
@@ -697,7 +687,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 return false;
             }
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             fieldMappings = null;
@@ -847,7 +836,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 return false;
             }
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             fieldMappings = null;
@@ -913,7 +901,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         }
 
                     } catch(Exception e){
-                        LOGGER.info("Exception : "+e);
                         return "";
                     }
                 } else {
@@ -1203,15 +1190,12 @@ public class BuilderFormDAO extends FormBaseDAO {
 			e.printStackTrace();
 			return false;
 		} */catch(TransformerConfigurationException e) {
-            LOGGER.info("TransformaerConfigException : "+e);
             return "";
         } catch(TransformerException e) {
 //			e.printStackTrace();
-            LOGGER.info("TransformerException : "+e);
             return "";
         } catch(Exception e) {
 //			e.printStackTrace();
-            LOGGER.info("Exception : "+e);
             return "";
         } finally {
             fieldMappings = null;
@@ -1253,7 +1237,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 						trans.transform(source, resultBackup);
 					} catch(Exception e) {
 						e.printStackTrace();
-						LOGGER.info("Exception : "+e);
 					}
 				}
 			}
@@ -1271,7 +1254,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 						trans.transform(source, resultBackup);
 					} catch(Exception e) {
 						e.printStackTrace();
-						LOGGER.info("Exception : "+e);
 					}
 				}
 				doc.normalize();
@@ -1359,7 +1341,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         }
                     } catch(Exception e) {
                     	e.printStackTrace();
-                        LOGGER.info("Exception : "+e);
                         return "";
                     }
                 } else {
@@ -2574,14 +2555,11 @@ public class BuilderFormDAO extends FormBaseDAO {
 			e.printStackTrace();
 			return false;
 		} */catch(TransformerConfigurationException e) {
-            LOGGER.info("TransformerConfigurationException : "+e);
             return "";
         } catch(TransformerException e) {
 //			e.printStackTrace();
-            LOGGER.info("TransformerException : "+e);
             return "";
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
 			e.printStackTrace();
             return "";
         } finally {
@@ -2633,7 +2611,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         source = new DOMSource(doc);
                         trans.transform(source, resultBackup);
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -2777,7 +2754,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             try {
                 create("formBuilderSectionLogs", logInfo);
             } catch(Exception e) {
-                LOGGER.info("TransformerConfigurationException : "+ e);
             }
         } /*catch(SAXException e) {
 			e.printStackTrace();	
@@ -2790,15 +2766,12 @@ public class BuilderFormDAO extends FormBaseDAO {
 			return false;
 		} */catch(TransformerConfigurationException e) {
 //			e.printStackTrace();
-            LOGGER.info("TransformerConfigurationException : "+ e);
             return false;
         } catch(TransformerException e) {
 //			e.printStackTrace();
-            LOGGER.info("TransformerException : "+ e);
             return false;
         } catch(Exception e) {
 //			e.printStackTrace();
-            LOGGER.info("Exception : "+ e);
             return false;
         } finally {
             file = null;
@@ -2850,7 +2823,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         source = new DOMSource(doc);
                         trans.transform(source, resultBackup);
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -3056,13 +3028,10 @@ public class BuilderFormDAO extends FormBaseDAO {
 			e.printStackTrace();
 			return false;
 		} */catch(TransformerConfigurationException e) {
-            LOGGER.info("TransformerConfigurationException : "+e);
             return false;
         } catch(TransformerException e) {
-            LOGGER.info("TransformerException : "+e);
             return false;
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             file = null;
@@ -3108,7 +3077,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         source = new DOMSource(doc);
                         trans.transform(source, resultBackup);
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -3198,10 +3166,8 @@ public class BuilderFormDAO extends FormBaseDAO {
 			e.printStackTrace();
 			return false;
 		} */catch(TransformerException e) {
-            LOGGER.info("TransformerException : "+e);
             return false;
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             file = null;
@@ -3240,7 +3206,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         source = new DOMSource(doc);
                         trans.transform(source, resultBackup);
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -3267,10 +3232,8 @@ public class BuilderFormDAO extends FormBaseDAO {
             source = new DOMSource(doc);
             trans.transform(source, result);
         } catch(TransformerException e) {
-            LOGGER.info("TransformerException : "+e);
             return false;
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } finally {
             file = null;
@@ -3382,7 +3345,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 
 
     						} catch(Exception e) {
-    							LOGGER.info("Exception : "+e);
     							return false;
     						}
     					} else {
@@ -3396,10 +3358,8 @@ public class BuilderFormDAO extends FormBaseDAO {
     			}
     		}
     	} catch(TransformerException e) {
-    		LOGGER.info("TransformerException : "+e);
     		return false;
     	} catch(Exception e) {
-    		LOGGER.info("Exception : "+e);
     		return false;
     	} finally {
     		file = null;
@@ -3463,7 +3423,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         	doc = docBuilder.parse(file);
                         }
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -3792,7 +3751,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             	removeTabularSectionDocument(request);
             }
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return false;
         } /*catch(IOException e) {
 			e.printStackTrace();
@@ -3847,7 +3805,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return tableAnchor;
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -3884,7 +3841,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderFormData(tableAnchor, request);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -3921,7 +3877,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderFormDataMap(tableAnchor, request);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -3957,7 +3912,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderFormDataAllMap(tableAnchor, request);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -3997,7 +3951,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 
     		}
     	}catch (Exception e) {
-    		logger.error("Exception in getting configured Tab.");
     	}
 		return list;
     }
@@ -4032,7 +3985,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 
     		}
     	}catch (Exception e) {
-    		logger.error("Exception in getting configured Tab by Internal name.");
     	}
 		return list;
     }
@@ -4134,7 +4086,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 			  }
 			  return tabularFieldsMap;
 		  } catch(Exception e) {
-			  LOGGER.info("Exception : ",e);
 			  return null;
 		  }
 	  }
@@ -4163,7 +4114,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 		  try {
 			  QueryUtil.preparedStatementsBatchUpdate(queryArray, batchMap);
 		  } catch(Exception e) {
-			  logger.error("Exception in insertTabularFields",e);
 		  } finally {
 			  queryArray = null;
 			  paramArray = null;
@@ -4237,7 +4187,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             result = QueryUtil.update(query.toString(), params);
         }
         catch(Exception e) {
-            LOGGER.info("Exception in InsertkeywordField() : "+e);
         }
         if(result == 1)
             return "true";
@@ -4260,7 +4209,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
         }
         catch (Exception e) {
-            LOGGER.error("Exception in getKeywordsFieldNames() : ", e);
         }
         finally
         {
@@ -4284,7 +4232,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
         }
         catch (Exception e) {
-            LOGGER.error("Exception in getDeactiveKeywordsFieldNames() : ", e);
         }
         finally
         {
@@ -4304,7 +4251,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             result = QueryUtil.update(query,params);
         } catch(Exception e)
         {
-            LOGGER.info("Exception in deleteKeywordsField() : "+e);
         }
         if(result == 1)
             return "true";
@@ -4332,7 +4278,6 @@ public class BuilderFormDAO extends FormBaseDAO {
     		}
     		return getBuilderRegularAndTabularSectionCount(tableAnchor);
     	} catch(Exception e) {
-    		LOGGER.info("Exception : "+e);
     		return null;
     	} finally {
     		key = null;
@@ -4377,7 +4322,6 @@ public class BuilderFormDAO extends FormBaseDAO {
     		info.set("tabularSectionCount", tabularSectionCount);
     		return info;
     	}catch(Exception e){
-    		LOGGER.info("Exception : "+e);
     		return null;
     	} finally {
     		//field = null;
@@ -4412,7 +4356,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderFormDataAllTablesMap(tableAnchor, request);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -4447,7 +4390,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderSectionDataMap(tableAnchor, request);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -4483,7 +4425,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return getBuilderSectionMapping(tableAnchor);
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             key = null;
@@ -4581,7 +4522,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return map;
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             vc = null;
@@ -4674,7 +4614,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return map;
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             e.printStackTrace();
             return null;
         } finally {
@@ -4762,7 +4701,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return map;
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             vc = null;
@@ -5017,7 +4955,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return map;
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             vc = null;
@@ -5065,7 +5002,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
             return map;
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             return null;
         } finally {
             map = null;
@@ -5108,7 +5044,6 @@ public class BuilderFormDAO extends FormBaseDAO {
     		}
     	
     	}catch(Exception e){
-    		LOGGER.info("Exception : "+e);
             return null;
     	}finally{
     		file=null;
@@ -5153,7 +5088,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		}
     	
     	}catch(Exception e){
-    		LOGGER.info("Exception : "+e);
             return false;
     	}finally{
     		file=null;
@@ -5197,7 +5131,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 				}
     		}
     	}catch(Exception e){
-    		LOGGER.info("Exception : "+e);
         }finally{
     		file=null;
     		doc=null;
@@ -5245,7 +5178,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 				}
  		}
  	}catch(Exception e){
- 		LOGGER.info("Exception : "+e);
      }finally{
  		file=null;
  		doc=null;
@@ -5434,7 +5366,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		return sortedTabMap;
 
     	} catch(Exception e) {
-    		LOGGER.info("Exception : "+e);
     		return null;
     	} finally {
     		file = null;
@@ -5448,7 +5379,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         try{
             return getFieldMappings(tableAnchor);
         }catch(Exception e){
-            LOGGER.info("Exception : "+e);
             return null;
         }
     }
@@ -5641,7 +5571,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 }
             }catch(Exception e)
             {
-                LOGGER.error("Exception in getFieldData", e);
             }finally
             {
                 result = null;
@@ -5692,7 +5621,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 info.set(result.getString("OPTION_ID"), result.getString("OPTION_VALUE"));
             }
         } catch(Exception e) {
-            LOGGER.error("error in INSERTING combo options map==="+e.getMessage());
         } finally {
             QueryUtil.releaseResultSet(result);
         }
@@ -5772,12 +5700,10 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 //QueryUtil.update(query, new String[]{"","",fieldName,""+(i+1),optionName[i], tableAnchor,isActive});
             }
             batchMap.put("0",paramList);
-            LOGGER.info("Iteration Final End Now Insert");
             QueryUtil.preparedStatementsBatchUpdate(queryArray, batchMap);
             flag = true;
         } catch (Exception e) {
             e.printStackTrace();
-            LOGGER.error("error in INSERTING combo options map===",e);
         }
         return flag;
 
@@ -5877,7 +5803,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 		try {
 			QueryUtil.update(query,params);
 		} catch(Exception e) {
-			logger.info("Exception in updateKeywordsStatusField() : "+e);
 		}
 	}
 	public void updateKeywordsStatus(String fieldName,String tableAnchor,String isOtherTableField, String newPath) throws SQLException 
@@ -5896,7 +5821,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 		try {
 			QueryUtil.update(query,params);
 		} catch(Exception e) {
-			logger.info("Exception in updateKeywordsStatusField() : "+e);
 		}
 	}
 	public void updateLeadKeywordsStatus(String fieldName,String tableAnchor,String isOtherTableField, String newPath) throws SQLException 
@@ -5915,7 +5839,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 		try {
 			QueryUtil.update(query,params);
 		} catch(Exception e) {
-			logger.info("Exception in updateKeywordsStatusField() : "+e);
 		}
 	}
 
@@ -5933,7 +5856,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 		try {
 			QueryUtil.update(query,params);
 		} catch(Exception e) {
-			logger.info("Exception in updateKeywordsDisplayNameField() : "+e);
 		}
 	}
 	
@@ -6752,7 +6674,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 										idSeq++;
 									}
 								}catch(Exception error){
-									LOGGER.error(error.getMessage(),error);
 								}
 								
 								query = "INSERT INTO SMART_GROUP_CRITERIA_FIELD(CRITERIA_ID,MODULE_ID,FORM_ID,TABLE_ANCHOR,FORM_FIELD_NAME,HEADER_DISPLAY_NAME,IS_ACTIVE,ORDER_NO,FIELD_TRANSFORM_DETAILS) VALUES(?,?,?,?,?,?,?,?,?)";
@@ -6958,7 +6879,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 				flag = false;
 			}
 		} catch(Exception e) {
-			logger.info("Exception : "+e);
 			e.printStackTrace();
 			flag = false;
 		} finally {
@@ -7268,7 +7188,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 	                    pio.writeProperty();
                 	}
                 	catch (Exception e) {
-                		LOGGER.error(e.getMessage(),e);
 					}
                 	
                 }
@@ -7367,7 +7286,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 	                    pio.setProperty(dVal, dVal);
 	                    pio.writeProperty();
                 	}catch (Exception e) {
-                		LOGGER.error(e.getMessage(),e);
 					}
                 	
                 }
@@ -7430,7 +7348,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                         source = new DOMSource(doc);
                         trans.transform(source, resultBackup);
                     } catch(Exception e) {
-                        LOGGER.info("Exception "+e);
                         return false;
                     }
                 } else {
@@ -7446,7 +7363,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                     try {
                         doc = docBuilder.parse(file);
                     } catch(Exception e) {
-                        LOGGER.info("Exception "+e);
                         return false;
                     }
 //    				doc = docBuilder.parse(file);
@@ -7518,7 +7434,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 Debug.print(e);
             }
         } catch(Exception e) {
-            LOGGER.error("Parsing Error is",e);
             return false;
         } finally {
             file = null; loc = null; location = null;
@@ -7611,7 +7526,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 return false;
             }
         } catch(Exception e) {
-            LOGGER.error("Parsing Error is",e);
             return false;
         } finally {
             tableAnchor = null;
@@ -7637,7 +7551,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                     try {
                         doc = docBuilder.parse(file);
                     } catch(Exception e) {
-                        LOGGER.info("Exception "+e);
                         return false;
                     }
 //    				doc = docBuilder.parse(file);
@@ -7685,19 +7598,14 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             source = new DOMSource(doc);
             trans.transform(source, result);
         } catch(Exception e) {
-            LOGGER.error("Parsing Error is",e);
             return false;
         }/* catch(IOException e) {
-			LOGGER.error("Add/Update File error is",e);
 			return false;
 		} catch(ParserConfigurationException e) {
-			LOGGER.error("Exception is",e);
 			return false;
 		} catch(TransformerConfigurationException e) {
-			LOGGER.error("Transform data Error is",e);
 			return false;
 		} catch(TransformerException e) {
-			LOGGER.error("Transformer error is",e);
 			return false;
 		} */finally {
             file = null; location = null;
@@ -8130,7 +8038,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                     }
                     catch(Exception e)
                     {
-                        LOGGER.info("Exception "+e);
                         e.printStackTrace();
                         return false;
                     }
@@ -8361,7 +8268,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     }
                                     catch(Exception e)
                                     {
-                                        LOGGER.info("Exception "+e);
                                         e.printStackTrace();
                                         return false;
                                     }
@@ -8779,7 +8685,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                     }
                     catch(Exception e)
                     {
-                        LOGGER.info("Exception "+e);
                         e.printStackTrace();
                         return false;
                     }
@@ -8791,7 +8696,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             }
 
         } catch(Exception e) {
-            LOGGER.error("Parsing Error is",e);
             e.printStackTrace();
             return false;
         }
@@ -8827,7 +8731,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             //return new Object();
             return TableXMLDAO.getBuilderFileXMLAttr(location, xmlElement, xmlKey, requestInfo.get(BuilderFormFieldNames.KEY_TYPE));
         } catch(Exception e) {
-            LOGGER.error("Error is",e);
             return null;
         }
     }
@@ -8854,7 +8757,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             //return new Object();
             return TableXMLDAO.getBuilderFileXMLAttr(location, xmlElement, xmlKey, getRequestValue(request, BuilderFormFieldNames.KEY_TYPE));
         } catch(Exception e) {
-            LOGGER.error("Error is",e);
             return null;
         }
     }
@@ -8894,7 +8796,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception e)
         {
-            LOGGER.info("Exception in getAllExistingTabNames() in BuilderFormDAO");
             e.printStackTrace();
         }
         return allNames;
@@ -8957,7 +8858,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in deleteTableData function in BuilderFormDAO");
         }
         return isPresent;
     }
@@ -9033,7 +8933,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in getAllTabs function in BuilderFormDAO");
         }
         finally
         {
@@ -9082,7 +8981,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in deleteTableData function in BuilderFormDAO");
         }
         finally
         {
@@ -9181,7 +9079,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in notCustomTab function in BuilderFormDAO");
         }
         finally
         {
@@ -9211,7 +9108,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in notCustomTab function in BuilderFormDAO");
         }
         finally
         {
@@ -9414,7 +9310,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception e)
         {
-            logger.error("Exception in BuilderFormDAO : getFieldReportInfo :: " , e);
         }
         return isInReport;
     }
@@ -9435,7 +9330,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             QueryUtil.update(deleteQuery, new String[]{fieldName,dbColumnName});
         } catch (Exception e) {
             // TODO: handle exception
-            logger.error("Exception in dropSummaryDisplayColumnData=====>>>>"+e);
         }
     }
 
@@ -9454,7 +9348,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             QueryUtil.update(modifyQuery, new String[]{displayName, fieldName, dbColumnName});
         } catch (Exception e) {
             // TODO: handle exception
-            logger.error("Exception in updateSummaryDispplayColumnName======>>"+e);
         }
     }
     
@@ -9465,7 +9358,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             QueryUtil.update(deleteQuery, new String[]{fieldName});
         } catch (Exception e) {
             // TODO: handle exception
-            logger.error("Exception in dropCmFilterColumnData=====>>>>"+e);
         }
     }
     
@@ -9478,7 +9370,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         try {
             QueryUtil.update(updateQuery, new String[]{isActiveOrDeactive, fieldName});
         } catch (Exception e) {
-            logger.error("Exception in updateIsCmFilterColumnDataSelected========>>>"+e);
         }
     }//ZCUB-20160210-230 End
 
@@ -9505,7 +9396,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 QueryUtil.update(modifyQuery, new String[]{displayName, isActiveOrDeactive, fieldName, moduleID});
             } catch (Exception e) {
                 // TODO: handle exception
-                logger.error("Exception in updateSummaryDisplayColumnNameForBuildFields======>>"+e);
             }
         }else{
             modifyQuery = "UPDATE SUMMARY_DISPLAY SET DISPLAY_NAME=? WHERE FIELD_NAME=? AND MODULE_ID=?";
@@ -9513,7 +9403,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 QueryUtil.update(modifyQuery, new String[]{displayName, fieldName, moduleID});
             } catch (Exception e) {
                 // TODO: handle exception
-                logger.error("Exception in updateSummaryDisplayColumnNameForBuildFields======>>"+e);
             }
         }
         //P_CM_B_58037 Start End
@@ -9537,7 +9426,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             QueryUtil.update(updateQuery, new String[]{isActiveOrDeactive, fieldName, dbColumnName});
         } catch (Exception e) {
             // TODO: handle exception
-            logger.error("Exception in updateSummaryDisplayIsSelected========>>>"+e);
         }
     }
     
@@ -9559,7 +9447,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     			}
     		}
     	}
@@ -9675,7 +9562,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     			}
     		}
     	}
@@ -10041,7 +9927,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				source = new DOMSource(todoc);
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     				return false;
     			}
     		} else {
@@ -10056,10 +9941,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				fromDoc = docBuilder.parse(new File(fileFromWriteLoc));
     			} catch (SAXException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			}
     			String tableName = FieldNames.EMPTY_STRING;
     			if(fromDoc!= null) {
@@ -10071,10 +9954,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				fromDoc = docBuilder.parse(new File(fileFromWriteLoc));
     			} catch (SAXException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.info("Exception : "+e);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.info("Exception : "+e);
     			}
 
     			if(StringUtil.isValidNew(dependentLoc)){
@@ -10082,10 +9963,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     					dependentDoc = docBuilder.parse(new File(dependentLoc));
     				} catch (SAXException e) {
     					// TODO Auto-generated catch block
-    					LOGGER.error("Exception : ",e);
     				} catch (IOException e) {
     					// TODO Auto-generated catch block
-    					LOGGER.error("Exception : ",e);
     				}
     				NodeList nodeList = dependentDoc.getElementsByTagName(TableXMLDAO.FIELD);
     				int size = nodeList.getLength();
@@ -10115,12 +9994,10 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				trans.transform(source, result);
     			} catch (TransformerException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			}
 
     		}
     	}catch(Exception e){
-    		LOGGER.error("Exception : ",e);
     	}
     	finally{
     		todoc = null;
@@ -10153,7 +10030,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				source = new DOMSource(todoc);
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     				return false;
     			}
     		} else {
@@ -10261,11 +10137,9 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				trans.transform(source, result);
     			} catch (TransformerException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			} 
     		}
     	} catch(Exception e) {
-    		LOGGER.error("Exception : ",e);
     		return false;
     	}finally{
     		todoc = null;
@@ -10300,7 +10174,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				source = new DOMSource(todoc);
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     				return false;
     			}
     		} else {
@@ -10313,10 +10186,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     			fromDoc = docBuilder.parse(new File(tabfileLoc));
     		} catch (SAXException e) {
     			// TODO Auto-generated catch block
-    			LOGGER.info("Exception : ",e);
     		} catch (IOException e) {
     			// TODO Auto-generated catch block
-    			LOGGER.info("Exception : ",e);
     		}
     	}
     	try {
@@ -10393,13 +10264,11 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				trans.transform(source, result);
     			} catch (TransformerException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			}
     		}
     	} catch (Exception e) {
     		e.printStackTrace();
     		// TODO Auto-generated catch block
-    		LOGGER.error("Exception : ",e);
     	} finally{
     		todoc = null;
     		result = null;
@@ -10433,7 +10302,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				source = new DOMSource(todoc);
     				trans.transform(source, resultBackup);
     			} catch(Exception e) {
-    				LOGGER.error("Exception : ",e);
     				return false;
     			}
     		} else {
@@ -10449,10 +10317,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				fromDoc = docBuilder.parse(new File(fileFromWriteLoc));
     			} catch (SAXException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.info("Exception : ",e);
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.info("Exception : ",e);
     			}
     			int maxOrderBy = getMaxOrderBy(todoc);
     			System.out.println("Before Copy...");
@@ -10580,12 +10446,10 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				trans.transform(source, result);
     			} catch (TransformerException e) {
     				// TODO Auto-generated catch block
-    				LOGGER.error("Exception : ",e);
     			}
     		}
     	} catch (Exception e) {
     		// TODO Auto-generated catch block
-    		LOGGER.error("Exception : ",e);
     	}finally{
     		todoc = null;
     		result = null;
@@ -10709,7 +10573,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 }
             }
         } catch(Exception e) {
-            logger.error("Exception in getHeatMeterValue=====>>>"+e);
         }
         return returnData;
     }
@@ -10730,7 +10593,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 }
             }
         } catch(Exception e) {
-            logger.error("Exception in getHeatMeterValue=====>>>"+e);
         }
         return returnData;
     }
@@ -10931,7 +10793,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         summaryDisplayString.append("'  WHERE DISPLAY_VALUE='").append(fld.getDbField()).append("'");
         QueryUtil.update(summaryDisplayString.toString(), null);
         } catch(Exception e) {
-            logger.error("Exception in updateColumnDataType=====>>>"+e);
         }
     	finally{
     		QueryUtil.releaseResultSet(result);
@@ -11130,7 +10991,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception e)
         {
-            logger.error("Exception in BuilderFormDAO : getSmartQuestionField :: " , e);
         }
         return isInSmartQuestion;
     }
@@ -11165,7 +11025,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception e)
         {
-            logger.error("Exception in BuilderFormDAO : getTabUsedInWebForm :: " , e);
         }
         return isInWebForm;
     }
@@ -11191,7 +11050,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		}
     	} catch (Exception e)
     	{
-    		logger.info("Exception in getOptionsOrderMap() : "+e.getMessage());
     	}
 		return optionOrderMap;
     }
@@ -11217,7 +11075,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		 }
     	} catch (Exception e)
     	{
-    		logger.info("Exception in updatePiiFieldPassword() : ",e);
     	}
     }
     
@@ -11234,7 +11091,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		}
     	} catch (Exception e)
     	{
-    		logger.info("Exception in updatePiiFieldPassword() : ",e);
     	}
     	return fieldList;
     }
@@ -11279,7 +11135,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         	QueryUtil.preparedStatementsBatchUpdate(queryArray, batchMap);
         } catch(Exception e) {
         	e.printStackTrace();
-        	logger.error("Exception in updateOptionsOrder() : "+e.getMessage());
         } 
     }
     /**
@@ -11627,7 +11482,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				}
     				catch(Exception e)
     				{
-    					LOGGER.info("Exception "+e);
     					return null;
     				}
     			}
@@ -11677,7 +11531,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     			removeFieldMappings(tabularSectionName); //dki-20160824-563
     		}
     	}catch(Exception e){
-    		LOGGER.info("Exception "+e);
     	}finally
 		{
 			docBuilder = null;
@@ -11726,7 +11579,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		QueryUtil.update(updateQuery, paramList.toArray(new String[paramList.size()]));
     	} catch (Exception e) {
     		// TODO: handle exception
-    		logger.error("Exception in updateTabularSectionDisplayColumns========>>>"+e);
     	}
     }
     /**
@@ -11788,7 +11640,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		}
 
     	} catch (Exception e) {
-    		logger.info("ERROR: exception in getConfiguredSummaryColumns() in builderFormDao ::" + e);
     	} finally {
     		if (result != null) {
     			result = null;
@@ -11823,7 +11674,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in isTabularSection function in BuilderFormDAO");
         }
         finally
         {
@@ -11884,7 +11734,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                         	tabDoc = docBuilder.parse(tabFile);
                         }
                     } catch(Exception e) {
-                        LOGGER.info("Exception : "+e);
                         return false;
                     }
                 } else {
@@ -11931,7 +11780,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             trans.transform(source, result);
             removeFieldMappings(getRequestValue(request, BuilderFormFieldNames.TABULAR_SECTION_TABLE_NAME));
         } catch(Exception e) {
-            LOGGER.info("Exception : "+e);
             e.printStackTrace();
             return false;
         } finally {
@@ -11971,7 +11819,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         }
         catch(Exception se)
         {
-            LOGGER.info("Exception in isMuTab function in BuilderFormDAO");
         }
         finally
         {
@@ -12003,7 +11850,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	catch(Exception e)
     	{
     		flag=false;
-    		logger.error("Exception in BuilderFormDAO : updateDeletedLeadLogs :: " , e);
     	}
     	return flag;
     }
@@ -12086,7 +11932,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 			}
 			
 		} catch (Exception e) {
-			logger.error("Exception in BuilderFormDAO : getAllParsingkeywords :: " , e);
 		}
 
 		return dupicationAlert.toString();
@@ -12101,7 +11946,6 @@ public static void updateParsingKeywordStatus(HashMap dataMap,String asActive) {
 	try {
 		QueryUtil.update(query, new String[]{asActive});
 	} catch (Exception e) {
-		logger.error("Exception in BuilderFormDAO : updateParsingKeywordStatus :: " , e);
 	}
 	
 }    																																//P_Enh_Custom_Parsing_Keywords_FC-286 ends
@@ -12114,7 +11958,6 @@ public static void updateTabularFields(HashMap dataMap,String asActive) {
 	try {
 		QueryUtil.update(query, new String[]{asActive});
 	} catch (Exception e) {
-		logger.error("Exception in BuilderFormDAO : updateParsingKeywordStatus :: " , e);
 	}
 	
 }   

@@ -10,14 +10,14 @@ Version No.					Date			By				Against		Function Changed    Comments
 PW_FORM_VERSION				15 July 2013	Veerpal Singh		Allow modification of Audit Forms and generating a new version of form when Visits submitted for previous versions.
 ----------------------------------------------------------------------------------------------------------------
 */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.xmldao.TableXMLDAO;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.TableXMLDAO;
 
 public class FormTab implements Cloneable {
 	private String name;

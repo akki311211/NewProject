@@ -18,6 +18,8 @@ import com.home.builderforms.Info;
 
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -3605,7 +3607,6 @@ fieldMap.put(fieldName, new Field(fieldName,
     public String[] getAllFieldNames()
     {
         Field [] allFields = getAllFieldsArray();
-        logger.info("allFields:"+allFields);
         String[] allFieldNames = new String[allFields.length];
         for (int i=0 ;i<allFields.length;i++)
         {
@@ -4379,7 +4380,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
 
         if(list.size() > 0) {
@@ -4459,7 +4459,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
 
         if(list.size() > 0) {
@@ -4543,7 +4542,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
         return ques;
     }
@@ -4578,7 +4576,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
         return listMap;
     }
@@ -4627,7 +4624,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
         return listMap;
     }
@@ -4653,7 +4649,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
         }
         return ques;
     }
@@ -4718,7 +4713,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                         return (FormMetaData)obj;
                     }
                 } catch(Exception e) {
-                    logger.error(e);
                     return null;
                 }
             }
@@ -4745,7 +4739,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
             return ques;
         }
 
@@ -4808,7 +4801,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
             return listMap;
         }
         return listMap;
@@ -5021,7 +5013,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
             return ques;
         }
 
@@ -5076,7 +5067,6 @@ fieldMap.put(fieldName, new Field(fieldName,
                 }
             }
         } catch(Exception e) {
-            logger.error(e);
             return flds;
         }
 
@@ -5383,7 +5373,6 @@ fieldMap.put(fieldName, new Field(fieldName,
 
             }
         } catch(Exception e) {
-            logger.error(e);
         }
         // live scoring Changes starts
         if(requiredInfo!=null){
@@ -5435,7 +5424,6 @@ public String getDataForLocation(String tableName,String fieldName,String module
 	    		
 	    } catch(Exception e) {
 	    	e.printStackTrace();
-	    	logger.error("error in geting audit getSmartQuestionFieldsMap===",e);
 	    } finally {
 	    	QueryUtil.releaseResultSet(result);
 	    }
@@ -5517,7 +5505,6 @@ public String getDataForLocation(String tableName,String fieldName,String module
 
             }
         } catch(Exception e) {
-            logger.error("\n Exception in getAllActionPlans Method ::: "+e.getMessage());
         }
         if(StringUtil.isValid(actionIDs) && actionIDs.indexOf(",")!=-1)
             actionIDs=actionIDs.substring(0, actionIDs.length()-1);
