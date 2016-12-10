@@ -1381,5 +1381,4 @@ public class Constants
 	 public static final String LEAD_DATA_MAP = "leadDataMap";
 	 
 	 public static final int MAX_FRANCHISEE_COUNT_FOR_MULTIPLE_VISITS = 20;
-	 public static final String XML_DIRECTORY = appHome + "/src/" + TENANT_PATH + "config/xml/";
 }
