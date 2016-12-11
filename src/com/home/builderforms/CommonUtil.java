@@ -180,11 +180,13 @@ import com.home.builderforms.sqlqueries.SQLUtil;
 import com.home.builderforms.tagutils.Combo;
 import com.google.gdata.util.common.html.HtmlToText;
 import com.lowagie.text.Document;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.paymentech.orbital.sdk.request.Fields;
 import com.home.builderforms.base.MenuUtils;//BB-20160203-516
