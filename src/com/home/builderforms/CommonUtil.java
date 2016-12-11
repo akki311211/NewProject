@@ -81,6 +81,8 @@ ZCUB-20160310-239    18 March  2016    Divanshu Verma    Email Notification in c
 
 
 
+
+
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -117,14 +119,12 @@ import java.net.HttpURLConnection;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.home.builderforms.DivisionUtil;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import jxl.write.Number;
-import jxl.write.WritableCellFormat;
+
+
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -133,69 +133,16 @@ import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 
-import com.appnetix.app.components.accesscontrolmgr.manager.AccessControlMgr;
 
 import org.json.JSONObject;
 
 import com.home.builderforms.Constants;
-import com.appnetix.app.components.adminmgr.manager.AdminMgr;
-import com.appnetix.app.components.calendarmgr.manager.CalendarMgr;
-import com.appnetix.app.components.commonmgr.manager.CommonMgr;
-import com.appnetix.app.components.commonmgr.manager.dao.CommonCmDAO;
-import com.appnetix.app.components.locationmgr.manager.LocationMgr;
-import com.appnetix.app.components.masterdatamgr.manager.MasterDataMgr;
-import com.appnetix.app.components.regionmgr.manager.RegionMgr;
-import com.appnetix.app.components.rolemgr.manager.RoleMgr;
-import com.appnetix.app.components.taskmgr.manager.TaskMgr;
-import com.appnetix.app.components.taskmgr.manager.dao.TaskDAO;
-import com.appnetix.app.components.zipcodemgr.manager.ZipcodeMgr;
-import com.appnetix.app.control.web.ParamResolver;
-import com.appnetix.app.control.web.handler.ProductBroker;
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
-import com.appnetix.app.portal.SearchConfiguration;
-import com.appnetix.app.portal.UserInfo;
-import com.appnetix.app.portal.builderforms.DataManipulator;
-import com.appnetix.app.portal.calendar.UserTimezoneMap;
-import com.appnetix.app.portal.export.ExportDataCollector;
-import com.appnetix.app.portal.intelligence.LogiPrivilegeConstants;
-import com.appnetix.app.portal.role.Privileges;
-import com.appnetix.app.portal.role.PrivilegesMgr;
-import com.appnetix.app.portal.role.UserRole;
-import com.appnetix.app.portal.role.UserRoleMap;
-import com.appnetix.app.portal.role.UserRoleMgr;
-import com.appnetix.app.portal.tasks.TaskModule;
-import com.appnetix.app.portal.upsshipping.UPSServiceCodeXMLParser;
-import com.home.builderforms.ModuleUtil.MODULE_NAME;
-import com.home.builderforms.base.BaseNewPortalUtils;
-import com.home.builderforms.cache.CacheMgr;
-import com.home.builderforms.database.Field;
-import com.home.builderforms.database.FieldMappings;
-import com.home.builderforms.information.Info;
-import com.home.builderforms.mail.MailSender;
 import com.home.builderforms.sqlqueries.ResultSet;
-import com.home.builderforms.sqlqueries.SQLQuery;
 import com.home.builderforms.sqlqueries.SQLUtil;
-import com.home.builderforms.tagutils.Combo;
-import com.google.gdata.util.common.html.HtmlToText;
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.paymentech.orbital.sdk.request.Fields;
-import com.home.builderforms.base.MenuUtils;//BB-20160203-516
-import com.appnetix.app.portal.admin.WebCacheBypass;//BB-20160203-516
 
-import org.apache.commons.lang.StringEscapeUtils;
 
 public class CommonUtil {
-    static	Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(CommonUtil.class);
+    static	Logger logger = Logger.getLogger(CommonUtil.class);
     public static String getSelectedFields(String tableAnchor)
 	 {
 		 String selectedFields = FieldNames.EMPTY_STRING;
@@ -218,7 +165,7 @@ public static String[] getFranchiseeAndOwner(HttpServletRequest request)
    {
        String franchiseeOwner[]=new String[2];
        HttpSession session=request.getSession();
-       String menuName = (((String) session.getAttribute(FieldNames.MENU_NAME)) == null) ? MultiTenancyUtil.getTenantConstants().DEFAULT_MODULE : ((String) session.getAttribute(FieldNames.MENU_NAME));////P_B_26486
+       String menuName = "";
        ArrayList list=(ArrayList)session.getAttribute("FranchiseeNoList");
 
        if("ppc".equals(menuName)){//P_B_26486
@@ -265,7 +212,7 @@ public static String getRegionList(String userList)
    }
 public static Info getComboInfo(String tableName,String columnName){
        Info info=new Info();
-       BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+      /* BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
        LinkedHashMap map=null;
        String initialValue=FieldNames.EMPTY_STRING;
        String endValue=FieldNames.EMPTY_STRING;
@@ -331,10 +278,10 @@ public static Info getComboInfo(String tableName,String columnName){
        endValue=null;
        key=null;
        score=null;
-       hMap=null;
+       hMap=null;*/
        return info;
    }
-	public static Info getBackGroundInfo() {
+public static Info getBackGroundInfo() {
        return SQLUtil.getColumnValueInfo("EMPLOYMENT_BACKGROUND", "EBG_ID", "EBG_NAME", null, null, "EBG_NAME", null);
    }
 	     
