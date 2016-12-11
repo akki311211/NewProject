@@ -79,20 +79,20 @@
  --------------------------------------------------------------------------------------------------------------------------------
  */
 
-package com.appnetix.app.util;
+package com.home.builderforms;
 
 
 
-import com.appnetix.app.util.base.BaseNewPortalUtils;
-import com.appnetix.app.util.information.Info;
-import com.appnetix.app.util.sqlqueries.ResultSet;
+import com.home.builderforms.base.BaseNewPortalUtils;
+import com.home.builderforms.information.Info;
+import com.home.builderforms.sqlqueries.ResultSet;
 import org.apache.log4j.Logger;
 
 /**
  * 
  * Name - NewPortalUtils.java
  * 
- * Directory position - com.appnetix.app.util.financials
+ * Directory position - com.home.builderforms.financials
  * 
  * 
  * author Pritish

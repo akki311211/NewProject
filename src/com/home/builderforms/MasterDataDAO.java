@@ -14,10 +14,10 @@ package com.appnetix.app.components.masterdatamgr.manager.dao;
 
 import java.util.Calendar;
 import com.appnetix.app.components.BaseDAO;
-import com.appnetix.app.util.*;
-import com.appnetix.app.util.information.Info;
-import com.appnetix.app.util.sqlqueries.ResultSet;
-import com.appnetix.app.util.sqlqueries.SQLUtil;
+import com.home.builderforms.*;
+import com.home.builderforms.information.Info;
+import com.home.builderforms.sqlqueries.ResultSet;
+import com.home.builderforms.sqlqueries.SQLUtil;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -750,7 +750,7 @@ ResultSet result=null;
  	   StringBuffer query = new StringBuffer("SELECT DATA_VALUE FROM MASTER_DATA WHERE DATA_TYPE=?");
  	   String dataValue ="";
  	   boolean domainName=true;
- 	   com.appnetix.app.util.sqlqueries.ResultSet result = QueryUtil.getResult(query.toString(), new Object[]{MasterEntities.CAPTIVATE_MAIL_DOMAIN});
+ 	   com.home.builderforms.sqlqueries.ResultSet result = QueryUtil.getResult(query.toString(), new Object[]{MasterEntities.CAPTIVATE_MAIL_DOMAIN});
  	   if(result.next()) 
  	   {
             dataValue=result.getString("DATA_VALUE");

@@ -137,13 +137,30 @@ ENH_71BBFCNE12           20June2011           Veerpal Singh                     
 
  */
 
-package com.appnetix.app.util;
+package com.home.builderforms;
 
-import com.appnetix.app.util.base.BasePortalUtils;
 /**
  * This class contains some frequently used general utility methods being used
  * in the portal All methods have been declared static
  */
 
-public class PortalUtils extends BasePortalUtils {}//end class
+public class PortalUtils {
+	public static String replaceAll(String _string, String _old, String _new) {
+		StringBuffer buffer = new StringBuffer(_string);
+		int pos = _string.indexOf(_old);
+		if(!StringUtil.isValidNew(_new) && !"&nbsp;".equals( _old))
+		{
+			_new="";
+		}
+        int newLen = _new.length();
+		while (pos != -1) {
+			// System.out.println(pos);
+			buffer.replace(pos, pos + _old.length(), _new);
+                        pos = buffer.indexOf(_old,pos+newLen);
+//			pos = buffer.toString().indexOf(_old);
+		}
+		// System.out.println(buffer);
+		return buffer.toString();
+	}
+}//end class
 

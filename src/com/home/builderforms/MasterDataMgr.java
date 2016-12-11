@@ -1,7 +1,6 @@
-package com.appnetix.app.components.masterdatamgr.manager;
+package com.home.builderforms;
 
-import com.appnetix.app.components.masterdatamgr.manager.dao.*;
-import com.appnetix.app.control.web.base.BeanHandler;
+import com.home.builderforms.MasterDataDAO;
 
 public class MasterDataMgr {
 

@@ -914,7 +914,7 @@ Methods to control transaction.
         java.sql.ResultSet rs = null;
         String query = "SELECT " + requiredColumnName + " FROM " + tableName + " WHERE " + givenColumnName + "='" + givenColumnValue + "'";
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             if (rs.next()) {

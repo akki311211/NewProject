@@ -31,7 +31,7 @@
  *
  */
 
-package com.appnetix.app.util;
+package com.home.builderforms;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
 
 public class DateUtil
 {
-    static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(DateUtil.class);
+    static Logger logger = Logger.getLogger(DateUtil.class);
     public static final String DB_FORMAT = "yyyy-MM-dd";
     public static final String DB_DATETIME_FORMAT = "yyyy-MM-dd HH:mm";
     public static String DB_FORMAT_HMS = DB_FORMAT + " HH:mm:ss";
@@ -144,7 +144,7 @@ public class DateUtil
     {
         Calendar cal = Calendar.getInstance();
 
-        if (!com.appnetix.app.util.StringUtil.badString(date))
+        if (!com.home.builderforms.StringUtil.badString(date))
         {
             /**
              *  Checks the passed String for non-numeric character at either start or end, and for any character other than 0-9,/,- at any position
@@ -453,7 +453,7 @@ public class DateUtil
 
     public static String formatDate(String date)
     {
-        if (!com.appnetix.app.util.StringUtil.badString(date))
+        if (!com.home.builderforms.StringUtil.badString(date))
         {
             return formatDate(getDate(date), null);
         }
@@ -475,7 +475,7 @@ public class DateUtil
      */
     public static String formatDateGivenFormat(String date, String givenFormat) throws ParseException
     {
-        if (!com.appnetix.app.util.StringUtil.badString(date))
+        if (!com.home.builderforms.StringUtil.badString(date))
         {
             SimpleDateFormat dateParser = new SimpleDateFormat(givenFormat);
             return formatDate(dateParser.parse(date), null);
@@ -486,7 +486,7 @@ public class DateUtil
 
     public static String formatDate(String date, String format)
     {
-        if (!com.appnetix.app.util.StringUtil.badString(date))
+        if (!com.home.builderforms.StringUtil.badString(date))
             return formatDate(getDate(date), format);
         return "";
     }
@@ -1057,7 +1057,7 @@ public class DateUtil
         if (monthcount <= 0)
         {
 
-            monthcount = com.appnetix.app.util.DateTime.getNoOfMonth(fromdate, date);
+            monthcount = com.home.builderforms.DateTime.getNoOfMonth(fromdate, date);
         }
 
 
@@ -1352,8 +1352,8 @@ public class DateUtil
         SimpleDateFormat simpleDateformatY = new SimpleDateFormat("yyyy");
         SimpleDateFormat simpleDateformatM = new SimpleDateFormat("MM");
         SimpleDateFormat simpleDateformatD = new SimpleDateFormat("dd");
-        //if(!com.appnetix.app.util.PortalUtils.isBadString(dateOfBirthString)){
-        if (!com.appnetix.app.util.BaseUtils.isBadString(dateOfBirthString))
+        //if(!com.home.builderforms.PortalUtils.isBadString(dateOfBirthString)){
+        if (!com.home.builderforms.BaseUtils.isBadString(dateOfBirthString))
         {     //For Product_Seperation_BL By Amar Singh.
             try
             {

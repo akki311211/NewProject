@@ -26,6 +26,7 @@ import java.util.TreeMap;
  */
 public class Constants
 {
+	public static final String DISPLAY_FORMAT = "MM/dd/yyyy";
     public static final boolean IS_COAPPLICANT_ENABLED = true;
     public static final String EXPECTED_OPENING_DATE = "Expected Opening Date";
     public static final String MAX_RSS_FEEDS = "5";
@@ -1381,4 +1382,5 @@ public class Constants
 	 public static final String LEAD_DATA_MAP = "leadDataMap";
 	 
 	 public static final int MAX_FRANCHISEE_COUNT_FOR_MULTIPLE_VISITS = 20;
+	 public static final String TENANT_NAME="default";
 }

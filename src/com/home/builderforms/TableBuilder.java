@@ -36,7 +36,7 @@ public class TableBuilder extends BaseBuilder{
     
     public void createTableElements(HashMap cParams, HashMap tableParameters) throws ConnectionException{
         Connection con = null;
-        con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+        con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
         createTable(con, (HashMap)cParams.get(BuilderConstants.FORM_TABLE), tableParameters);
         try{
             DBConnectionManager.getInstance().freeConnection(con);

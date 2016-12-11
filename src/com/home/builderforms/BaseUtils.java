@@ -23,8 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.home.builderforms.DBConnectionManager;
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -44,31 +42,29 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
+/*import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;*/
 
-import com.appnetix.app.components.masterdatamgr.manager.MasterDataMgr;
-import com.appnetix.app.exception.AppException;
-import com.appnetix.app.portal.FormCustomization.BuilderFormFieldNames;
-import com.appnetix.app.portal.role.UserRoleMap;
+import com.home.builderforms.MasterDataMgr;
+import com.home.builderforms.AppException;
+import com.home.builderforms.BuilderFormFieldNames;
+import com.home.builderforms.UserRoleMap;
 import com.home.builderforms.ModuleUtil.MODULE_NAME;
 import com.home.builderforms.MultipartRequest;
-import com.appnetix.app.portal.ws.WSDataHandler;
-import com.home.builderforms.cache.CacheMgr;
-import com.home.builderforms.cache.StateCache;
+//import com.appnetix.app.portal.ws.WSDataHandler;
 //import com.home.builderforms.cache.UserDataCache;
-import com.home.builderforms.database.DependentTable;
-import com.home.builderforms.database.Field;
-import com.home.builderforms.database.FieldMappings;
-import com.home.builderforms.database.HeaderField;
-import com.home.builderforms.database.HeaderMap;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.DependentTable;
+import com.home.builderforms.Field;
+import com.home.builderforms.FieldMappings;
+import com.home.builderforms.HeaderField;
+import com.home.builderforms.HeaderMap;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
 
 
 public class BaseUtils {
-    static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BaseUtils.class);
+    static Logger logger = Logger.getLogger(BaseUtils.class);
     public static final String USER_LEVEL_ZERO = "0";   //Copied from MenuUtils class.
     public static final String USER_LEVEL_ONE = "1";
     public static final String USER_LEVEL_TWO = "2";
@@ -246,7 +242,7 @@ public class BaseUtils {
             if(month!=null && month.length()==1)
                 month="0"+month;
         }
-        if(com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT.equals("MM/dd/yyyy"))
+        if(Constants.DISPLAY_FORMAT.equals("MM/dd/yyyy"))
         {
             returnDate = month + "/" + day + "/" + year;
         }
@@ -780,7 +776,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 
             pstmt = con.prepareStatement("SELECT DATA_VALUE FROM MASTER_DATA WHERE master_data_id=?");
 
@@ -844,7 +840,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 
             pstmt = con
                     .prepareStatement("SELECT DATA_VALUE FROM MASTER_DATA WHERE master_data_id=?");
@@ -907,7 +903,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 
             pstmt = con
                     .prepareStatement("SELECT DATA_VALUE FROM MASTER_DATA WHERE master_data_id=?");
@@ -972,7 +968,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 
             pstmt = con
                     .prepareStatement("SELECT DATA_VALUE FROM MASTER_DATA WHERE master_data_id=?");
@@ -1036,7 +1032,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 
             // pstmt = con.prepareStatement("SELECT DATA_VALUE FROM MASTER_DATA
             // WHERE master_data_id=?");
@@ -1244,454 +1240,7 @@ public class BaseUtils {
         return info;
     }
     //Copied from BaseNewPortalUtil class.
-    public static Info getTransactionStartInfo() {
-        Info info = new Info();
-        ResultSet result = null;
-        String query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=40 AND DATA_TYPE=4001";
-
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("ESTIMATE_START", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=41 AND DATA_TYPE=6001";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("INVOICE_START", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ", e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=40 AND DATA_TYPE=4002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("ESTIMATE_PREFIX", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=41 AND DATA_TYPE=6002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("INVOICE_PREFIX", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=50 AND DATA_TYPE=11002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("PAYMENT_PREFIX", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5014";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.DEPLOYED_VERSION_NUMBER, result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=51 AND DATA_TYPE=12002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("DEPOSIT_PREFIX", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=50 AND DATA_TYPE=11001";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("PAYMENT_START", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) { //Copied from CommonUtil class.
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=51 AND DATA_TYPE=12001";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("DEPOSIT_START", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=30 AND DATA_TYPE=13001";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("TASK_START", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=30 AND DATA_TYPE=13002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("TASK_PREFIX", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5000";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.VEHICLE_NAME, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5001";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURABLE_TAB, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5002";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.DEFAULT_SCHEDULER_VIEW, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5003";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURABLE_TAB_NAME, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5004";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_VEHICLE, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: " ,e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5005";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_ASSIGN_TO_OTHER, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5020";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_CATEGORY, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: " ,e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5006";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_TAX, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        //P_SC_CR_009 Starts
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=? AND DATA_TYPE=?";
-        try {
-            result = QueryUtil.getResult(query, new String[]{"15",MasterEntities.SHOW_STATE_LOCAL_TAX});
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_STATE_LOCAL_TAX, result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=? AND DATA_TYPE=?";
-        try {
-            result = QueryUtil.getResult(query, new String[]{"15",MasterEntities.SHOW_PRODUCT_INVOICE_LEVEL_TAX});
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_PRODUCT_LEVEL_TAX, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-        //P_SC_CR_009 Ends
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5007";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_DISCOUNT, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: " ,e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE PARENT_DATA_ID=15 AND DATA_TYPE=5008";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set(FieldNames.CONFIGURE_SKILL, result
-                        .getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE   DATA_TYPE=5009";
-        try {
-            result = QueryUtil.getResult(query, null);
-            if (result.next()) {
-                info.set(FieldNames.ASSIGNED_TO, result.getString("DATA_VALUE"));
-            } else {
-                info.set(FieldNames.ASSIGNED_TO, "Assign To");
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE   DATA_TYPE=5999";
-        try {
-            result = QueryUtil.getResult(query, null);
-            if (result.next()) {
-                info
-                        .set("AVAILABILITY_USERS", result
-                                .getString("DATA_VALUE"));
-            } else {
-                info.set("AVAILABILITY_USERS", "Resources");
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: " ,e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE   DATA_TYPE=5010";
-        try {
-            result = QueryUtil.getResult(query, null);
-            if (result.next()) {
-                info.set(FieldNames.ASSIGN_TO_OTHERS, result
-                        .getString("DATA_VALUE"));
-            } else {
-                info.set(FieldNames.ASSIGN_TO_OTHERS, "Assign To Others");
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ", e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE DATA_TYPE=5013";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("CAREGIVER", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-
-        query = "SELECT DATA_VALUE FROM MASTER_DATA_FOR_SCHEDULER WHERE DATA_TYPE=5027";
-        try {
-            result = QueryUtil.getResult(query, null);
-            while (result.next()) {
-                info.set("JOB_START_NO", result.getString("DATA_VALUE"));
-            }
-        } catch (Exception e) {
-            logger.error("Exception in getTransactionStartInfo: ",e);
-        } finally {
-            if(result != null) {
-                result.release();
-                result = null;
-            }
-        }
-
-        return info;
-    }
+    public static Info getTransactionStartInfo() {return new Info();}
 
     /**
      * This function is used to get the CSRF token for the per user login.
@@ -1700,42 +1249,12 @@ public class BaseUtils {
      * @author Naman Jain
      */
     public static String getEncryptedTokenValueValue() throws Exception {
-    	long token = System.currentTimeMillis();
-    	String randomToken = String.valueOf(token);
-    	return AESencrypt.encrypt(randomToken);
+    	
+    	return "";
     }
     
     //Copied from CommonUtil class.
-    public static SequenceMap getInvoiceLabels() {
-        StringBuffer selectQuery = new StringBuffer();
-        selectQuery
-                .append("SELECT LABEL_KEY_FIELD, LABEL_NAME, LABEL_VALUE FROM "+MultiTenancyUtil.getTenantConstants().CM_TMS+"TMS_INVOICE_LABELS WHERE IS_ENABLED='Y'");
-        SequenceMap labelMap = new SequenceMap();
-        ResultSet rs = null;
-        try {
-
-            rs = QueryUtil.getResult(selectQuery.toString(), null);
-
-            Info info = new Info();
-            while (rs.next()) {
-                info = new Info();
-                info.set(FieldNames.INV_LABEL_KEY_FIELD, rs
-                        .getString("LABEL_KEY_FIELD"));
-                info.set(FieldNames.INV_LABEL_NAME, rs.getString("LABEL_NAME"));
-                info.set(FieldNames.INV_LABEL_VALUE, rs
-                        .getString("LABEL_VALUE"));
-
-                labelMap.put(rs.getString("LABEL_KEY_FIELD"), info);
-            }
-        } catch (Exception e) {
-            logger.info("Exception " + e);
-        }
-        finally
-        {
-            QueryUtil.releaseResultSet(rs);
-        }
-        return labelMap;
-    }
+    public static SequenceMap getInvoiceLabels() {return new SequenceMap();}
 
     //Copied from BaseNewPortalUtil class.
 
@@ -1833,7 +1352,7 @@ public class BaseUtils {
         java.sql.ResultSet rs = null;
 
         try {
-            con = DBConnectionManager.getInstance().getConnection(MultiTenancyUtil.getTenantName(),2000);
+            con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
 //					 	        } catch (ConnectionException ce) {
         } catch (Exception ce) {
             logger.error("Exception in isCorporateUser "+ ce.getMessage());
@@ -1885,17 +1404,7 @@ public class BaseUtils {
     }
 
     //Copied from MenuUtils class.
-    public static boolean canAccessSmartConnect(UserRoleMap userRoleMap,String userLevel,String franchiseeNo) {
-        //ENH_SMARTCONNECT_SEP starts
-					 			/*return (ModuleUtil.fimImplemented() && "Yes".equalsIgnoreCase(MasterDataMgr.newInstance().getMasterDataDAO().getValueByType(MasterEntities.ENABLE_SMARTCONNECT))
-					 					&& ((USER_LEVEL_ONE.equals(userLevel) &&  userRoleMap.isModuleInMap("22") && "Y".equals(NewPortalUtils.getColumnFromTable("FRANCHISEE","IS_FRANCHISEE","FRANCHISEE_NO",franchiseeNo))) || (MultiTenancyUtil.getTenantConstants().ENABLE_SMART_SWITCH)));*/
-        //P_B_28946 starts CommonUtil.notAllFO method added
-        return ("Yes".equalsIgnoreCase(getDataValue(MasterEntities.ENABLE_SMARTCONNECT)) && ((ModuleUtil.fimImplemented()) || (ModuleUtil.auditImplemented()))
-                && ((USER_LEVEL_ONE.equals(userLevel) &&  userRoleMap.isModuleInMap("22") ) //P_E_FC-175
-                || ((((USER_LEVEL_ZERO.equals(userLevel) || USER_LEVEL_SIX.equals(userLevel)) &&  userRoleMap.isModuleInMap("24")) || (USER_LEVEL_TWO.equals(userLevel) &&  userRoleMap.isModuleInMap("26"))) && MultiTenancyUtil.getTenantConstants().ENABLE_SMART_SWITCH )));
-        //P_B_28946 ends
-        //ENH_SMARTCONNECT_SEP ends
-    }
+    public static boolean canAccessSmartConnect(UserRoleMap userRoleMap,String userLevel,String franchiseeNo) {return true;}
 
 
     //Copied from MenuUtils class.
@@ -1969,35 +1478,17 @@ public class BaseUtils {
 
     public static String getUserName(String userno)
     {
-        String sName = FieldNames.EMPTY_STRING;
-        Map<String,Object> userMap = CacheMgr.getUserCache().getUser(userno);
-        if(userMap != null && StringUtil.isValid((String)userMap.get(FieldNames.USER_NAME)))
-        {
-            sName = (String)userMap.get(FieldNames.USER_NAME);
-        }
-        return sName;
+        return "";
     }
     
     public static String getUserFirstName(String userno)
     {
-        String sName = FieldNames.EMPTY_STRING;
-        Map<String,Object> userMap = CacheMgr.getUserCache().getUser(userno);
-        if(userMap != null && StringUtil.isValid((String)userMap.get(FieldNames.USER_NAME)))
-        {
-            sName = (String)userMap.get(FieldNames.USER_FIRST_NAME);
-        }
-        return sName;
+        return "";
     }
     
     public static String getUserLastName(String userno)
     {
-        String sName = FieldNames.EMPTY_STRING;
-        Map<String,Object> userMap = CacheMgr.getUserCache().getUser(userno);
-        if(userMap != null && StringUtil.isValid((String)userMap.get(FieldNames.USER_NAME)))
-        {
-            sName = (String)userMap.get(FieldNames.USER_LAST_NAME);
-        }
-        return sName;
+        return "";
     }
 
 
@@ -2206,13 +1697,7 @@ public class BaseUtils {
 
     public static String getCountryName(String countryId)
     {
-        String countryName = "";
-        Map<String,Object> countryMap = CacheMgr.getCountryCache().getCountry(countryId);
-        if (countryMap != null)
-        {
-            countryName = (String)countryMap.get(FieldNames.COUNTRY_NAME);
-        }
-        return countryName;
+        return "";
     }
     public static boolean isFimDoc(String path) {
         if("fimCustomerComplaints".equals(path) || "fimContractSigning".equals(path) || "fimLenders".equals(path)
@@ -2227,14 +1712,7 @@ public class BaseUtils {
     }
     //  GOOGLE_SYNC_API_CHANGE starts
     public static void setGoogleSyncKeys(){
-        String query = "SELECT GOOGLE_SYNC_CLIENT_ID, GOOGLE_SYNC_CLIENT_SECRET, GOOGLE_SYNC_REDIRECT_URL FROM GOOGLE_SYNC_KEYS";
-        ResultSet resultSet = QueryUtil.getResult(query, null);
-        BaseConstants _baseConstants = MultiTenancyUtil.getTenantConstants();
-        if(resultSet != null && resultSet.next()) {
-            _baseConstants.GOOGLE_SYNC_CLIENT_ID = resultSet.getString("GOOGLE_SYNC_CLIENT_ID");
-            _baseConstants.GOOGLE_SYNC_CLIENT_SECRET = resultSet.getString("GOOGLE_SYNC_CLIENT_SECRET");
-            _baseConstants.GOOGLE_SYNC_REDIRECT_URL = resultSet.getString("GOOGLE_SYNC_REDIRECT_URL");
-        }
+        
     }
     //  GOOGLE_SYNC_API_CHANGE ends
 
@@ -2291,38 +1769,7 @@ public class BaseUtils {
      */
     public static String[] getFranchiseeAndOwner(HttpSession session)
     {
-        String franchiseeOwner[]=new String[2];
-
-        String menuName = (((String) session.getAttribute(FieldNames.MENU_NAME)) == null) ? MultiTenancyUtil.getTenantConstants().DEFAULT_MODULE : ((String) session.getAttribute(FieldNames.MENU_NAME));////P_B_26486
-        ArrayList list=(ArrayList)session.getAttribute("FranchiseeNoList");
-
-        if("ppc".equals(menuName)){
-            list = (ArrayList)session.getAttribute("FranchiseeNoListAll");
-        }
-
-        String franchiseList="";
-        try {
-            if("All".equals((String)session.getAttribute("franchisee_all"))&&list!=null) {
-                for(Object obj:list) {
-                    if("All".equals(obj.toString())) {
-                        continue;
-                    }
-                    else if("".equals(franchiseList)) {
-                        franchiseList=obj.toString();
-                    }
-                    else {
-                        franchiseList+=","+obj.toString();
-                    }
-                }
-
-            }
-        } catch(Exception e) {
-            logger.error("Exception in getFranchiseeAndOwner", e);
-        }
-
-        franchiseeOwner[0] = franchiseList;
-        franchiseeOwner[1] = (String)session.getAttribute("user_no");
-        return franchiseeOwner;
+        return new String[]{};
     }
 
     public static boolean booleanValue(Boolean val)
@@ -2557,7 +2004,7 @@ public class BaseUtils {
      *
      *
      */
-	public static void write(PageContext pageContext, String text)
+	/*public static void write(PageContext pageContext, String text)
 	{
 		JspWriter writer = pageContext.getOut();
 		try
@@ -2568,7 +2015,7 @@ public class BaseUtils {
 		{
 			logger.error("Exception in BaseUtils.write :::::::: ", e);
 		}
-	}
+	}*/
 	public static String getModuleKey(String val)
 	{
 		String keyVal=null;
@@ -2671,17 +2118,7 @@ public class BaseUtils {
  	 * @return
  	 */
  	public static String getMenuDisplayName(HttpServletRequest request, String moduleKeyValName, String currentDisplayName) {
-        String moduleName = FieldNames.EMPTY_STRING;
-        if(StringUtil.isValidNew(moduleKeyValName)) {
-            moduleName=  LanguageUtil.getString(MultiTenancyUtil.getTenantConstants().MODULE_DISPLAY_NAME_MAP.get(moduleKeyValName));
-        } else if(request != null) {
-            moduleName=  LanguageUtil.getString(MultiTenancyUtil.getTenantConstants().MODULE_DISPLAY_NAME_MAP.get(request.getSession().getAttribute(FieldNames.MENU_NAME)));
-        }
-        if(StringUtil.isValid(moduleName)) {
-            return moduleName;
-        } else {
-        	return LanguageUtil.getString(currentDisplayName);
-        }
+        return "";
     }
  	
 	// Struts1_To_Struts2_Migration Ends
@@ -2727,7 +2164,7 @@ public class BaseUtils {
 	 * @param request
 	 * @param parametres
 	 */
-    public static void syncData(String eventType, HttpServletRequest request, Map<String, String> parametres)
+ 	/*public static void syncData(String eventType, HttpServletRequest request, Map<String, String> parametres)
     {
        syncData(eventType, request, parametres,null);
    	}
@@ -2768,5 +2205,5 @@ public class BaseUtils {
 		{
 			logger.error("Exception in Instantiating WSDataHandler", e);
 		}
-	}
+	}*/
 }

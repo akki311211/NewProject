@@ -416,7 +416,7 @@ public class QueryUtil {
 
 	public static ResultSet getResult(String sqlQuery, Object[] params) {
 
-		return getResult(MultiTenancyUtil.getTenantName(), sqlQuery, params);
+		return getResult(Constants.TENANT_NAME, sqlQuery, params);
 
 	}
 
@@ -583,7 +583,7 @@ public class QueryUtil {
 
 			}
 
-            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 
         }
 
@@ -685,7 +685,7 @@ public class QueryUtil {
 			} catch (SQLException e)
 			{
 			}
- 			connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+ 			connectionManager.freeConnection(Constants.TENANT_NAME, connection);
  			if(exception && throwException)
             {
                 throw new AppException();
@@ -748,7 +748,7 @@ public class QueryUtil {
 			} catch (SQLException e) {
 			}
             
-            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 
           }
 
@@ -958,7 +958,7 @@ public class QueryUtil {
 			}
 
 			if(connection != null)
-            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
         }
 
        return iResult;
@@ -1021,7 +1021,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			}
 
 			if(connection != null)
-            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
         }
 
        return iResult;
@@ -1093,7 +1093,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			}
 
 			if(connection != null)
-            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
         }
 
        return ids.toString();
@@ -1166,7 +1166,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 				}
 
 				if(connection != null)
-	            connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+	            connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 	        }
 
 	       return ids.toString();
@@ -1206,7 +1206,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 				 }
 			 } catch(Exception e) {
 			 }
-			 connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+			 connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 		 }
 		 return result;
 	 }
@@ -1318,7 +1318,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 
 		}finally{	//P_OPT_CONNECTIONS
 			releaseResultSet(result);
-			connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+			connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 		}
     	return columnName;
     }
@@ -1353,7 +1353,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 
 	}finally{	//P_OPT_CONNECTIONS
 		releaseResultSet(rs);
-		connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+		connectionManager.freeConnection(Constants.TENANT_NAME, connection);
 	}
     return info;
       
