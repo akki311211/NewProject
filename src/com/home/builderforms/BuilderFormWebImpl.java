@@ -1,11 +1,13 @@
 package com.home.builderforms;
 
-import com.home.builderforms.*;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
-import com.home.builderforms.*;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.FieldMappings;
 import com.home.builderforms.Info;
@@ -318,38 +320,7 @@ public final class BuilderFormWebImpl implements java.io.Serializable {
 		}
 	}
 	
-	public SequenceMap getBuilderFormCM() {
-		try {
-			return getBuilderFormMgr().getBuilderFormDAOforCm().getBuilderFormListCM();
-		} catch (Exception e) {
-			return null;
-		}
-	}
 
-	public SequenceMap getBuilderFieldsCM(String formId) {
-		try {
-			return getBuilderFormMgr().getBuilderFormDAOforCm().getCmFormBuilderFields(formId);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	public SequenceMap getBuilderFormViewFieldsCM(String formId , String tableName , String columnName , String foreignId) {
-		try {
-			return getBuilderFormMgr().getBuilderFormDAOforCm().getViewCmBuilderFields(formId,tableName,columnName,foreignId);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public SequenceMap getBuilderFormDisplayFieldsCM(String formId) {
-		try {
-			return getBuilderFormMgr().getBuilderFormDAOforCm().getCmDisplayBuilderFields(formId);
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
 	public boolean checkForSkipValue(Vector flds, String sDBTableName, String fldName) {
 		try {
 			return getBuilderFormMgr().getBuilderFormDAO().checkForSkipValue(flds, sDBTableName, fldName);

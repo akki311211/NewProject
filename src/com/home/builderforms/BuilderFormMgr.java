@@ -1,6 +1,5 @@
 package com.home.builderforms;
 
-import com.home.builderforms.*;
 import com.home.builderforms.BeanHandler;
 
 /**
@@ -29,7 +28,4 @@ public class BuilderFormMgr {
         return BeanHandler.getBean("base-builderformdao", BuilderFormDAO.class);
     }
 
-    public BuilderFormDAOforCm getBuilderFormDAOforCm() {
-        return BeanHandler.getBean("base-builderformdaoforcm", BuilderFormDAOforCm.class);
-    }
 }

@@ -337,7 +337,7 @@ public class MultipartRequest implements java.io.Serializable {
                 
 						if (fileName != null  )
 						{
-							if(MultiTenancyUtil.getTenantConstants().SECURE && !checkValidContentType(fileName,contentType,fileFrom)) {
+							if(Constants.SECURE && !checkValidContentType(fileName,contentType,fileFrom)) {
 								System.out.println(">>>>>>>>>>>>>!!!Threat has been Detected!!!<<<<<<<<<<<<<<<<<<<<<\n"+fileName+"\n"+contentType);
 								throw new IllegalArgumentException("Not writable: " + saveDirectory);
 							} else {
@@ -368,7 +368,7 @@ public class MultipartRequest implements java.io.Serializable {
 
         String toUrl = request.getRequestURI();
         
-        if(MultiTenancyUtil.getTenantConstants().SECURE && !toUrl.contains("uploadckPicture.jsp")) {
+        if(Constants.SECURE && !toUrl.contains("uploadckPicture.jsp")) {
 
         	String encryptToken = getParameter("cft") ;
         	String referer = request.getHeader("referer");
@@ -379,10 +379,10 @@ public class MultipartRequest implements java.io.Serializable {
         	}
         	System.out.println("encryptToken in session == "+session.getAttribute("csrfToken"));
         	try {
-        		if(StringUtil.isValidNew(referer) && referer.indexOf(MultiTenancyUtil.getTenantConstants().HOST_NAME) != -1 && "XMLHttpRequest".equals(XRequestedWith)) { //AJAX request
+        		if(StringUtil.isValidNew(referer) && referer.indexOf(Constants.HOST_NAME) != -1 && "XMLHttpRequest".equals(XRequestedWith)) { //AJAX request
         			//do nothing
         		} 
-        		else if(StringUtil.isValidNew(referer) && referer.indexOf(MultiTenancyUtil.getTenantConstants().HOST_NAME) != -1) { //from inside the build only
+        		else if(StringUtil.isValidNew(referer) && referer.indexOf(Constants.HOST_NAME) != -1) { //from inside the build only
         			/*if(!StringUtil.isValidNew(encryptToken)) { // P_B_63989
         				request.getSession().invalidate();
         				System.out.println("CSRF Exception: Token is not valid.");
@@ -632,7 +632,7 @@ public class MultipartRequest implements java.io.Serializable {
     }
     
     public String stripXSS(String value, String paramName) {
-		if (MultiTenancyUtil.getTenantConstants().SECURE && value != null && !value.isEmpty()) {
+		if (Constants.SECURE && value != null && !value.isEmpty()) {
 
 			// Remove all sections that match a pattern
 			for (Pattern scriptPattern : patterns) {
@@ -690,7 +690,7 @@ public class MultipartRequest implements java.io.Serializable {
 	
 	public boolean checkValidContentType(String fileName,String contentType,String fileFrom)
 	{
-		ServletContext context = com.appnetix.app.control.web.handler.IModuleBroker.AppInfo.icontext;
+		/*ServletContext context = com.appnetix.app.control.web.handler.IModuleBroker.AppInfo.icontext;
 		Properties appConfig =(Properties)context.getAttribute("ext_prop");
 		Properties pageConfig =(Properties)context.getAttribute("page_prop");
 
@@ -702,7 +702,7 @@ public class MultipartRequest implements java.io.Serializable {
 			if(StringUtil.isValid(fileFrom) && StringUtil.isValid(pageExt) && !al.contains(ext)){
 				return false;
 			}
-		}
+		}*/
 		return true;
 		/*boolean isValid=false;
 		if(contentType.contains(ext)){

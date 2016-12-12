@@ -139,6 +139,8 @@ ENH_71BBFCNE12           20June2011           Veerpal Singh                     
 
 package com.home.builderforms;
 
+import java.util.StringTokenizer;
+
 /**
  * This class contains some frequently used general utility methods being used
  * in the portal All methods have been declared static
@@ -162,5 +164,122 @@ public class PortalUtils {
 		// System.out.println(buffer);
 		return buffer.toString();
 	}
+
+public static String getAuditFormatDate(String date) {
+	String months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+			"Aug", "Sep", "Oct", "Nov", "Dec" };
+	int i = 0;
+	String returnDate = "";
+	if (date == null || date.equals("")) {
+		return returnDate;
+	}
+	StringTokenizer dateSTr = new StringTokenizer(date);
+	String day = dateSTr.hasMoreTokens() ? dateSTr.nextToken() : "";
+	String month = dateSTr.hasMoreTokens() ? dateSTr.nextToken() : "";
+	String year = dateSTr.hasMoreTokens() ? dateSTr.nextToken() : "";
+	for (; i < 12; i++)
+		if (month.equals(months[i]))
+			break;
+	if (i <= 8)
+		month = "0" + (i + 1);
+	//P_E_FIM_58658 By Nikhil Verma
+	if(date!=null && date.length() >= 10 && i==12 && date.indexOf("AM")==-1 && date.indexOf("PM")==-1 && date.indexOf("No Time Scheduled")==-1)
+	{
+		if(date.length()>10)
+			date = date.substring(0,10).trim();
+		//HomeTeam-20160503-577 starts
+		if(date.indexOf("-")!=-1)
+		{
+			month = date.substring(5,7);
+			day = date.substring(8,10);
+			 year = date.substring(0,4);
+		}
+		else if(Constants.DISPLAY_FORMAT.equalsIgnoreCase("dd/MM/yyyy"))
+		{
+			 day= date.substring(0,2);
+			month  = date.substring(3,5);
+			 year = date.substring(6);
+		}
+		else
+		{	
+		 month = date.substring(0,2);
+		 day = date.substring(3,5);
+		 year = date.substring(6);
+		}
+		//HomeTeam-20160503-577 ends
+	}
+	else
+	{
+		month = new Integer((i + 1)).toString();
+		//P_B_FIM_56578 By Nikhil Verma
+		if(month!=null && month.length()==1)
+			month="0"+month;
+	}
+	if(Constants.DISPLAY_FORMAT.equals("MM/dd/yyyy"))
+	{
+		returnDate = month + "/" + day + "/" + year;
+	}
+	else
+	{
+		returnDate = day + "/" + month + "/" + year;
+	}
+	//P_E_FIM_58658 By Nikhil Verma
+	if(date.indexOf("AM")!=-1 || date.indexOf("PM")!=-1 || date.indexOf("No Time Scheduled")!=-1)
+		returnDate=date;
+	return returnDate;
+}
+/**
+ * @author Dheerendra  
+ * @param String   
+ * This method replace all special characters in the query
+ * which can be saved in database. 
+ */
+public static String forSpecialCharForDB(String pValue) {
+
+	if (pValue == null || pValue.length() == 0)
+		return (pValue);
+
+	char[] content = pValue.toCharArray();
+	int size = content.length;
+	StringBuffer result = new StringBuffer(size + 50);
+	int mark = 0;
+	String replacement = null;
+	for (int i = 0; i < size; i++) {
+		switch (content[i]) {
+		
+		case '"':
+			replacement = "\\\"";
+			break;
+		
+		case '?':
+			replacement = "\\?";
+			break;
+		case '\'':
+			replacement = "\\\'";
+			break;
+		
+		case '\\':
+			replacement = "\\\\";
+			break;
+	
+	
+	
+		}
+		
+		if (replacement != null) {
+			if (mark < i) {
+				result.append(content, mark, i - mark);
+			}
+			result.append(replacement);
+			replacement = null;
+			mark = i + 1;
+		}
+	}
+	if (mark < size) {
+		result.append(content, mark, size - mark);
+	}
+	return (result.toString());
+
+}
 }//end class
 

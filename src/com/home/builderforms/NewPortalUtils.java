@@ -83,8 +83,6 @@ package com.home.builderforms;
 
 
 
-import com.home.builderforms.base.BaseNewPortalUtils;
-import com.home.builderforms.information.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import org.apache.log4j.Logger;
 
@@ -174,9 +172,57 @@ import org.apache.log4j.Logger;
 /* Updated by kulmeet for removing exclaimation sign @20 july 06 */
 
 
-public class NewPortalUtils extends BaseNewPortalUtils {
-	public static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(NewPortalUtils.class);
+public class NewPortalUtils {
+	public static Logger logger = Logger.getLogger(NewPortalUtils.class);
 	
-	
+	public static String getColumnFromTable(String tableName,
+            String requiredColumn, String validatingColumn,
+            String validatingColumnValue) {
+    	
+
+        String returncolumnValue = "";
+        if (StringUtil.isValid(tableName) && StringUtil.isValid(requiredColumn)
+                && StringUtil.isValid(validatingColumn)
+                && StringUtil.isValid(validatingColumnValue)) {
+            StringBuffer query = new StringBuffer();
+            ResultSet result = null;
+            try {
+                query.append("SELECT  ");
+                query.append(requiredColumn);
+                query.append("  FROM  ");
+                query.append(tableName);
+                query.append("  WHERE  ");
+                query.append(validatingColumn);
+                query.append("='");
+                if (validatingColumn != null
+                        && validatingColumn.equalsIgnoreCase("LEAD_ID")) {
+                    validatingColumnValue = validatingColumnValue.replaceAll(
+                            "'", "");
+                    validatingColumnValue = validatingColumnValue.trim();
+                }
+
+                if(validatingColumnValue.contains("'"))
+                {
+                	validatingColumnValue = validatingColumnValue.replaceAll("'", "\\\\'");
+                }
+
+                query.append(validatingColumnValue);
+                query.append("'");
+
+                result = QueryUtil.getResult(query.toString(), null);
+                if (result.next()) {
+                    returncolumnValue = result.getString(requiredColumn);
+                }
+            } catch (Exception e) {
+                logger.info("ERROR: exception in getLeadOwners ::" + e);
+            } finally {
+                if (result != null) {
+                    result = null;
+                }
+            }
+        }
+        return returncolumnValue;
+
+    }
 }
 

@@ -1,8 +1,8 @@
-package com.appnetix.app.components.regionmgr.manager;
+package com.home.builderforms;
 
-import com.appnetix.app.components.regionmgr.manager.dao.CountriesDAO;
-import com.appnetix.app.components.regionmgr.manager.dao.RegionsDAO;
-import com.appnetix.app.control.web.base.BeanHandler;
+import com.home.builderforms.CountriesDAO;
+import com.home.builderforms.RegionsDAO;
+import com.home.builderforms.BeanHandler;
 
 public class RegionMgr {
 

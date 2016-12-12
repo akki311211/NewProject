@@ -1383,4 +1383,6 @@ public class Constants
 	 
 	 public static final int MAX_FRANCHISEE_COUNT_FOR_MULTIPLE_VISITS = 20;
 	 public static final String TENANT_NAME="default";
+	 public static final boolean SECURE = false;
+	 public static final String HOST_NAME = "www.franconnect.com";
 }

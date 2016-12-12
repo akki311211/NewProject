@@ -281,6 +281,155 @@ public static Info getComboInfo(String tableName,String columnName){
        hMap=null;*/
        return info;
    }
+
+public static String getPasswordFunctionalityValue()
+{
+	String value = "";
+	ResultSet rs=null;
+	try{
+                    StringBuffer query = new StringBuffer("SELECT PASSWORD_FUNCTIONALITY FROM RED_PASSWORD");
+		 rs = QueryUtil.getResult(query.toString(), null);			
+		
+                    if(rs!=null && rs.next())
+                    value=rs.getString("PASSWORD_FUNCTIONALITY");
+                    
+	}
+	
+	catch(Exception e){
+		e.printStackTrace();
+		//System.out.println("Exception in PortalUtil-->getServerName(): "+e);
+		Debug.println("Exception in getPasswordFunctionalityValue"+e);
+	}
+	finally
+	{
+		QueryUtil.releaseResultSet(rs);
+	}
+	
+	return value;
+}
+
+public Info convertIdFields(Info infoToConvert,HttpServletRequest request,String tableAnchor){
+    Info convertedInfo = new Info();
+
+    try{
+        if (infoToConvert != null){
+            for (Iterator it = infoToConvert.getKeySetIterator(); it.hasNext();){
+                String key = (String) it.next();
+                Field fld = DBUtil.getInstance().getFieldMappings(tableAnchor).getField(key);
+                if (fld != null){
+                    // P_E_FIM_58658 By Nikhil Verma
+                    ExportDataCollector exportDCol=  new ExportDataCollector();
+                    exportDCol.init(request,tableAnchor);
+                    String newValue ="";
+                    String paramData ="";
+                    String sDisType	= fld.getDisplayTypeField();
+                    DataManipulator manipulator = DataManipulator.getInstance();
+                    // Added by Veerpal Singh against Bug#10464
+                    if(fld.isBuildField()) {
+                        if(fld.getTransformMethodParam()!=null && !"".equals(fld.getTransformMethodParam()))
+                        {
+                            try {
+                                /**
+                                 * Check whether Param Field value exist in FieldNames otherwise get default Param value from Field Object as added through XML 
+                                 */
+                                if(StringUtil.isValid(FieldNames.getVal(fld.getTransformMethodParam()))) {
+                                    newValue = exportDCol.transform1(fld,infoToConvert.get(key),infoToConvert.getString(FieldNames.getVal(fld.getTransformMethodParam())));
+                                } else {
+                                    newValue = exportDCol.transform1(fld,infoToConvert.get(key),infoToConvert.getString(fld.getTransformMethodParam()));
+                                }
+                            } catch(Exception e) {
+                                logger.error(e);
+                            }
+                        }
+                        else if(fld.getTransformMethod()!=null && !"".equals(fld.getTransformMethod()))
+                        {
+                            newValue = exportDCol.transform1(fld,infoToConvert.get(key));
+                        }else{
+                            newValue=infoToConvert.get(key);
+                        }
+                    }else{
+                        if(sDisType != null && (sDisType.equals("Text") || sDisType.equals("Numeric") || sDisType.equals("Date"))){
+                            newValue = manipulator.transform(fld,infoToConvert.get(key),fld.getTransformMethodParam(),null);
+                        }
+                        else if(sDisType != null && sDisType.equals("Checkbox")){
+                            String chkBVal =infoToConvert.get(key);
+                            if(chkBVal != null) {
+                                newValue = BuilderFormWebImpl.getInstance().getCheckboxOptionsValueForId(fld.getFieldName(),tableAnchor, infoToConvert.get(key));
+                            }
+                        }else if(sDisType != null && sDisType.equals("Radio")) {
+                            if(infoToConvert.get(key) != null) {
+                                newValue = BuilderFormWebImpl.getInstance().getRadioOrComboOptionsValueForId(fld.getFieldName(),tableAnchor, infoToConvert.get(key));
+                            }
+                        }else if(sDisType != null && sDisType.equals("Combo")) {
+                            if(!StringUtil.isValid(fld.getTransformMethod())){
+                            	//if(!infoToConvert.get(key).equals("-1")) {//RPM-20150626-618 starts
+								//if(!"-1".equals(infoToConvert.get(key))) {//RPM-20150626-618 ends
+                            	if(StringUtil.isValidNew(infoToConvert.getString(key))) {//RPM-20150626-618 ends		//dki-20160912-591 Udai Agarwal
+                                    newValue = BuilderFormWebImpl.getInstance().getRadioOrComboOptionsValueForId(fld.getFieldName(),tableAnchor, infoToConvert.get(key));
+                                    if(newValue== null)				//dki-20160912-591 Udai Agarwal
+                                    {
+                                    	newValue = "";
+                                    }
+                                }
+                            } else if(StringUtil.isValid(fld.getTransformMethod())) {
+                                String valFld = infoToConvert.get(key);
+                                if(fld.getComboSourceMethodOtherField() != null && fld.getComboSourceMethodOtherFieldType().equals(valFld.trim())) {
+                                    newValue = fld.getComboSourceMethodOtherField();
+                                } else {
+
+                                    if(StringUtil.isValid(fld.getComboMethodParam()))
+                                        newValue = manipulator.transform(fld,infoToConvert.get(key),fld.getComboMethodParam(),null);
+                                    else
+                                        newValue	= 	manipulator.transform(fld,infoToConvert.get(key),"",null);
+                                }
+                            }
+                        }else
+                        {
+                            newValue=infoToConvert.get(key);
+
+                        }
+                    }
+                    convertedInfo.set(key, newValue);
+                }else{
+
+                    convertedInfo.set(key, infoToConvert.get(key));
+                }
+            }
+        }
+    }catch(Exception e){
+        logger.error(e,e);
+    }
+    return convertedInfo;
+}
+
+/**
+ * Added by Sunilk on 24 Feb 2006 to convert the date format for Audit History.
+ * To taken care of false audit hsitory on date fields.
+ * To taken care of false trigger mails send for date fields.
+ */
+
+public Info convertDateFields(Info infoToConvert,String tableAnchor){
+    Info convertedInfo = new Info();
+    try{
+        if (infoToConvert != null){
+            for (Iterator it = infoToConvert.getKeySetIterator(); it.hasNext();){
+                String key = (String) it.next();
+                Field fld = DBUtil.getInstance().getFieldMappings(tableAnchor).getField(key);
+                if (fld != null && fld.getDataType() != null && fld.getDataType().equals("Date")){
+                    //Sanjeev  37002_date_format
+                    String newValue = PortalUtils.getAuditFormatDate(infoToConvert.get(key));
+                    //String newValue = infoToConvert.get(key);
+                    convertedInfo.set(key, newValue);
+                }else{
+                    convertedInfo.set(key, infoToConvert.get(key));
+                }
+            }
+        }
+    }catch(Exception e){
+        logger.error(e,e);
+    }
+    return convertedInfo;
+}
 public static Info getBackGroundInfo() {
        return SQLUtil.getColumnValueInfo("EMPLOYMENT_BACKGROUND", "EBG_ID", "EBG_NAME", null, null, "EBG_NAME", null);
    }

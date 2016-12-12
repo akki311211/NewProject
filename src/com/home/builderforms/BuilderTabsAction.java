@@ -22,11 +22,9 @@ import javax.servlet.http.HttpSession;
 
 
 import com.home.builderforms.QueryUtil;
-import com.appnetix.app.components.accesscontrolmgr.manager.AccessControlMgr;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
-import com.home.BuilderFormFieldNames;
-import com.appnetix.app.struts.actions.AbstractAppAction;
+import com.home.builderforms.BuilderFormWebImpl;
+import com.home.builderforms.BuilderFormFieldNames;
+import com.home.builderforms.AbstractAppAction;
 import com.home.builderforms.BuilderFormUtil;
 import com.home.builderforms.Constants;
 import com.home.builderforms.FieldNames;
@@ -46,7 +44,7 @@ public class BuilderTabsAction extends AbstractAppAction {
 		SequenceMap tabGeneratorMap = new SequenceMap();
 		HttpSession session = request.getSession();
 		String sTabModuleName 	= request.getParameter(FieldNames.MODULE);
-		String passwordFunctionality=AccessControlMgr.newInstance().getAccessControlDAO().getPasswordFunctionalityValue();
+		String passwordFunctionality=CommonUtil.getPasswordFunctionalityValue();
 		String subModuleName = request.getParameter("subModuleName"); //PP_changes
                 //CM_B_57250 starts
                 if(!StringUtil.isValid(subModuleName)){

@@ -1,9 +1,8 @@
-package com.appnetix.app.components.commonmgr.manager;
+package com.home.builderforms;
 
-import com.appnetix.app.components.commonmgr.manager.dao.*;
-import com.appnetix.app.control.web.base.BeanHandler;
-import com.appnetix.app.portal.CommonSyncFieldManipulator;
-import com.appnetix.app.portal.CommonTabularSectionManipulator;
+import com.home.builderforms.BeanHandler;
+import com.home.builderforms.CommonSyncFieldManipulator;
+import com.home.builderforms.CommonTabularSectionManipulator;
 
 
 public class CommonMgr {
@@ -29,7 +28,7 @@ public class CommonMgr {
 		return BeanHandler.getBean("common-commonTabularSectionManipulator", CommonTabularSectionManipulator.class);
 	}
 	//P_Enh_FormBuilder_Tabular_Section ends
-	public CommonFsDAO getCommonFsDAO() 
+	/*public CommonFsDAO getCommonFsDAO() 
 	{
 		return BeanHandler.getBean("common-commonfsdao", CommonFsDAO.class);
 	}
@@ -82,5 +81,5 @@ public class CommonMgr {
 	public VzaarDAO getVzaarDAO()
 	{
 		return BeanHandler.getBean("common-vzaardao", VzaarDAO.class);
-	}
+	}*/
 }

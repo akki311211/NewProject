@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.home.builderforms.BaseUtils;
 import com.home.builderforms.StringUtil;
 import com.home.builderforms.StrutsUtil;
-import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
-import com.appnetix.app.struts.actions.AbstractAppAction;
+import com.home.builderforms.BuilderFormWebImpl;
+import com.home.builderforms.AbstractAppAction;
 
 public class BuilderKeywordAction extends AbstractAppAction {
 

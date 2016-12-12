@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-import com.appnetix.app.components.builderformmgr.manager.BuilderFormsMgr;
-import com.appnetix.app.struts.actions.AbstractAppAction;
+import com.home.builderforms.BuilderFormsMgr;
+import com.home.builderforms.AbstractAppAction;
 import com.home.builderforms.FieldNames;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.Info;

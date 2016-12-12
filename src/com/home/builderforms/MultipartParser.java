@@ -2,7 +2,7 @@
 // All rights reserved.  Use of this class is limited.
 // Please see the LICENSE for more information.
 
-package com.home.builderforms.multipart;
+package com.home.builderforms;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -72,7 +72,7 @@ import com.home.builderforms.BaseUtils;
  */
 public class MultipartParser {
   
-  static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(MultipartParser.class);
+  static Logger logger = Logger.getLogger(MultipartParser.class);
     
   /** input stream to read parts from */
   private ServletInputStream in;

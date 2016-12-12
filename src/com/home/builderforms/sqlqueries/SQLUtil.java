@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-
 import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ColumnList;
+
 import java.util.Map;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import com.home.builderforms.AppException;
 import com.home.builderforms.Field;
 import com.home.builderforms.FieldMappings;
+import com.home.builderforms.SequenceMap;
 import com.home.builderforms.sqlqueries.ResultSet;
 
 public class SQLUtil {
@@ -48,8 +49,8 @@ public class SQLUtil {
         }
         return new ResultList(list, columnArray);
     }
-
-    public static Info getDetailsInfo(FieldMappings fieldMappings, Integer id) throws RecordNotFoundException, SQLException {
+    
+     public static Info getDetailsInfo(FieldMappings fieldMappings, Integer id) throws RecordNotFoundException, SQLException {
         String queryString = SQLQueryGenerator.getDetailsInfoQueryString(fieldMappings);
         SequenceMap params = new SequenceMap();
         params.put(fieldMappings.getIdField()[0], id);

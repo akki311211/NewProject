@@ -32,7 +32,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.home.builderforms.AppException;
 import com.home.builderforms.BuilderFormFieldNames;
 import com.home.builderforms.BaseFormFactory;
@@ -182,11 +181,11 @@ public class FormBaseDAO{
 		return DBUtil.getInstance().getFimTablesWithMergableFieldsData(tableAnchor);
 	}
 	
-	public HashMap getFimAllMergableKeyFieldsData(String tableAnchor){
+	/*public HashMap getFimAllMergableKeyFieldsData(String tableAnchor){
 //		if(dbUtil == null) 
 //			dbUtil 	= DBUtil.getInstance();
 		return DBUtil.getInstance().getFimAllMergableKeyFieldsData(tableAnchor);
-	}
+	}*/
 
 	public boolean removeFieldMappings(){
 //		if(dbUtil == null) 
@@ -960,7 +959,7 @@ public class FormBaseDAO{
 			
 			String queryStr= SQLQueryGenerator.getDdlQuery(dbQuery);
 			
-			if ("yes".equalsIgnoreCase((String) MultiTenancyUtil.getTenantContext().getAttribute("isInnoDB"))) {
+			if (true) {
 				queryStr = queryStr + ",algorithm=inplace, lock=none";
 			}
 			
@@ -988,7 +987,7 @@ public class FormBaseDAO{
 			DBQuery dbQuery = new DBQuery(SQLQueryGenerator.ALTER, tableName, dbColumn);
 			String queryStr= SQLQueryGenerator.getDdlQuery(dbQuery);
 			
-			if ("yes".equalsIgnoreCase((String) MultiTenancyUtil.getTenantContext().getAttribute("isInnoDB"))) {
+			if (true) {
 				queryStr = queryStr + ",algorithm=inplace, lock=none";
 			}
 			
@@ -1048,7 +1047,7 @@ public class FormBaseDAO{
 			
 			DBQuery dbQuery = new DBQuery(SQLQueryGenerator.ALTER, tableName, dbColumn);
 			String queryStr= SQLQueryGenerator.getDdlQuery(dbQuery);
-			if ("yes".equalsIgnoreCase((String) MultiTenancyUtil.getTenantContext().getAttribute("isInnoDB"))) {
+			if (true) {
 				queryStr = queryStr + ",algorithm=inplace, lock=none";
 			}
             int count = QueryUtil.alterDBTable(queryStr);
@@ -1361,7 +1360,7 @@ public class FormBaseDAO{
 	 */
 	public void refreshTabularSectionMappings()
 	{
-		String tabularSectionMappingsURL=MultiTenancyUtil.getTenantConstants().XML_DIRECTORY +"tabularSectionMappings.xml";
+		String tabularSectionMappingsURL=Constants.XML_DIRECTORY +"tabularSectionMappings.xml";
 		HashMap tabularSectionMappings 				= TableXMLDAO.getTabularSectionMappings(tabularSectionMappingsURL);
 		HashMap tableMappings		= 	getTableMappings();
 		if(tabularSectionMappings != null)
