@@ -23,7 +23,7 @@ import com.home.builderforms.DateTime;
 import com.home.builderforms.DateUtil;
 import com.home.builderforms.Constants;
 import com.home.builderforms.sqlqueries.SQLQuery;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.Info;
 import com.home.builderforms.BaseUtils;
 import com.home.builderforms.FieldNames;
 import com.home.builderforms.IntConstants;
