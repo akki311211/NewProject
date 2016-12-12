@@ -39,19 +39,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.home.builderforms.*;
-import com.appnetix.app.control.SystemVariableManager;
-import com.appnetix.app.control.web.FCInitHandlerServlet;
-import com.appnetix.app.control.web.ParamResolver;
+//import com.appnetix.app.control.web.ParamResolver;
 import com.home.BuilderFormFieldNames;
-import com.home.PropertiesIO;
 import com.home.admin.WebCacheBypass;
 import com.home.builderforms.BaseFormFactory;
 import com.home.builderforms.BuilderConstants;
 import com.home.builderforms.BuilderCustomTab;
 import com.home.builderforms.BuilderFormTimerTask;
-import com.home.i18n.Language;
 import com.home.builderforms.BaseUtils;
-import com.appnetix.app.portal.role.UserRoleMap;
 import com.home.builderforms.BuilderFormUtil;
 import com.home.builderforms.Constants;
 import com.home.builderforms.DBUtil;
@@ -62,12 +57,10 @@ import com.home.builderforms.FileUtil;
 import com.home.builderforms.IDGenerator;
 import com.home.builderforms.LanguageUtil;
 import com.home.builderforms.ModuleUtil;
-import com.home.builderforms.StrutsUtil;
 //import com.home.builderforms.NewPortalUtils;
 import com.home.builderforms.QueryUtil;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
-import com.home.builderforms.TableAnchors;
 //import com.home.builderforms.base.BaseNewPortalUtils;
 import com.home.builderforms.DependentTable;
 import com.home.builderforms.DocumentMap;
@@ -78,7 +71,6 @@ import com.home.builderforms.HeaderField;
 import com.home.builderforms.HeaderMap;
 import com.home.builderforms.LinkField;
 import com.home.builderforms.TableField;
-import com.home.builderforms.i18n.UserLanguageLocal;
 import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.DBColumn;
 import com.home.builderforms.sqlqueries.DBQuery;
@@ -87,8 +79,6 @@ import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLQueryGenerator;
 import com.home.builderforms.TableXMLDAO;
 import com.home.builderforms.XMLUtil;
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
 import com.home.builderforms.AppException;
 
@@ -236,7 +226,6 @@ public class BuilderFormDAO extends FormBaseDAO {
         }
 		Thread thread = new Thread(new BuilderFormTimerTask(dataMap, userNo, tableAnchor, formId, request, baseBuilder1));
         thread.setName("FormGeneratorFieldAdd");
-        MultiTenancyUtil.getTenantConstants().IS_THREAD_RUNNING = true;
         //request.getSession().setAttribute("formGeneratorFieldAddThread", thread);    // Commented For Tomcat Clustering Issue
    		thread.start();
     }
@@ -274,7 +263,7 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
 
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location)) {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
@@ -282,12 +271,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             //flag = updateActiveXmlData(request, tableAnchor);
             flag = addModifyXmlSectionData(request);
             if(flag) {
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
             } else {
                 return false;
@@ -333,7 +316,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 }
             }
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location)) {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
@@ -347,7 +330,7 @@ public class BuilderFormDAO extends FormBaseDAO {
   			if("true".equals(isTabularSection)){
   				String tableAnchorTabularSection=tabularSectionTableName;
   	            loc		= (String)getTableMappings().get(tableAnchorTabularSection);
-  	            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+  	            location = Constants.XML_DIRECTORY + loc;
   	            if(StringUtil.isValidNew(location)) {
   	                request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
   	            }
@@ -355,12 +338,6 @@ public class BuilderFormDAO extends FormBaseDAO {
   	        removeFieldMappings(tableAnchorTabularSection);
   			}//P_Enh_FormBuilder_Tabular_Section ends
             if(flag) {
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
 
                 /**
@@ -438,19 +415,13 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
 
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location))
             {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
             flag = addModifyFieldOrderData(request);
 
-            if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                removeFieldMappings(TableAnchors.FRANCHISEE);
-            }
-            if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                removeFieldMappings(TableAnchors.FRANCHISEES);
-            }
             removeFieldMappings(tableAnchor);
         } catch(Exception e) {
             e.printStackTrace();
@@ -486,19 +457,13 @@ public class BuilderFormDAO extends FormBaseDAO {
             }
 
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location))
             {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
             flag = addModifySectionOrderData(request);
 
-            if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                removeFieldMappings(TableAnchors.FRANCHISEE);
-            }
-            if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                removeFieldMappings(TableAnchors.FRANCHISEES);
-            }
             removeFieldMappings(tableAnchor);
         } catch(Exception e) {
             e.printStackTrace();
@@ -575,7 +540,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 }
             }
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location)) {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
@@ -619,12 +584,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 						dropCmFilterColumnData(fld.getFieldName());
                     }
                 } catch(Exception e) {
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
                 }
                 removeFieldMappings(tableAnchor);
 
@@ -777,7 +736,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 }
             }
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location)) {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
@@ -785,12 +744,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             flag = removeXmlData(request);
 
             if(flag) {
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
 
                 /**
@@ -1092,7 +1045,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                             String tableNameDB = tableNode.getFirstChild().getNodeValue();
                           //Martin-20160728-018 ends
                             String isCenterInfoField = getValueFromMap(dataMap, "isCenterInfoField");
-                            String fileToWriteLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
+                            String fileToWriteLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
                             Node retNode = getNodeInChildren(node,TableXMLDAO.IS_ACTIVE);
                             if(retNode == null) {
                                 Element activeEle = doc.createElement(TableXMLDAO.IS_ACTIVE);
@@ -1348,7 +1301,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 }
             }
             loc		= (String)getTableMappings().get(tableAnchor);
-            String fileToWriteLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
+            String fileToWriteLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
             if(StringUtil.isValidNew(modifyFld)) {
                 boolean isOtherField = false;
                 if(StringUtil.isValidNew(isOtherTableField) && Boolean.parseBoolean(isOtherTableField)) {
@@ -1469,7 +1422,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                                                 }
                                                 if(!"yes".equals(modifyFld) && StringUtil.isValidNew(isCenterInfoField)) {
                                                     setTagAttr(tablesFldNodes[looptablesfld], TableXMLDAO.CENTER_INFO_DISPLAY, ""+!Boolean.parseBoolean(isCenterInfoField));
-                                                    String dependentLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get(getAttributeValue(dependentTableNodes[looptables], "tableAnchor"));
+                                                    String dependentLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get(getAttributeValue(dependentTableNodes[looptables], "tableAnchor"));
                                                     addDependentField(fileLoc, fileToWriteLoc, getAttributeValue(tablesFldNodes[looptablesfld], TableXMLDAO.NAME),dependentLoc,tNameVal,depTableAnchor);
                                                     break;
                                                 }
@@ -2343,7 +2296,7 @@ public class BuilderFormDAO extends FormBaseDAO {
 
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.TRANSFORM_METHOD, BuilderConstants.TRANSFORM_COUNTRY_METHOD));
                 			//CUSTOM_REPORT_SORTING_ISSUE starts
-                			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, TableAnchors.COUNTRIES));
+                			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, "countries"));
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_FIELD, FieldNames.COUNTRY_ID));
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_VALUE, FieldNames.NAME));
                 			//CUSTOM_REPORT_SORTING_ISSUE ends
@@ -2351,13 +2304,13 @@ public class BuilderFormDAO extends FormBaseDAO {
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.DROPDOWN_OPTION, combooption));
 
                 			Element eleN = getElementNode(doc, TableXMLDAO.COMBO, null);
-                			eleN.appendChild(getElementNode(doc, TableXMLDAO.PARENT, MultiTenancyUtil.getTenantConstants().TRUE));
+                			eleN.appendChild(getElementNode(doc, TableXMLDAO.PARENT, Constants.TRUE));
                 			eleN.appendChild(getElementNode(doc, TableXMLDAO.DEPENDENT_FIELD, getValueFromMap(dataMap, BuilderFormFieldNames.FIELD_NAME+"1")));
                 			eleN.appendChild(getElementNode(doc, TableXMLDAO.COMBO_SOURCE_VALUES_METHOD, BuilderConstants.COMBO_COUNTRY_METHOD));
                 			childElement.appendChild(eleN);
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.TRANSFORM_METHOD, BuilderConstants.TRANSFORM_COUNTRY_METHOD));
                 			//CUSTOM_REPORT_SORTING_ISSUE starts
-                			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, TableAnchors.COUNTRIES));
+                			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, "countries"));
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_FIELD, FieldNames.COUNTRY_ID));
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.SRC_VALUE, FieldNames.NAME));
                 			//CUSTOM_REPORT_SORTING_ISSUE ends
@@ -2372,7 +2325,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 			childElement1.appendChild(eleN1);
                 			childElement1.appendChild(getElementNode(doc, TableXMLDAO.TRANSFORM_METHOD, BuilderConstants.TRANSFORM_STATE_METHOD));
                 			//CUSTOM_REPORT_SORTING_ISSUE starts
-                			childElement1.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, TableAnchors.REGIONS));
+                			childElement1.appendChild(getElementNode(doc, TableXMLDAO.SRC_TABLE, "regions"));
                 			childElement1.appendChild(getElementNode(doc, TableXMLDAO.SRC_FIELD, FieldNames.REGION_NO));
                 			childElement1.appendChild(getElementNode(doc, TableXMLDAO.SRC_VALUE, FieldNames.REGION_NAME));
                 			//CUSTOM_REPORT_SORTING_ISSUE ends
@@ -3276,16 +3229,15 @@ public class BuilderFormDAO extends FormBaseDAO {
     		String tabOrder="";
     		String tabName="";
     		String tempVal="";
-    		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     		if(StringUtil.isValidNew(moduleName)){
     			for(int j=0;j<tabCount;j++){
-    				fileLoc =_baseConstants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
+    				fileLoc =Constants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
     				isCustom=request.getParameter(BuilderFormFieldNames.TAB_DISPLAY_NAME+"_"+j + "_" + BuilderFormFieldNames.IS_CUSTOM);
     				tabOrder=request.getParameter(BuilderFormFieldNames.TAB_DISPLAY_NAME+"_"+j + "_" + "No");
     				tabName=request.getParameter(BuilderFormFieldNames.TAB_DISPLAY_NAME+"_"+j);
     				if(StringUtil.isValidNew(isCustom)&&"Y".equals(isCustom))
     				{
-    					fileLoc =_baseConstants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
+    					fileLoc =Constants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
     				}
 
     				if(StringUtil.isValidNew(fileLoc)) {
@@ -3374,14 +3326,13 @@ public class BuilderFormDAO extends FormBaseDAO {
     public boolean removeXmlData(HttpServletRequest request) {
     	String fileLocBackup = "";
     	HashMap dataMap = new HashMap();
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         try {
         	Boolean deleteDocFromTabularSection=false;
             String fileLoc = getRequestValue(request, BuilderFormFieldNames.FILE_LOCATION);
             String val = getRequestValue(request, BuilderFormFieldNames.FIELD_NAME);
             String secName = getRequestValue(request, "secName");
             String tName = getRequestValue(request, BuilderFormFieldNames.TABLE_NAME);
-            String fileToWriteLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
+            String fileToWriteLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get("centerInfoDisplay");
             String dropdownOpt = getRequestValue(request, "dropdownOpt");
             String dependentFld = getRequestValue(request, "dependentFld");
             String docName = getRequestValue(request, "docName");
@@ -3490,7 +3441,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                     	if("yes".equals(isTabularSection)){
                     		isTabularSectionPresent=true;
                     		if(StringUtil.isValidNew(tabularSectionTableAnchor)){
-                                File tabularSectionFile 	= new File(_baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH+"/"+tabularSectionTableAnchor+".xml");
+                                File tabularSectionFile 	= new File(Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH+"/"+tabularSectionTableAnchor+".xml");
                                 if(tabularSectionFile.exists())
                                 {
                                 	tabularSectionFile.delete();
@@ -3744,7 +3695,7 @@ public class BuilderFormDAO extends FormBaseDAO {
             	String tabularSectionTableDBName=getRequestValue(request, BuilderFormFieldNames.TABULAR_SECTION_TABLE_DB_NAME);
             	String tabularSectionTableName=getRequestValue(request, BuilderFormFieldNames.TABULAR_SECTION_TABLE_NAME);
             	loc		= (String)getTableMappings().get(tabularSectionTableName);
-            	location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            	location = Constants.XML_DIRECTORY + loc;
             	if(StringUtil.isValidNew(location)) {
             		request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             	}
@@ -4032,7 +3983,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 		  String key = null;
 		  Object ob = null;
 		  Map tabularFieldsMap = new LinkedHashMap();
-		  UserRoleMap userRoleMap		= (UserRoleMap)request.getSession().getAttribute("userRoleMap");
 	      String user_level=(String)request.getSession().getAttribute("user_level");
 	      
 		  try 
@@ -4063,9 +4013,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                   if("additionalFranchiseLocationDetails".equals(hFld.getHeaderAttrMap().get("name"))) {
                 	  continue;
                   }
-                  if("userLevelMessage".equals(hFld.getHeaderAttrMap().get("name"))&& ("off".equalsIgnoreCase(MultiTenancyUtil.getTenantConstants().BOEFLY_INTEGRATION_STATUS)) ){//Bug 59836
-                	  continue;
-                  }
                   
                   if(flds != null){
                       for(Field field : flds) {
@@ -4077,9 +4024,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                         	  continue;
                           }
                           String fldName = field.getFieldName();
-                          if("fbc".equals(fldName) && !(ModuleUtil.auditImplemented() && ModuleUtil.canAccessAudit(userRoleMap, user_level))){   
-  							continue;
-                          }
                           tabularFieldsMap.put(fldName, field.getDisplayName());
                       }
                   }
@@ -4296,7 +4240,6 @@ public class BuilderFormDAO extends FormBaseDAO {
     public Info getBuilderRegularAndTabularSectionCount(String tableAnchor) {
 
     	Info info=new Info();
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	int regularSectionCount=0;
     	int tabularSectionCount=0;
     	try{
@@ -4306,9 +4249,6 @@ public class BuilderFormDAO extends FormBaseDAO {
     		for(HeaderMap h:hMap) {
     			HeaderField hFld = h.getHeaderFields();
     			if("additionalFranchiseLocationDetails".equals(hFld.getHeaderAttrMap().get("name"))) {
-    				continue;
-    			}
-    			if("userLevelMessage".equals(hFld.getHeaderAttrMap().get("name"))&& ("off".equalsIgnoreCase(_baseConstants.BOEFLY_INTEGRATION_STATUS)) ){
     				continue;
     			}
     			if(hFld.isTabularSection()){
@@ -4512,12 +4452,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 /**
                  * remove table data from JVM
                  */
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
             }
             return map;
@@ -4604,12 +4538,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 /**
                  * remove table data from JVM
                  */
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
             }
             return map;
@@ -4691,12 +4619,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 /**
                  * remove table data from JVM
                  */
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
             }
             return map;
@@ -4713,8 +4635,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 
     private SequenceMap getBuilderFormDataAllTablesMap(String tableAnchor, HttpServletRequest request) {
         SequenceMap map = new SequenceMap();
-        BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();//Bug 59836
-        UserRoleMap userRoleMap		= (UserRoleMap)request.getSession().getAttribute("userRoleMap");
         String user_level=(String)request.getSession().getAttribute("user_level");
 //		FieldMappings mappings = null;
         FieldMappings     fieldTabularSectionMappings=null;
@@ -4748,9 +4668,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                     }
                     if("additionalFranchiseLocationDetails".equals(hFld.getHeaderAttrMap().get("name"))) {
                         continue;
-                    }
-                    if("userLevelMessage".equals(hFld.getHeaderAttrMap().get("name"))&& ("off".equalsIgnoreCase(_baseConstants.BOEFLY_INTEGRATION_STATUS)) ){//Bug 59836
-                    	continue;
                     }
 
                     Field[] flds = fieldMappings.getSectionTablesFieldsArray(hFld);
@@ -4794,9 +4711,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                                 ++ii;
                             }
                             String fldName = field.getFieldName();
-                            if("fbc".equals(fldName) && !(ModuleUtil.auditImplemented() && ModuleUtil.canAccessAudit(userRoleMap, user_level))){   //ENH_PW_FBC
-    							continue;
-    						}
                             //isSkip = checkForSkipValue(vc, sDBTableName, fldName);
                             //if(isSkip)
                             //continue;
@@ -4846,12 +4760,6 @@ public class BuilderFormDAO extends FormBaseDAO {
                 /**
                  * remove table data from JVM
                  */
-                if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEE);
-                }
-                if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-                    removeFieldMappings(TableAnchors.FRANCHISEES);
-                }
                 removeFieldMappings(tableAnchor);
             } else {
 
@@ -4967,7 +4875,6 @@ public class BuilderFormDAO extends FormBaseDAO {
 
     private SequenceMap getBuilderSectionDataMap(String tableAnchor, HttpServletRequest request) {
         SequenceMap map = new SequenceMap();
-        BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();//P_CM_B_59392 
 //		FieldMappings mappings = null;
         try{
             fieldMappings = getFieldMappings(tableAnchor);
@@ -4980,9 +4887,6 @@ public class BuilderFormDAO extends FormBaseDAO {
             		continue;
             	}
                 HeaderField hFld = h.getHeaderFields();
-                if("userLevelMessage".equals(hFld.getHeaderAttrMap().get("name"))&& ("off".equalsIgnoreCase(_baseConstants.BOEFLY_INTEGRATION_STATUS)) ){//Bug 59836
-                	continue;
-                }
                 if("fsLeadDetails".equals(tableAnchor) && "callInformation".equals(h.getName())) {
                     continue;
                 }
@@ -5014,7 +4918,7 @@ public class BuilderFormDAO extends FormBaseDAO {
     	String tabName="cmLeadDetails".equals(tableAnchor)?"lead":"contact";
     	Map smap=new TreeMap();
     	Info info=null;
-    	String xmlPath=MultiTenancyUtil.getTenantConstants().XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
+    	String xmlPath=Constants.XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
     	try{
     			
     		file = new File(xmlPath);
@@ -5058,7 +4962,7 @@ public class BuilderFormDAO extends FormBaseDAO {
 public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	
     	String tabName="cmLeadDetails".equals(tableAnchor)?"lead":"contact";
-    	String xmlPath=MultiTenancyUtil.getTenantConstants().XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
+    	String xmlPath=Constants.XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
     	boolean isExist=false;
     	try{
     			
@@ -5100,7 +5004,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     
  public void removeNode(String tableanchor, String fieldName) {
     	
-    	String xmlPath=MultiTenancyUtil.getTenantConstants().XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
+    	String xmlPath=Constants.XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
     	String tabName="cmLeadDetails".equals(tableanchor)?"lead":"contact";
     	try{
     			
@@ -5140,7 +5044,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
  
  public void addNode(String tableanchor, String fieldName, String colspan) {
  	
- 	String xmlPath=MultiTenancyUtil.getTenantConstants().XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
+ 	String xmlPath=Constants.XML_DIRECTORY+"tables/cm/quickFormDetails.xml";
  	String tabName="cmLeadDetails".equals(tableanchor)?"lead":"contact";
  	try{
  		if(!StringUtil.isValid(colspan)){
@@ -5226,8 +5130,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     
     	try{
     		if(StringUtil.isValidNew(moduleName)){
-    			BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
-    			fileLoc =_baseConstants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
+    			fileLoc =Constants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
     			if(StringUtil.isValidNew(fileLoc)) {
     				file = new File(fileLoc);
     				if(file.isFile()) {
@@ -5257,17 +5160,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     											tempVal=getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME);
     										}
 
-    										if("Qualification Center".equals(getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME))) { //skipping tabs
-    											if(MultiTenancyUtil.getTenantContext().getAttribute("callCenter") == null||(MultiTenancyUtil.getTenantContext().getAttribute("callCenter") != null && ((String)MultiTenancyUtil.getTenantContext().getAttribute("callCenter")).equals("off"))){
-    												continue;
-    											}
-    										}
     										
-    										//if("bQual".equals(getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME))){ //bQual will not come
-    										if(("bQual".equals(getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME)) && ("off".equalsIgnoreCase(_baseConstants.BOEFLY_INTEGRATION_STATUS)))
-    												|| ("Account Info".equals(getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME)) && "contact".equals(subModule)) ) {
-    											continue;
-    										}
 
     										info.set(BuilderFormFieldNames.DISPLAY_NAME,tempVal);
     										info.set(BuilderFormFieldNames.TAB_DISPLAY_NAME,getAttributeValue(tabNodes[looptab], BuilderFormFieldNames.DISPLAY_NAME));
@@ -5296,7 +5189,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 		    			subModuleName=(String)request.getAttribute("subModuleName");
 		    		}
 		    	}
-    			fileLoc =_baseConstants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
+    			fileLoc =Constants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
     			file = new File(fileLoc);
     			if(file.isFile()) {
     				this.initBDaoInstance();
@@ -5311,10 +5204,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     						continue;
     					}
     					
-    					//if("bQual".equals(getAttributeValue(node, BuilderFormFieldNames.TAB_DISPLAY))){
-    					if("bQual".equals(getAttributeValue(node, BuilderFormFieldNames.TAB_DISPLAY)) && ("off".equalsIgnoreCase(_baseConstants.BOEFLY_INTEGRATION_STATUS)) ){
-							continue;
-						}
     					
     					if(StringUtil.isValidNew(subModuleName)&&StringUtil.isValidNew(subModule)&&subModule.equals(subModuleName)){
     						info=new Info();
@@ -5490,9 +5379,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
     public SequenceMap getRadioOrComboOptionsMap(String fieldName, String tableAnchor) {
         //SMC-20140213-378 Starts
-    	if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
         String query = "SELECT ID,FIELD_ID,FIELD_NAME,OPTION_ID,OPTION_VALUE,IS_ACTIVE,TABLE_ANCHOR FROM FIM_BUILDER_MASTER_DATA  WHERE FIELD_NAME = ? AND TABLE_ANCHOR = ? ORDER BY ORDER_NO";//FORM_BUILDER_ISSUE_1//P_Enh_Form_Builder_Option_Sequence
 
         ResultSet result =null;
@@ -5586,9 +5472,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         return getRadioOrComboOptionsInfo(fieldName, tableAnchor, value, null); //BB-20150203-259 (Dynamic Response based on parent field response) starts
     }
     public Info getRadioOrComboOptionsInfo(String fieldName, String tableAnchor,String value, String parentValue) {
-    	if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
         StringBuffer query = new StringBuffer();
         query.append("SELECT OPTION_ID,OPTION_VALUE FROM FIM_BUILDER_MASTER_DATA  WHERE FIELD_NAME = ? AND TABLE_ANCHOR = ? ");
         if(StringUtil.isValid(parentValue)) { //BB-20150203-259 (Dynamic Response based on parent field response) starts
@@ -5627,9 +5510,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         return info;
     }
     public boolean deleteRadioOrComboOptions(String fieldName, String tableAnchor) throws Exception {
-    	if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
         boolean flag = false;
         String query = "SELECT * FROM FIM_BUILDER_MASTER_DATA WHERE FIELD_NAME =? AND TABLE_ANCHOR=? ";
         ResultSet result = QueryUtil.getResult(query, new Object[] {fieldName, tableAnchor});
@@ -5711,9 +5591,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
     public String getRadioOrComboOptionsValueForId(String fieldName, String tableAnchor, String id) {
 
-    	if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
     	
         String query = "SELECT OPTION_ID,OPTION_VALUE FROM FIM_BUILDER_MASTER_DATA  WHERE FIELD_NAME = ? AND TABLE_ANCHOR = ? AND OPTION_ID IN ( "+id+" ) ORDER BY ORDER_NO";//P_Enh_Form_Builder_Option_Sequence
         StringBuffer str=new StringBuffer();
@@ -5743,10 +5620,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
     public String getCheckboxOptionsValueForIds(String fieldName, String tableAnchor, String id) {
         String query = "";
-        
-        if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
         
         //FORM_BUILDER_ISSUE_1 starts
         if(StringUtil.isValid(id))
@@ -5863,7 +5736,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 	public synchronized void setBuilderFormAddOrUpdate(HashMap dataMap, HttpServletRequest request, String user_no, String tableAnchor, String formId, SequenceMap baseBuilder1) throws SQLException, RecordNotFoundException {
 		System.out.println("dataMap=========>>"+dataMap);
 		BuilderFormDAO builderFormDao = BuilderFormWebImpl.getInstance().getBuilderFormMgr().getBuilderFormDAO();
-		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		boolean flag = false;
 		StringBuffer updateQuery1=null;
 		Object baseBuilder = null;
@@ -5896,7 +5768,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             }
 			String mainTableAnchor=tableAnchor;
 			loc	= (String)new FormBaseDAO().getTableMappings().get(tableAnchor);
-			location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+			location = Constants.XML_DIRECTORY + loc;
 			if(StringUtil.isValidNew(location)) {
 				//request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
 				dataMap.put(BuilderFormFieldNames.FILE_LOCATION, location);
@@ -5912,7 +5784,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 			String moduleName = builderFormDao.getValueFromMap(dataMap, BuilderFormFieldNames.BUILDER_MODULE_NAME);
 			String isMandatoryVal = getValueFromMap(dataMap, BuilderFormFieldNames.IS_MANDATORY);
 			if("true".equals(isTabularSection)){
-				dataMap.put(BuilderFormFieldNames.FILE_LOCATION, _baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH+tabularSectionTableName+".xml");
+				dataMap.put(BuilderFormFieldNames.FILE_LOCATION, Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH+tabularSectionTableName+".xml");
 				tableAnchor=tabularSectionTableName;
 			}//P_Enh_FormBuilder_Tabular_Section ends
 			String newPath = "";
@@ -5929,12 +5801,12 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             if("fimOwners".equals(tableAnchor)){// P_B_73908 starts
             	tableAnchorExport="multiUnitOwnerExport";
 				locExport	= (String)new FormBaseDAO().getTableMappings().get(tableAnchorExport);
-				locationExport = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + locExport;
+				locationExport = Constants.XML_DIRECTORY + locExport;
 				
 			}else if("fimEntityDetail".equals(tableAnchor)){
 				tableAnchorExport="entityDisplayDetail";
 				locExport	= (String)new FormBaseDAO().getTableMappings().get(tableAnchorExport);
-				locationExport = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + locExport;
+				locationExport = Constants.XML_DIRECTORY + locExport;
 
 			}// P_B_73908 ends
 			if(StringUtil.isValidNew(modifyFld) && !"yes".equals(modifyFld) && StringUtil.isValidNew(asActive)) {
@@ -6003,14 +5875,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 			}
 			dataMap.put("newPath", newPath);
 
-			if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-				//DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEE);
-				DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEE+"_copy");
-			}
-			if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-				//DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEES);
-				DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEES+"_copy");
-			}
 			//DBUtil.getInstance().removeFieldMappings(tableAnchor);
 			DBUtil.getInstance().removeFieldMappings(tableAnchor+"_copy");
 
@@ -6474,9 +6338,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 							moduleID = 5;
 						} else if("41".equals(formId)) {
 							moduleID = 53;
-						} else if("49".equals(formId) && MultiTenancyUtil.getTenantConstants().IS_LEAD_ENABLED) {
-							moduleID = 54;
-						}else if("64".equals(formId)) {			//Bug 73206 
+						} else if("64".equals(formId)) {			//Bug 73206 
 							moduleID = 31;
 						}else if("7".equals(formId)) {			 
 							moduleID = 32;
@@ -6614,25 +6476,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 									}
 								}
 							} else {
-								if(isDone && ( "cm".equals(moduleName) || "account".equals(moduleName) || ("opportunity".equals(moduleName) && MultiTenancyUtil.getTenantConstants().IS_OPPORTUNITY_ENABLED) || ("lead".equals(moduleName) && MultiTenancyUtil.getTenantConstants().IS_LEAD_ENABLED))){//P_CM_B_60533
-									if(!"multiselect".equals(dateType) && !"checkbox".equals(dateType) && !"file".equals(dateType) && !"true".equals(isTabularSection) && ("31".equals(formId) || "32".equals(formId) || "41".equals(formId) || "49".equals(formId))){//P_CM_B_60918 
-										
-										query = "INSERT INTO SUMMARY_DISPLAY VALUES("+id1+",?,?,'"+moduleID+"',0,'10%','No','false','','"+orderSequence +"',"+"'0',?,?,?,?,'false')"; // BB-20150525-360
-										updateResult = QueryUtil.update(query, new String[]{dVal, val, fldName, dateType, asActive, fldName}); //used to insert the record in SUMMARY_DISPLAY table
-									}
-									if("true".equals(isTabularSection)){//P_Enh_FormBuilder_Tabular_Section starts
-										query = "INSERT INTO TABULAR_SECTION_DISPLAY_COLUMN VALUES("+maxId+",?,?,'"+moduleID+"',"+isSelected+",'"+maxOrderSequence +"',"+"'0',?,?,'false','"+tableAnchor+"','"+mainTableAnchor+"')"; 
-										updateResult = QueryUtil.update(query, new String[]{dVal, val, asActive, fldName}); //used to insert the record in TABULAR_SECTION_DISPLAY_COLUMN table	
-									}//P_Enh_FormBuilder_Tabular_Section ends
-									if("cm".equals(moduleName) && "31".equals(formId) ){
-										query = "INSERT INTO CM_EMAIL_FIELD_MAPPING ( FIELD_NAME,IS_CONFIGURED,IS_ACTIVE) VALUES ('"+fldName+"','Y','Y')"; 
-										updateResult = QueryUtil.update(query, new String[]{});
-									}
-									if("lead".equals(moduleName) && "49".equals(formId) ){
-										query = "INSERT INTO CM_LEAD_EMAIL_FIELD_MAPPING ( FIELD_NAME,IS_CONFIGURED,IS_ACTIVE) VALUES ('"+fldName+"','Y','Y')"; 
-										updateResult = QueryUtil.update(query, new String[]{});
-									}
-								}else if(isDone){
+								if(isDone){
 									if(!"true".equals(isTabularSection)){
 									query = "INSERT INTO SUMMARY_DISPLAY VALUES("+id1+",?,?,'"+moduleID+"',0,'10%','No','false','','"+orderSequence +"',"+"'0',?,?,?,?,'false')"; // BB-20150525-360
 									updateResult = QueryUtil.update(query, new String[]{dVal, val, fldName, dateType, asActive, fldName}); //used to insert the record in SUMMARY_DISPLAY table
@@ -6761,12 +6605,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 							BuilderFormDAO.updateSummaryDisplayColumnNameForBuildFields(builderFormDao.getValueFromMap(dataMap, BuilderFormFieldNames.DISPLAY_NAME), fldName, moduleID, asActive); //P_B_FIM_56998 //P_CM_B_58037
 						}
 						
-						if(StringUtil.isValidNew(modifyFld) && !"yes".equals(modifyFld) && StringUtil.isValidNew(asActive)) {
-							if("franchisees".equals(tableAnchor) && ("centerName".equals(fldName) || "licenseNo".equals(fldName))) {
-								SQLUtil.updateTableValue("MASTER_DATA", "DATA_VALUE", "N", "DATA_TYPE", "15206"); //updating the value of franchisee ID display format.
-								MultiTenancyUtil.getTenantConstants().FRANCHISEE_ID_DISPLAY_NAME = "N";
-							}
-						}
 						
 					}
 				}
@@ -6886,12 +6724,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 			fld =null;
 			if(flag) {
 				copyXML(dataMap);
-				if(tableAnchor.equals(TableAnchors.FRANCHISEES)) {
-					DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEE);
-				}
-				if(tableAnchor.equals(TableAnchors.FRANCHISEE)) {
-					DBUtil.getInstance().removeFieldMappings(TableAnchors.FRANCHISEES);
-				}
 				if(StringUtil.isValidNew(tableAnchorExport)){// P_B_73908
 					DBUtil.getInstance().removeFieldMappings(tableAnchorExport);
 				}
@@ -6900,7 +6732,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 				boolean isBuildField = Boolean.parseBoolean((String)dataMap.get(BuilderFormFieldNames.IS_BUILD_FIELD));
 				String action = getValueFromMap(dataMap, "action");
 				
-				String updateQuery = (String)ParamResolver.getResolver().get("duplicateUpdateQuery");
+				//String updateQuery = (String)ParamResolver.getResolver().get("duplicateUpdateQuery");
+				String updateQuery="";
 				if(StringUtil.isValidNew(updateQuery)) {
 					try {
 						QueryUtil.update(updateQuery, null);
@@ -6971,10 +6804,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	{
     		QueryUtil.update("UPDATE ACTIVE_SEARCH_FIELDS SET IS_ACTIVE=? WHERE TABLE_NAME=? AND DB_FIELD_NAME = ?", new String []{"true".equals(isActive)?"N":"Y",tableName,dbField});
     		int updated = QueryUtil.update("UPDATE SMART_SEARCH SET IS_ACTIVE=? WHERE TABLE_NAME=? AND FIELDS = ?", new String []{"true".equals(isActive)?"no":"yes",tableName,dbField});
-    		if(updated>0)
-    		{
-    			MultiTenancyUtil.getTenantConstants().setSearchFieldMap();
-    		}
     		
     		
     	}
@@ -7151,71 +6980,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     public void addCustomKeyWordInPropertyFile(String[] dVal) {
 
 
-        if(LanguageUtil.isI18nImplemented()) {
-
-            SystemVariableManager manager =  com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getSysVarMgr();
-            String baseDir = manager.getSystemVariable("base_url");
-
-
-            //Info languageInfo = NewPortalUtils.getLanguageDataInfo();
-            Info languageInfo = BaseUtils.getLanguageDataInfo();      //For Product_Seperation_BL By Amar Singh.
-            String language="";
-            if(languageInfo!= null) {
-                for(int i=0;i<languageInfo.size();i++) {
-                    language+=languageInfo.getKey(i)+",";
-                }
-            }
-
-            if(StringUtil.isValid(language)) {
-                language=language.substring(0,language.length()-1);
-                String allLanguage[]=language.split(",");
-                for(int i=0;i<allLanguage.length;i++)
-                {
-                	//MT_PHASE_III_I18n_CHANGES Starts
-                	try
-                	{
-	                	File file=new File(baseDir
-	    						+ "/src/tenants/"+MultiTenancyUtil.getTenantName()+"/classes/i18n/" + allLanguage[i] + "/i18n_customFields.properties");
-	    				if(!file.getParentFile().exists())
-	    					FileUtil.mkDirs(file.getParentFile().getPath());
-	    				if(!file.exists())
-	    					file.createNewFile();
-	    				
-	                    PropertiesIO pio = new PropertiesIO(file.getPath());
-	                    for (int j = 0; j < dVal.length; j++) {
-	                        pio.setProperty(dVal[j], dVal[j]);
-	                    }
-	                    pio.writeProperty();
-                	}
-                	catch (Exception e) {
-					}
-                	
-                }
-            }
-
-            String localLanguage = UserLanguageLocal.getUserLanguage();
-            Language _language =(Language) MultiTenancyUtil.getTenantContext().getAttribute("_language");
-            for (int j = 0; j < dVal.length; j++) {
-            	 if(("en").equals(localLanguage))
-                 	_language.enProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("de").equals(localLanguage))
-                 	_language.deProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("es").equals(localLanguage))
-                 	_language.esProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("it").equals(localLanguage))
-                 	_language.itProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("fr").equals(localLanguage))
-                 	_language.frProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("pt").equals(localLanguage))
-                 	_language.ptProperties.setProperty(dVal[j],dVal[j]);
-                 else if(("test").equals(localLanguage))
-                 	_language.testProperties.setProperty(dVal[j],dVal[j]);
-                 else
-                 	_language.enProperties.setProperty(dVal[j],dVal[j]);
-             }
-
-        }//MT_PHASE_III_I18n_CHANGES Ends
-    }
+          }
 
     public SequenceMap getBuilderTabs() {
         String query = "SELECT * FROM MODULE_TAB_CONFIG WHERE IS_ACTIVE='Y' ";
@@ -7252,67 +7017,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
      * @param dVal
      */
     public void addCustomKeyWordInPropertyFile(String dVal) {
-
-        if(LanguageUtil.isI18nImplemented()) {
-
-            SystemVariableManager manager =  com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getSysVarMgr();
-            String baseDir = manager.getSystemVariable("base_url");
-
-            //Info languageInfo = NewPortalUtils.getLanguageDataInfo();
-            Info languageInfo = BaseUtils.getLanguageDataInfo();   //For Product_Seperation_BL By Amar Singh.
-            String language="";
-            if(languageInfo!= null) {
-                for(int i=0;i<languageInfo.size();i++) {
-                    language+=languageInfo.getKey(i)+",";
-                }
-            }
-
-            if(StringUtil.isValid(language)) {
-                language=language.substring(0,language.length()-1);
-                String allLanguage[]=language.split(",");
-                for(int i=0;i<allLanguage.length;i++)
-                {
-                	//MT_PHASE_III_I18n_CHANGES Starts
-                	try
-                	{
-	                	File file=new File(baseDir
-	    						+ "/src/tenants/"+MultiTenancyUtil.getTenantName()+"/classes/i18n/" + allLanguage[i] + "/i18n_customFields.properties");
-	    				if(!file.getParentFile().exists())
-	    					FileUtil.mkDirs(file.getParentFile().getPath());
-	    				if(!file.exists())
-	    					file.createNewFile();
-	    				
-	                    PropertiesIO pio = new PropertiesIO(file.getPath());
-	                    pio.setProperty(dVal, dVal);
-	                    pio.writeProperty();
-                	}catch (Exception e) {
-					}
-                	
-                }
-            }
-
-            String localLanguage = UserLanguageLocal.getUserLanguage();
-            Language _language =(Language) MultiTenancyUtil.getTenantContext().getAttribute("_language");
-            if(StringUtil.isValidNew(dVal)) {
-            	if(("en").equals(localLanguage))
-            		_language.enProperties.setProperty(dVal,dVal);
-            	else if(("de").equals(localLanguage))
-            		_language.deProperties.setProperty(dVal,dVal);
-            	else if(("es").equals(localLanguage))
-            		_language.esProperties.setProperty(dVal,dVal);
-            	else if(("it").equals(localLanguage))
-            		_language.itProperties.setProperty(dVal,dVal);
-            	else if(("fr").equals(localLanguage))
-            		_language.frProperties.setProperty(dVal,dVal);
-            	else if(("pt").equals(localLanguage))
-            		_language.ptProperties.setProperty(dVal,dVal);
-            	else if(("test").equals(localLanguage))
-            		_language.testProperties.setProperty(dVal,dVal);
-            	else
-            		_language.enProperties.setProperty(dVal,dVal);
-            }
-        }
-        	//MT_PHASE_III_I18n_CHANGES Ends
+    	
     }
 
     /**
@@ -7355,7 +7060,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 }
             } else if(!StringUtil.isValidNew(modify) || !"modify".equals(modify)) {
                 loc		= (String)getTableMappings().get(BuilderConstants.BUILDER_TEMPLATE_ANCHOR);
-                location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+                location = Constants.XML_DIRECTORY + loc;
 
                 file = new File(location);
                 if(file.isFile()) {
@@ -7480,7 +7185,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 }
             }
             loc		= (String)getTableMappings().get(tableAnchor);
-            location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            location = Constants.XML_DIRECTORY + loc;
             if(StringUtil.isValidNew(location)) {
                 request.setAttribute(BuilderFormFieldNames.FILE_LOCATION, location);
             }
@@ -7543,7 +7248,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         try {
             String modify = getRequestValue(request, "action");
             if(!StringUtil.isValidNew(modify) || !"modify".equals(modify)) {
-                location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + BuilderConstants.BUILDER_MAPPING_XML;
+                location = Constants.XML_DIRECTORY + BuilderConstants.BUILDER_MAPPING_XML;
 
                 file = new File(location);
                 if(file.isFile()) {
@@ -7624,7 +7329,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     public boolean processFormGeneratorTabData(HttpServletRequest request)
     {
         ResultSet tabResultSet	 = null;
-        BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         try
         {    String tabCount			=getRequestValue(request, "tabCount");	//BB-20150203-259(Builder for tab repositioning ) changes
             String tabAction 		 	= getRequestValue(request, BuilderFormFieldNames.TAB_ACTION);
@@ -7639,9 +7343,9 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             String tabFileName 		 	= null;
             String tabName 				= null;
             String tabFileLocation   	= null;
-            File   tabPath 			 	= new File(_baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH);
-            String tabModuleLocation 	= _baseConstants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
-            String xmlPath 				= _baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH;//ENH_MODULE_CUSTOM_TABS
+            File   tabPath 			 	= new File(Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH);
+            String tabModuleLocation 	= Constants.XML_DIRECTORY+"tables/admin/"+BuilderConstants.TAB_MAPPING_XML;
+            String xmlPath 				= Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH;//ENH_MODULE_CUSTOM_TABS
             String subModule			= null;
 
             DBQuery tabQuery		 = null;
@@ -7662,11 +7366,11 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
                 SequenceMap moduleMap = new SequenceMap();
                 //ENH_MODULE_CUSTOM_TABS ends
-                location 		= _baseConstants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML;
+                location 		= Constants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML;
                 //P_SCH_ENH_008 Starts
                 if(ModuleUtil.MODULE_NAME.NAME_SCHEDULER.equals(getRequestValue(request, "module")))
                 {
-                    location = _baseConstants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML_SCHEDULER;
+                    location = Constants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML_SCHEDULER;
                 }
                 //P_SCH_ENH_008 Ends
                 randomId 		= IDGenerator.getNextKey();
@@ -8024,13 +7728,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
                             //P_HeplDesk_Export_CustomTabs starts
                             String keyTable = moduleInfo.get("keyTable");
-                            if(keyTable.equals(TableAnchors.FRANCHISEES)) {
-                                keyTable = TableAnchors.FRANCHISEES;
-                            } else if(keyTable.equals(TableAnchors.FRANCHISEE)) {
-                                keyTable = TableAnchors.FRANCHISEES;
-                            }else if(keyTable.equals(TableAnchors.AREA_INFO)) {//P_Enh_Mu-Entity_FormGenerator
-                                keyTable = TableAnchors.AREAS;
-                            }
                             removeFieldMappings(keyTable);
                             //P_HeplDesk_Export_CustomTabs ends
                         }
@@ -8198,9 +7895,9 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                 			fimSubModuleList.add("franchiseewithoutsc");
                                 			fimSubModuleList.add("inDev"); //BUG_78346
                                 		}
-                                		tabModuleLocationModifyTab=_baseConstants.XML_DIRECTORY+"tabs/fimTabs.xml";
+                                		tabModuleLocationModifyTab=Constants.XML_DIRECTORY+"tabs/fimTabs.xml";
                                 	}else{
-                                		tabModuleLocationModifyTab=_baseConstants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
+                                		tabModuleLocationModifyTab=Constants.XML_DIRECTORY+"tabs/"+moduleName+"Tabs.xml";
                                 	}
                                 }//P_Enh_Mu-Entity_FormGenerator ends
                                 file = new File(tabModuleLocationModifyTab);
@@ -8450,13 +8147,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
                                     //P_HeplDesk_Export_CustomTabs starts
                                     String keyTable = moduleInfo.get("keyTable");
-                                    if(keyTable.equals(TableAnchors.FRANCHISEES)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    } else if(keyTable.equals(TableAnchors.FRANCHISEE)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    }else if(keyTable.equals(TableAnchors.AREA_INFO)) {//P_Enh_Mu-Entity_FormGenerator
-                                        keyTable = TableAnchors.AREAS;
-                                    }
                                     removeFieldMappings(keyTable);
                                     //P_HeplDesk_Export_CustomTabs ends
 
@@ -8534,13 +8224,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     //For logs
                                     //P_HeplDesk_Export_CustomTabs starts
                                     String keyTable = moduleInfo.get("keyTable");
-                                    if(keyTable.equals(TableAnchors.FRANCHISEES)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    } else if(keyTable.equals(TableAnchors.FRANCHISEE)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    }else if(keyTable.equals(TableAnchors.AREA_INFO)) {//P_Enh_Mu-Entity_FormGenerator
-                                        keyTable = TableAnchors.AREAS;
-                                    }
                                     removeFieldMappings(keyTable);
                                     //P_HeplDesk_Export_CustomTabs ends
 
@@ -8578,7 +8261,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                 {
                                     tabTableName	= getAttributeValue(childNode, BuilderFormFieldNames.DB_TABLE);
                                     tabFileLocation	= getAttributeValue(childNode, BuilderFormFieldNames.FILE_LOCATION);
-                                    File tabFile 	= new File(_baseConstants.XML_DIRECTORY+"/"+tabFileLocation);
+                                    File tabFile 	= new File(Constants.XML_DIRECTORY+"/"+tabFileLocation);
                                     if(tabFile.exists())
                                     {
                                         tabFile.delete();
@@ -8633,13 +8316,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
 
                                     //P_HeplDesk_Export_CustomTabs starts
                                     String keyTable = moduleInfo.get("keyTable");
-                                    if(keyTable.equals(TableAnchors.FRANCHISEES)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    } else if(keyTable.equals(TableAnchors.FRANCHISEE)) {
-                                        keyTable = TableAnchors.FRANCHISEES;
-                                    }else if(keyTable.equals(TableAnchors.AREA_INFO)) {//P_Enh_Mu-Entity_FormGenerator
-                                        keyTable = TableAnchors.AREAS;
-                                    }
                                     removeFieldMappings(keyTable);
                                     //P_HeplDesk_Export_CustomTabs ends
                                     refreshCustomTabMappings();
@@ -8727,7 +8403,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             String xmlElement = requestInfo.get(BuilderFormFieldNames.XML_ELEMENT);
             String xmlKey = requestInfo.get(BuilderFormFieldNames.XML_KEY);
             String loc		= (String)getTableMappings().get(tAnchor);
-            String location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            String location = Constants.XML_DIRECTORY + loc;
             //return new Object();
             return TableXMLDAO.getBuilderFileXMLAttr(location, xmlElement, xmlKey, requestInfo.get(BuilderFormFieldNames.KEY_TYPE));
         } catch(Exception e) {
@@ -8753,7 +8429,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             String xmlElement = getRequestValue(request, BuilderFormFieldNames.XML_ELEMENT);
             String xmlKey = getRequestValue(request, BuilderFormFieldNames.XML_KEY);
             String loc		= (String)getTableMappings().get(tAnchor);
-            String location = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + loc;
+            String location = Constants.XML_DIRECTORY + loc;
             //return new Object();
             return TableXMLDAO.getBuilderFileXMLAttr(location, xmlElement, xmlKey, getRequestValue(request, BuilderFormFieldNames.KEY_TYPE));
         } catch(Exception e) {
@@ -8777,7 +8453,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     public List getAllExistingTabNames(String module)
     {
         ArrayList allNames = new ArrayList(20);
-        StringBuffer moduleTabXmlLoc = new StringBuffer(MultiTenancyUtil.getTenantConstants().XML_DIRECTORY).append("/tabs/").append(module).append("Tabs.xml");
+        StringBuffer moduleTabXmlLoc = new StringBuffer(Constants.XML_DIRECTORY).append("/tabs/").append(module).append("Tabs.xml");
         this.initBDaoInstance();
         try
         {
@@ -8867,7 +8543,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
         String query 			= null;
         ResultSet dataResult 	= null;
         SequenceMap tabMap		= null;
-		UserRoleMap userRoleMap	= (UserRoleMap)StrutsUtil.getHttpServletRequest().getSession().getAttribute("userRoleMap");
     	if(moduleName.contains("fimarea")){
     		moduleName=moduleName.replaceAll("\\bfimarea\\b","area");
     	}
@@ -8886,9 +8561,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
             else
             {
                 moduleName="'scheduler'";
-                if("yes".equals(MultiTenancyUtil.getTenantConstants().SITE_CLEARANCE_SETTING)) {
-                	moduleName=moduleName+",'site'";
-                }
                 if(ModuleUtil.fimImplemented()){
                     moduleName=moduleName+",'fim'";
                 }
@@ -8898,14 +8570,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                 if(ModuleUtil.cmImplemented()){
                     moduleName=moduleName+",'cm'";
                   
-                if(userRoleMap.isPrivilegeIDInMap("20881007") || userRoleMap.isPrivilegeIDInMap("20881008") || userRoleMap.isPrivilegeIDInMap("90881004"))
-                    moduleName=moduleName+",'account'";
                 
-                if(MultiTenancyUtil.getTenantConstants().IS_LEAD_ENABLED) 
-                	  moduleName=moduleName+",'lead'";
-                
-                if(MultiTenancyUtil.getTenantConstants().IS_OPPORTUNITY_ENABLED) 
-              	  moduleName=moduleName+",'opportunity'";
               }
                 
                 
@@ -9431,7 +9096,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     
     
     public void removeExistingTableXml(String tableName, String fieldName, HashMap dataMap, String childTableAnchor, String otherField, String isMand, String sourceField, String val) {
-    	String parentFileLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get(tableName);
+    	String parentFileLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get(tableName);
     	File parentFile = null;
     	Document parentDoc = null;
     	if(StringUtil.isValidNew(parentFileLoc)) {
@@ -9546,7 +9211,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
      * @throws AppException 
      */
     public void updateExistingTableXml(String tableName, String fieldName, HashMap dataMap, String childTableAnchor, String otherField, String isMand, String sourceField, String childPii) throws AppException {
-    	String parentFileLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get(tableName);
+    	String parentFileLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get(tableName);
     	File parentFile = null;
     	Document parentDoc = null;
     	if(StringUtil.isValidNew(parentFileLoc)) {
@@ -9839,7 +9504,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     			}
     		}
 
-    		ParamResolver.getResolver().put("duplicateUpdateQuery", updateQuery);
+    		//ParamResolver.getResolver().put("duplicateUpdateQuery", updateQuery);
     	}
     }
     
@@ -9872,7 +9537,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		mapping = null;
     		
     	}
-    	String parentFileLoc = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + (String)getTableMappings().get(parentTableName);
+    	String parentFileLoc = Constants.XML_DIRECTORY + (String)getTableMappings().get(parentTableName);
     	File parentFile = null;
     	Document parentDoc = null;
     	if(StringUtil.isValidNew(parentFileLoc)) {
@@ -10534,28 +10199,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     
 
     private void updateFieldValueForHeatMeter(String fieldName, boolean isActive) {
-        if("francSignAgrDate".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().AGREEMENT_SIGNED_BY_FRANCHISEES = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "AGREEMENT_SIGNED_BY_FRANCHISEES");
-        } else if("recByFrancDate1".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().FDD_RECEIVED_BY_FRANCIHSEE = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "FDD_RECEIVED_BY_FRANCIHSEE");
-        } else if("visitdate".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().VISIT_DATE = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "VISIT_DATE");
-        } else if("backgroundCheck".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().BACKGROUND_CHECK = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "BACKGROUND_CHECK");
-        } else if("liquidCapitalMax".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().LIQUID_CAPITAL_MAX = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "LIQUID_CAPITAL_MAX");
-        } else if("liquidCapitalMin".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().LIQUID_CAPITAL_MIN = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "LIQUID_CAPITAL_MIN");
-        } else if("investTimeframe".equals(fieldName)) {
-            MultiTenancyUtil.getTenantConstants().INVEST_TIMEFRAME = isActive;
-            SQLUtil.updateTableValue("FS_HEAT_METER_CONFIGURATION", "IS_ACTIVE", String.valueOf(isActive), "FIELD_NAME", "INVEST_TIMEFRAME");
-        }
+    	
     }
 
     public static String getHeatMeterValue(String colName) {
@@ -10605,9 +10249,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
      * @return
      */
     public String checkForParentField(String fieldName, String tableAnchor, String option, String otherTableField) {
-    	if(TableAnchors.FRANCHISEE.equals(tableAnchor)){
-        	tableAnchor=TableAnchors.FRANCHISEES;
-		}
 
     	ResultSet result = null;
     	String conditionValue = "";
@@ -10834,8 +10475,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	
     	StringBuffer returnValue = new StringBuffer();
     	SequenceMap resultMap = new SequenceMap();
-    	UserRoleMap fimLeftUserRoleMap = (UserRoleMap)StrutsUtil.getHttpSession().getAttribute("userRoleMap");
-    	String user_level = (String)StrutsUtil.getHttpSession().getAttribute("user_level");
+    	String user_level = "";
 
     	FieldMappings fieldMappings = getFieldMappings(tableAnchor);
     	HeaderMap[] hMap = fieldMappings.getHeaderMap();
@@ -10873,9 +10513,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				if(("fimTtZip".equals(fld.getFieldName()) || "fimTtZipLocatorIdentical".equals(fld.getFieldName()) || "fimTtZipLocator".equals(fld.getFieldName()) || "syncCheckBox".equals(fld.getFieldName())) && "fimTerritory".equals(tableAnchor)){
     					continue;
     				}
-    				if("fbc".equals(fld.getFieldName()) && !(ModuleUtil.auditImplemented() && ModuleUtil.canAccessAudit(fimLeftUserRoleMap, user_level))) {
-						continue;
-					}
     				//P_B_71549 starts
     				if(("leadSource2ID".equals(fld.getFieldName()) || "leadSource3ID".equals(fld.getFieldName())) && "fsLeadDetails".equals(tableAnchor)){
     					continue;
@@ -11148,7 +10785,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	Document tabulardoc = null;
     	File tabularfile = null;
     	Info returnInfo=null;
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	String action 		 	= getRequestValue(request, "action");
     	String moduleName			= getRequestValue(request, FieldNames.MODULE);
     	String subModuleName		= getRequestValue(request, "submoduleName");
@@ -11166,9 +10802,9 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	String sectionFileName 		 	= null;
     	String tabularSectionName 				= null;
     	String tabularSectionFileLocation   	= null;
-    	File   tabularSectionPath 			 	= new File(_baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH);
-    	String xmlPath 				= _baseConstants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH;
-    	String sectionMappingLocation 	= _baseConstants.XML_DIRECTORY+BuilderConstants.TABULAR_SECTION_MAPPING_XML;
+    	File   tabularSectionPath 			 	= new File(Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH);
+    	String xmlPath 				= Constants.XML_DIRECTORY+BuilderConstants.BUILDER_TABLE_PATH;
+    	String sectionMappingLocation 	= Constants.XML_DIRECTORY+BuilderConstants.TABULAR_SECTION_MAPPING_XML;
     	String subModule			= null;
     	DBQuery tabularSectionQuery		 = null;
     	DBColumn tabularSectionColumns[]	 = null;
@@ -11190,7 +10826,7 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     				tableName=tableName.substring(tableName.indexOf("_")+1);
     			}
     			SequenceMap moduleMap = new SequenceMap();
-    			location 		= _baseConstants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML;
+    			location 		= Constants.XML_DIRECTORY+"tables/admin/"+ BuilderConstants.TEMPLATE_TAB_XML;
     			randomId 		= IDGenerator.getNextKey();
     			sectionFileName 	= sectionTableAnchor+randomId+".xml";
     			tabularSectionFileLocation = tabularSectionPath+"/"+sectionFileName;
@@ -11594,7 +11230,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     		String isSelected, String isNotSelected) {
     	Map<String, Map> criteriaMap = null;
     	ResultSet result = null;
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	Map finalMap= new HashMap();
     	Map <String,String> valueMap=null;
     	try {
@@ -11689,7 +11324,6 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
     	Element rootTab=null;	
     	String fileLocBackup = "";
     	HashMap dataMap = new HashMap();
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         try {
             String fileLoc = getRequestValue(request, BuilderFormFieldNames.FILE_LOCATION);
             String val = getRequestValue(request, BuilderFormFieldNames.FIELD_NAME);
