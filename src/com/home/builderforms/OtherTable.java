@@ -2,11 +2,11 @@
  * @author abhishek gupta
  * @Date 26 July 2012
  */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 import java.util.Iterator;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 
 public class OtherTable {
 	private String msTableName			= null;

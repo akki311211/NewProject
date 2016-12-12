@@ -3,13 +3,12 @@ package com.home.builderforms;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
 import com.appnetix.app.struts.EventHandler.*;
 import com.appnetix.app.struts.actions.AbstractAppAction;
 import com.home.builderforms.Info;
-import com.appnetix.app.util.tagutils.Combo;
+import com.home.builderforms.tagutils.Combo;
 import java.util.*;
-import com.appnetix.app.util.*;
+import com.home.builderforms.*;
 import com.appnetix.app.components.customformsmgr.manager.CustomFormsMgr;
 /**
  * Purpose of this form is to process form action
@@ -19,7 +18,6 @@ import com.appnetix.app.components.customformsmgr.manager.CustomFormsMgr;
  */
 
 public class BuilderFormAction extends AbstractAppAction{
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderFormAction.class);
 	public String execute()
 		throws Exception {
 

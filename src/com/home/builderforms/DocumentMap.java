@@ -2,9 +2,9 @@
  * @author abhishek gupta
  * @Date 2 May 2012
  */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 
 public class DocumentMap {
     private SequenceMap msDocFieldMap			= null;

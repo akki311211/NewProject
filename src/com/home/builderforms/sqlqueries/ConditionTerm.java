@@ -1,12 +1,12 @@
-package com.appnetix.app.util.sqlqueries;
+package com.home.builderforms.sqlqueries;
 
 
 
 
 
-import com.appnetix.app.util.DBUtil;
+import com.home.builderforms.DBUtil;
 
-import com.appnetix.app.util.database.*;
+import com.home.builderforms.*;
 
 
 

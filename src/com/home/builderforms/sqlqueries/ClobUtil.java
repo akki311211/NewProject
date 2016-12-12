@@ -1,6 +1,6 @@
 
 
-package com.appnetix.app.util.sqlqueries;
+package com.home.builderforms.sqlqueries;
 
 
 
@@ -12,11 +12,10 @@ import java.util.*;
 
 import oracle.jdbc.driver.*;
 
-import com.appnetix.app.util.*;
+import com.home.builderforms.*;
 
  
 
-import org.apache.log4j.Logger;
 
 
 
@@ -32,7 +31,6 @@ public class ClobUtil
 
 {
 
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(ClobUtil.class);
 
 
 
@@ -102,7 +100,6 @@ public class ClobUtil
 							out.close();
 							out = null;
 						}catch(Exception e){
-							logger.error("Exception ", e);
 						}
 					}
 
@@ -120,7 +117,6 @@ public class ClobUtil
 
 		{
 
-			logger.error(ie);
 
 			return null;
 
@@ -135,7 +131,6 @@ public class ClobUtil
 					rset = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}
 
@@ -145,7 +140,6 @@ public class ClobUtil
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}
 			//rset.close();
@@ -184,7 +178,6 @@ public class ClobUtil
 
 		{
 
-			logger.error("Exception ", e);
 
 		}
 

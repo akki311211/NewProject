@@ -21,20 +21,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-import com.appnetix.app.util.QueryUtil;
+import com.home.builderforms.QueryUtil;
 import com.appnetix.app.components.accesscontrolmgr.manager.AccessControlMgr;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
 import com.home.BuilderFormFieldNames;
 import com.appnetix.app.struts.actions.AbstractAppAction;
-import com.appnetix.app.util.BuilderFormUtil;
-import com.appnetix.app.util.Constants;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.LanguageUtil;
-import com.appnetix.app.util.ModuleUtil;
-import com.appnetix.app.util.NewPortalUtils;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
+import com.home.builderforms.BuilderFormUtil;
+import com.home.builderforms.Constants;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.LanguageUtil;
+import com.home.builderforms.ModuleUtil;
+import com.home.builderforms.NewPortalUtils;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
 import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
@@ -461,11 +461,9 @@ public class BuilderTabsAction extends AbstractAppAction {
 			}
 		}		
 		}
-		logger.info("Update Flag is::" + updateFlag+ "UpdateQuery is "+updateQuery);
 		}
 			catch(Exception e)
 			{
-				logger.info("Exception : "+e);
 			}*/
 			// BB-20141017-177 ends
 		

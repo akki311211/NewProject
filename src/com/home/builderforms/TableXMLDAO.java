@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.SortedSet;
 
-import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -62,7 +61,6 @@ import com.home.builderforms.Trigger;
 import com.home.builderforms.Info;
 
 public class TableXMLDAO {
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(TableXMLDAO.class);
     // constants
     public static final String TABLE 								= "table";
     public static final String TABLE_NAME 							= "table-name";
@@ -464,7 +462,6 @@ public class TableXMLDAO {
 			}
 			return builderMappings;
 		} catch(Exception e) {
-			logger.error(e);
 			return null;
 		}
 	}
@@ -549,7 +546,6 @@ public class TableXMLDAO {
 								= (Element)XMLUtil.getTagNode(root, RECORD_TRIGGER);
 
 		if(recordTriggerElement == null){
-			logger.info("Adding record trigger to " + location);
 			recordTriggerElement
 								= doc.createElement(RECORD_TRIGGER);
 		}
@@ -560,7 +556,6 @@ public class TableXMLDAO {
 								INSERTION,
 								String.valueOf(recordTrigger.insertionTrigger())
 									);
-		logger.info("Record Trigger, insertion = " + recordTrigger.insertionTrigger());
 		recordTriggerElement.setAttribute(
 								MODIFICATION,
 								String.valueOf(recordTrigger.modificationTrigger())
@@ -589,7 +584,6 @@ public class TableXMLDAO {
 				continue;
 			}
 			if(fieldTriggerElement == null){
-				logger.info("Adding field trigger");
 				fieldTriggerElement
 									= doc.createElement(RECORD_TRIGGER);
 			}
@@ -1564,7 +1558,6 @@ public class TableXMLDAO {
 			boolean summary 		= (MultiTenancyUtil.getTenantConstants().TRUE.equalsIgnoreCase(summaryString));
 			String fieldName		= XMLUtil.getTagText(node,FIELD_NAME);
 			fieldName				= childTableAnchor+"_"+appendor+fieldName;
-			logger.info("Validation fieldNames of foreign Table :"+fieldName);
 			String dbField			= XMLUtil.getTagText(node,DB_FIELD);
 			String dataType			= XMLUtil.getTagText(node,DATA_TYPE);
 			String displayName		= XMLUtil.getTagText(node,DISPLAY_NAME);
@@ -1648,7 +1641,6 @@ public class TableXMLDAO {
 			boolean summary 		= (MultiTenancyUtil.getTenantConstants().TRUE.equalsIgnoreCase(summaryString));
 			String fieldName		= XMLUtil.getTagText(node,FIELD_NAME);
 			fieldName				= childTableAnchor+"_"+appendor+fieldName;
-			logger.info("Validation fieldNames of foreign Table :"+fieldName);
 			String dbField			= XMLUtil.getTagText(node,DB_FIELD);
 			String dataType			= XMLUtil.getTagText(node,DATA_TYPE);
 			String displayName		= XMLUtil.getTagText(node,DISPLAY_NAME);

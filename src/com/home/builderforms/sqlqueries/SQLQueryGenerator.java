@@ -1,4 +1,4 @@
-package com.appnetix.app.util.sqlqueries;
+package com.home.builderforms.sqlqueries;
 
 
 
@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 
 
 
@@ -19,21 +18,21 @@ import org.apache.log4j.Logger;
 
 
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.util.DBConnectionManager;
-import com.appnetix.app.util.DateTime;
-import com.appnetix.app.util.DateUtil;
-import com.appnetix.app.util.Constants;
-import com.appnetix.app.util.sqlqueries.SQLQuery;
-import com.appnetix.app.util.information.Info;
-import com.appnetix.app.util.BaseUtils;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.IntConstants;
+import com.home.builderforms.DBConnectionManager;
+import com.home.builderforms.DateTime;
+import com.home.builderforms.DateUtil;
+import com.home.builderforms.Constants;
+import com.home.builderforms.sqlqueries.SQLQuery;
+import com.home.builderforms.Info;
+import com.home.builderforms.BaseUtils;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.IntConstants;
 
 
 
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.database.*;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.*;
 
 import java.sql.*;
 
@@ -41,7 +40,6 @@ import java.sql.*;
 
 public class SQLQueryGenerator{
 
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(SQLQueryGenerator.class);
 
 	/**
 	 * Used for Structured query operations
@@ -122,7 +120,6 @@ public class SQLQueryGenerator{
 
 			}
 
-			logger.info("Set PARAM " + field.toText() + "val=" +value);
 
 		}
 
@@ -192,7 +189,6 @@ public class SQLQueryGenerator{
 
 		{
 
-			//logger.info("Warning :For "+field.getFieldName() +" expected: "+field.getDataType()+ " found: "+value.getClass().getName(), e);
 
 			stmt.setString(i,value.toString());
 
@@ -892,7 +888,6 @@ public class SQLQueryGenerator{
 				}
 			}
 		} catch(Exception e) {
-			logger.error("Exception in DDL Query : "+e);
 		}
 		return "";
 	}
@@ -930,12 +925,10 @@ public class SQLQueryGenerator{
 					}else{
 						setParam(i++,con, stmt, field, value);
 					}
-					logger.info("Set PARAM " + field.toText() + "val=" +value);
 				}
 				stmt.addBatch();
 			}
 		}catch(SQLException e) {
-			logger.info("Error : "+e.getErrorCode());
 			return -1;
 		}
 		return 1;

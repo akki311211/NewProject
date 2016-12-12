@@ -3,7 +3,7 @@
  * @author abhishek gupta
  * @Date 28 Jan 2012
  */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 public class HeaderColumn implements Cloneable {
     private String name			= null;

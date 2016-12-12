@@ -13,12 +13,10 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.appnetix.app.util.information.Info;
-import org.apache.log4j.Logger;
+import com.home.builderforms.Info;
 
-import com.appnetix.app.exception.AppException;
-import com.appnetix.app.util.sqlqueries.ResultSet;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
+import com.home.builderforms.AppException;
+import com.home.builderforms.sqlqueries.ResultSet;
 
 
 
@@ -46,7 +44,6 @@ public class QueryUtil {
 
 
 
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(QueryUtil.class);
 	//static String lastInsertId	="";
 
 
@@ -448,8 +445,6 @@ public class QueryUtil {
     public static ResultSet getResult(String connectionName, String sqlQuery, Object[] params, boolean isSetFetchSize) {
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
         Connection connection = connectionManager.getConnection(connectionName);
-        logger.info("Executing query " + sqlQuery + " with parameters "
-                + StringUtil.toCommaSeparated(params));
         ResultSet result = null;
         PreparedStatement stmt = null;
         try {
@@ -474,8 +469,6 @@ public class QueryUtil {
             }
             result = new ResultSet(stmt.executeQuery());
         } catch (Exception e) {
-        	logger.error("Exception in QueryUtil class in Method getResult ::" + sqlQuery);
-            logger.error("Exception in QueryUtil class in Method getResult 11::" ,e);
         } finally {
             try {
                 if (stmt != null) {
@@ -483,7 +476,6 @@ public class QueryUtil {
                     stmt = null;
                 }
             } catch (Exception e) {
-                logger.error("Exception in QueryUtil class in Method getResult 22::" ,e);
             }
             connectionManager.freeConnection(connectionName, connection);
         }
@@ -493,8 +485,6 @@ public class QueryUtil {
     public static java.sql.ResultSet getResultJava(String connectionName, String sqlQuery, Object[] params, boolean isSetFetchSize) {
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
         Connection connection = connectionManager.getConnection(connectionName);
-        logger.info("Executing query " + sqlQuery + " with parameters "
-                + StringUtil.toCommaSeparated(params));
         java.sql.ResultSet result = null;
         PreparedStatement stmt = null;
         try {
@@ -519,8 +509,6 @@ public class QueryUtil {
             }
             result = stmt.executeQuery();
         } catch (Exception e) {
-        	logger.error("Exception in QueryUtil class in Method getResult ::" + sqlQuery);
-            logger.error("Exception in QueryUtil class in Method getResult 11::" ,e);
         } finally {
             try {
                 /*if (stmt != null) {
@@ -528,7 +516,6 @@ public class QueryUtil {
                     stmt = null;
                 }*/
             } catch (Exception e) {
-                logger.error("Exception in QueryUtil class in Method getResult 22::" ,e);
             }
             //connectionManager.freeConnection(connectionName, connection);
         }
@@ -576,8 +563,6 @@ public class QueryUtil {
             result = stmt.executeUpdate();
 
         } catch (Exception e) {
-			logger.error("Exception in Update Query::"+sqlQuery);
-            logger.error("Exception in QueryUtil class in Method update 1::" ,e);
             throw new AppException(e.toString());
 
         } finally {
@@ -595,7 +580,6 @@ public class QueryUtil {
 			catch(Exception e)
 
 			{
-	            logger.error("Exception in QueryUtil class in Method update 2::" ,e);
 
 			}
 
@@ -678,19 +662,16 @@ public class QueryUtil {
         {
             try
             {
-                logger.error(" BatchUpdateException in QueryUtil class in Method preparedStatementsBatchUpdate 11::" ,e);
             	connection.rollback();
             }
             catch (Exception e2) 
             {
-                logger.error(" BatchUpdateException in QueryUtil class in Method preparedStatementsBatchUpdate 11::" + e2.getMessage());
 
             }
             exception = true;
         }
         catch (Exception e) 
         {
-            logger.error(" BatchUpdateException in QueryUtil class in Method preparedStatementsBatchUpdate 22::" ,e);
             exception = true;
         }
         finally 
@@ -703,7 +684,6 @@ public class QueryUtil {
             	}
 			} catch (SQLException e)
 			{
-	            logger.error(" BatchUpdateException in QueryUtil class in Method preparedStatementsBatchUpdate 33::" ,e);
 			}
  			connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
  			if(exception && throwException)
@@ -766,7 +746,6 @@ public class QueryUtil {
             try {
 				stmt.close();
 			} catch (SQLException e) {
-	            logger.error(" BatchUpdateException in QueryUtil class in Method batchUpdate 11::" ,e);
 			}
             
             connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
@@ -815,7 +794,6 @@ public class QueryUtil {
 
         } catch (Exception e) {
 
-            logger.error(" Exception in QueryUtil class in Method getDisplayData 11::" ,e);
 
         }
 
@@ -896,7 +874,6 @@ public class QueryUtil {
      */
 //    PH_Intranet_Messages_Optimized Start
     public static Object[] getResultJava(java.sql.Connection connectionName, String sqlQuery, Object[] params) {
-        logger.info("Executing query " + sqlQuery + " with parameters " + StringUtil.toCommaSeparated(params));
         java.sql.ResultSet result = null;
         PreparedStatement stmt = null;
         try {
@@ -920,10 +897,8 @@ public class QueryUtil {
             // returing both the jdbc objects .. caller method must CLOSE these resources
             return new Object[]{result,stmt}; 
         }  catch (SQLException e) {
-            logger.error("Exception in QueryUtil class in Method getResultJava 11::" ,e);
             return null;
         } catch (Exception e) {
-            logger.error(" Exception in QueryUtil class in Method getResultJava 22::" ,e);
             return null;
         }
     }
@@ -957,7 +932,6 @@ public class QueryUtil {
         }
 		catch (Exception e)
 		{
-            logger.error("Exception in QueryUtil class in Method executeInsert 11::" ,e);
         }
 		finally
 		{
@@ -970,7 +944,6 @@ public class QueryUtil {
 			}
 			catch(Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsert 22::" ,e);
 			}
 
 			try
@@ -982,7 +955,6 @@ public class QueryUtil {
 			}
 			catch(Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsert 33::" ,e);
 			}
 
 			if(connection != null)
@@ -1007,7 +979,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 		ResultSet result=null;
         int iResult = -1;
         
-		logger.info("Executing query "+sSqlQuery +" with params ="+StringUtil.toCommaSeparated2(params));
 
         try {
 
@@ -1030,7 +1001,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
         }
 		catch (Exception e)
 		{
-            logger.error("Exception in QueryUtil class in Method executeInsert new 11::" ,e);
         }
 		finally
 		{
@@ -1048,7 +1018,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			}
 			catch(Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsert new 22::" ,e);
 			}
 
 			if(connection != null)
@@ -1098,7 +1067,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
         }
 		catch (Exception e)
 		{
-            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds 11::" ,e);
         }
 		finally
 		{
@@ -1111,7 +1079,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			}
 			catch(Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds 22::" ,e);
 			}
 
 			try
@@ -1123,7 +1090,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			}
 			catch(Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds 33::" ,e);
 			}
 
 			if(connection != null)
@@ -1148,7 +1114,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			StringBuffer  ids = new  StringBuffer();
 	        try
 			{
-	        	logger.info("Executing query "+sSqlQuery +" with params ="+StringUtil.toCommaSeparated2(params));
 	        	stmt = connection.prepareStatement(sSqlQuery,Statement.RETURN_GENERATED_KEYS);//FS_NewMySQL_Query
 	            for (int i = 0; i < params.length; i++) {
 					stmt.setString(i + 1, params[i]);
@@ -1175,7 +1140,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 	        }
 			catch (Exception e)
 			{
-	            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds new::" ,e);
 	        }
 			finally
 			{
@@ -1188,7 +1152,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 				}
 				catch(Exception e)
 				{
-		            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds 22::" ,e);
 				}
 
 				try
@@ -1200,7 +1163,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 				}
 				catch(Exception e)
 				{
-		            logger.error("Exception in QueryUtil class in Method executeInsertAndReturnIds 33::" ,e);
 				}
 
 				if(connection != null)
@@ -1226,7 +1188,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 		 try {
 			   	connectionManager.releaseConnections(MultiTenancyUtil.getTenantName());
 		 } catch(Exception e) {
-	            logger.error("Exception in QueryUtil class in Method alterDBTable for connection::" ,e);
 		 }
 		 
 		 Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
@@ -1236,8 +1197,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			 stmt = connection.prepareStatement(sqlQuery);
 			 result = stmt.executeUpdate();
 		 } catch (Exception e) {
-	            logger.error("Exception in QueryUtil class in Method alterDBTable for 11::" ,e);
-	            logger.error("Exception in Structural Query::"+sqlQuery);
 			 throw new AppException(e.toString());
 		 } finally {
 			 try {
@@ -1246,7 +1205,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 					 stmt = null;
 				 }
 			 } catch(Exception e) {
-		            logger.error("Exception in QueryUtil class in Method alterDBTable  22::" ,e);
 			 }
 			 connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
 		 }
@@ -1277,7 +1235,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			result=null;
 			}
 			catch (SQLException e) {
-	            logger.error("Exception in QueryUtil class in Method releaseResultSet::" ,e);
 
 			}
 		}
@@ -1358,7 +1315,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
     		}
     	}
     	catch (SQLException e) {
-            logger.error("Exception in QueryUtil class in Method getPrimaryColumn::" ,e);
 
 		}finally{	//P_OPT_CONNECTIONS
 			releaseResultSet(result);
@@ -1394,7 +1350,6 @@ public static int executeInsert(String sSqlQuery,String[] params) {
     }
     }
     catch (SQLException e) {
-        logger.error("Exception in QueryUtil class in Method getColumnMetaData::" ,e);
 
 	}finally{	//P_OPT_CONNECTIONS
 		releaseResultSet(rs);

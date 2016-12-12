@@ -22,9 +22,8 @@ import java.util.TimeZone;
 import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 
-import com.appnetix.app.util.*;
+import com.home.builderforms.*;
 
-import org.apache.log4j.Logger;
 
 /**
  *   Class for manipulating dataTime information
@@ -48,7 +47,6 @@ P_SCH_CAL_DAY		03/04/2014	Sanshey Sachdeva	Bug		getDateInTopFormat(),getDateInFu
 
 @SuppressWarnings("serial")
 public class BaseDateTime extends Object implements java.io.Serializable {
-	static Logger logger					= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BaseDateTime.class);
 	public static final String DB_DATETIME 			= "yyyy-MM-dd HH:mm:ss";
 	public static final String DB_DATE	 			= "yyyy-MM-dd";
 	public static final String STD_DATETIME_FORMAT	= "MMM-dd-yyyy hh:mm a z";
@@ -222,7 +220,6 @@ public static String getCalendarDisplayDateTime(Timestamp timestamp)
 	                startTime=sdf.format(date);
 	                }
 	                catch (Exception e) {
-					logger.error(e,e);
 					}
 				returnDateTime.append(startTime);//P_B_44793
 		}
@@ -272,7 +269,6 @@ public static int compare(String startDate , String endDate){
 			}
 
 	}catch(Exception e){
-		logger.error("Exception in compare:" , e);
 	}
 	return iReturn;
 }
@@ -321,7 +317,6 @@ public static int compareDate(String startDate , String endDate){
 			}
 
 	}catch(Exception e){
-		logger.error("Exception in compare:" , e);
 	}
 	}
 	else
@@ -376,7 +371,6 @@ public static int compareTime(String startTime , String endTime){
 			}
 
 	}catch(Exception e){
-		logger.error("Exception in compare:" , e);
 	}
 	return iReturn;
 }
@@ -411,7 +405,6 @@ public static boolean isWeekDay(String date){
 		bReturn		= false;
 	}
 	}catch(Exception e){
-		logger.error("Exception in isweekDay :" , e);
 	}
 	return bReturn;
 }
@@ -449,7 +442,6 @@ public static boolean isWeekDay(String date){
 			calObj.add(calendarAttribute, pnMagnitudeDays);
 			sCalculatedDate 		= getDBFormatDateTime(calObj);
 		}catch(Exception e){
-			logger.error("Exception in addDateTimeInDBFormat:" , e);
 		}
 		return sCalculatedDate;
 	}
@@ -477,8 +469,6 @@ public static boolean isWeekDay(String date){
         try {
 			long dateOne	= getMilliseconds(date1,format1);
 			long dateTwo	= getMilliseconds(date2,format2);
-		//	logger.info("date1 :" + dateOne);
-		//	logger.info("date2 :" + dateTwo);
 			if(dateOne > dateTwo){
 				return 1;
 			}else if(dateOne < dateTwo){
@@ -487,7 +477,6 @@ public static boolean isWeekDay(String date){
 				return 0;
 			}
         } catch (Exception e) {
-			logger.error("Exception in compareDates:" , e);
         }
         return -1;
     }
@@ -537,7 +526,6 @@ public static boolean isWeekDay(String date){
 				return -1;
 			}
 		}catch(Exception e){
-			logger.error("Exception in getWeekDayNo(String startDate , String endDate) : " , e);
 			returnInt = 0;
 		}
 		return returnInt;
@@ -626,21 +614,16 @@ public static int getNoOfWeeks(String startDate , String endDate){
 
 			String nextSunDate	= (mm) + "-" + dd + "-" + yy;
 
-			logger.info("nextSunDate :" + nextSunDate);
-			logger.info("endDate :" + endDate);
 			int cmpDate		= (int)compare(nextSunDate , endDate );
-			logger.info("cmpDate:" + cmpDate);
 			if(cmpDate <= 0){
 				//p_caringtransitions_cal_sync  start
 				//int noOfDays		= (int)getDaysBetweenDates(nextSunDate , endDate)-1;
 				int noOfDays		= (int)getDaysBetweenDates(DateTime.getRequiredFormat(nextSunDate,"MM-dd-yyyy",_baseConstants.DISPLAY_FORMAT),DateTime.getRequiredFormat( endDate,"MM-dd-yyyy",_baseConstants.DISPLAY_FORMAT) )-1;
 				//p_caringtransitions_cal_sync  end
-				logger.info("noOfDays:" + noOfDays);
 				iReturn				= (noOfDays/7) + 1;
 			}
 
 		}catch(Exception e){
-			logger.error("Exception in getWeekDayNo(String startDate , String endDate) : startDate=" +startDate+ " endDate="+endDate , e);
 			iReturn		= 0;
 		}
 
@@ -670,7 +653,6 @@ public static String getDayOfWeek(String date){
 
 			 iReturn	= startCal.get(Calendar.DAY_OF_WEEK);
 		}catch(Exception e){
-			logger.error("Exception in getDayOfWeek(String date ) : " , e);
 
 		}
 	return Integer.toString(iReturn);
@@ -711,7 +693,6 @@ public static int getNoOfMonth(String startDate , String endDate){
 
 		}
 	}catch(Exception e){
-		logger.error("Exception in getNoOfMonth :" , e);
 	}
 
 	return iReturn;
@@ -730,13 +711,13 @@ public static int getNoOfMonth(Date startDate , Date endDate){
 	int iReturn		= 0;
 
 	try{
-		int startYear		= com.appnetix.app.util.DateUtil.getYear(startDate);
+		int startYear		= com.home.builderforms.DateUtil.getYear(startDate);
 	
-		int endYear			= com.appnetix.app.util.DateUtil.getYear(endDate);
+		int endYear			= com.home.builderforms.DateUtil.getYear(endDate);
 
-		int startMonth		= com.appnetix.app.util.DateUtil.getMonth(startDate);
+		int startMonth		= com.home.builderforms.DateUtil.getMonth(startDate);
 
-		int endMonth		= com.appnetix.app.util.DateUtil.getMonth(endDate);
+		int endMonth		= com.home.builderforms.DateUtil.getMonth(endDate);
 	
 		if(startYear == endYear){
 			iReturn			= endMonth - startMonth;
@@ -749,7 +730,6 @@ public static int getNoOfMonth(Date startDate , Date endDate){
 
 		}
 	}catch(Exception e){
-		logger.error("Exception in getNoOfMonth :" , e);
 	}
 
 	return iReturn;
@@ -766,7 +746,6 @@ public static String getDayOfMonth(String date){
 	try{
 		sReturn			= date.substring(3,5);
 	}catch(Exception e){
-		logger.error("Exception in getDayOfMonth :" , e);
 	}
 	return sReturn;
 }
@@ -793,7 +772,6 @@ public static String getMaxWeekOfMonth(String date){
 
 			 sReturn	= Integer.toString(startCal.getActualMaximum(Calendar.WEEK_OF_MONTH));
 		}catch(Exception e){
-			logger.error("Exception in getMaxWeekOfMonth(String date ) : " , e);
 
 		}
 	return sReturn;
@@ -847,7 +825,6 @@ public static String getNthWeekDayOfMonth(String date,String nthOcr,String dayNo
 
 			}
 		}catch(Exception e){
-			logger.error("Exception in getWeekOfMonth(String date ) : " , e);
 		}
 	return sReturn;
 }
@@ -874,7 +851,6 @@ public static String getWeekOfMonth(String date){
 
 			 sReturn	= Integer.toString(startCal.get(Calendar.WEEK_OF_MONTH));
 		}catch(Exception e){
-			logger.error("Exception in getWeekOfMonth(String date ) : " , e);
 
 		}
 	return sReturn;
@@ -901,7 +877,6 @@ public static String getWeekOfYear(String date){
 
 			 sReturn	= Integer.toString(startCal.get(Calendar.WEEK_OF_YEAR));
 		}catch(Exception e){
-			logger.error("Exception in getWeekOfYear(String date ) : " , e);
 
 		}
 	return sReturn;
@@ -926,7 +901,6 @@ public static int getNoOfYear(String startDate , String endDate){
 		iReturn				= endYear - startYear;
 
 	}catch(Exception e){
-		logger.error("Exception in getNoOfYear:" , e);
 	}
 	return iReturn;
 }
@@ -945,7 +919,6 @@ public static String getMonth(String date){
 	try{
 		sReturn			= date.substring(0,2);
 	}catch(Exception e){
-		logger.error("Exception in getDayOfMonth :" , e);
 	}
 	return sReturn;
 }
@@ -2945,7 +2918,6 @@ public static String getMonth(String date){
 			long minuteDiff = dateDiff/60000;
 			return minuteDiff;
         } catch (Exception e) {
-			logger.error("Exception in getMinutesFromDates:" , e);
         }
         return -1;
     }
@@ -3062,7 +3034,6 @@ public static String getMonth(String date){
 		    		 }		
 		    	}
 	    	}catch(Exception e){
-	    		logger.error("Exception in getStartEndDate:" , e);
 	    	}
 	    	return returnDate;
 	    	
@@ -3085,7 +3056,6 @@ public static String getMonth(String date){
 	    		
 	    	}catch(Exception e){
 	    		
-	    		logger.error("Exception in getMaxDate:" , e);
 	    	}
 	    	
 	    	return null;
@@ -3108,7 +3078,6 @@ public static String getMonth(String date){
 	    		
 	    	}catch(Exception e){
 	    		
-	    		logger.error("Exception in getMaxDate:" , e);
 	    	}
 	    	
 	    	return null;

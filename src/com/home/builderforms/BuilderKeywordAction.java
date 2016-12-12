@@ -8,16 +8,14 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 
-import com.appnetix.app.util.BaseUtils;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.StrutsUtil;
+import com.home.builderforms.BaseUtils;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.StrutsUtil;
 import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
 import com.appnetix.app.struts.actions.AbstractAppAction;
 
 public class BuilderKeywordAction extends AbstractAppAction {
-	static final Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(BuilderTabsAction.class);
 
 	public String execute() throws Exception {
 		BuilderFormWebImpl builderWebImpl = BuilderFormWebImpl.getInstance();

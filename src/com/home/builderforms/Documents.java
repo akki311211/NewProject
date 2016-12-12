@@ -2,11 +2,11 @@
  * @author abhishek gupta
  * @Date 2 May 2012
  */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 import java.util.Iterator;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 
 public class Documents {
 	private String msDocumentName		= null;

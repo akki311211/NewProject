@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 //import com.appnetix.app.portal.export.ExportDataManipulator;
 import com.home.builderforms.BaseUtils;
@@ -40,7 +39,6 @@ import com.home.builderforms.Field;
 import com.home.builderforms.Info;
 
 public class SQLUtilHelper{
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(SQLUtilHelper.class);
 	private static HashMap checkBoxMap;
 
 	static {
@@ -108,12 +106,10 @@ private static HashMap liquorMap;
 
 			try
 			{
-			//	logger.info("SQLUtilHelper: setResultInfo() " + fields[i]);
 				obj		= transformHelper(helper, fields[i], obj);
 			}
 			catch (Exception e)
 			{
-				logger.error("Exception while transforming :" + e,e);
 			}
 			info.set(fieldName,obj);
 		}
@@ -164,7 +160,6 @@ private static HashMap liquorMap;
 
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
-		logger.info("Executing query " + queryString +" with"+(params==null?"No Params":params.toString()));
 		PreparedStatement stmt 					= null;
 		ResultSet result 						= null;
 		try{
@@ -181,7 +176,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 
@@ -198,10 +192,6 @@ private static HashMap liquorMap;
 
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
-		logger.info(
-				"Executing query "+queryString + 
-				(params != null && params.length > 0 ? " with params " : StringUtil.toCommaSeparated(params))
-					);
 		ResultSet result						= null;
 		PreparedStatement stmt 					= null;
 		try{
@@ -234,7 +224,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 			connectionManager.freeConnection(connectionName,connection);
@@ -250,8 +239,6 @@ private static HashMap liquorMap;
 							String connectionName)
 										throws SQLException{
 
-		logger.info("Executing query "+queryString+ " \nwith params");
-		logger.info("Params: "+params);
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		connection.setAutoCommit(false);
@@ -268,7 +255,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 
@@ -288,8 +274,6 @@ private static HashMap liquorMap;
 	 * @throws SQLException
 	 */
 	public static int[] updateMultiple(String queryString, SequenceMap[] params, String connectionName) throws SQLException{
-		logger.info("Executing query "+queryString+ " \nwith params");
-		logger.info("Params: "+params);
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		connection.setAutoCommit(false);
@@ -309,7 +293,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 
@@ -327,8 +310,6 @@ private static HashMap liquorMap;
 							String connectionName)
 										throws SQLException{
 
-		logger.info("Executing query "+queryString+ " \nwith params");
-		logger.info("Params: " + paramMapWhere);
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		int result								= -1;
@@ -341,9 +322,7 @@ private static HashMap liquorMap;
 																			paramMapUpdate,
 																			IntConstants.DEFAULT_INT
 																			);
-			logger.info("Set update params");
 			SQLQueryGenerator.setParams(connection,stmt, paramMapWhere, nNextIndex);
-			logger.info("set where params");
 			result								= stmt.executeUpdate();
 		}finally{
 			if(stmt != null){
@@ -352,7 +331,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 
@@ -383,7 +361,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 
@@ -420,7 +397,6 @@ private static HashMap liquorMap;
 					rset = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 			if(stmt != null){
@@ -429,7 +405,6 @@ private static HashMap liquorMap;
 					stmt = null;
 				}
 				catch(Exception e){
-					logger.error("Exception ", e);
 				}
 			}	
 		/*	try{
@@ -437,7 +412,6 @@ private static HashMap liquorMap;
 				stmt.close();
 			}
 			catch(Exception e){
-				logger.error("Exception ", e);
 			}*/
 			connectionManager.freeConnection(connectionName,connection);
 		}
@@ -454,8 +428,6 @@ private static HashMap liquorMap;
 		while(result.next()){
  
 			Info info							= getInfo(result, fields, idField);
-			logger.info("Info " + info);
-			logger.info("info.getID(): " + info.getID());
 			map.put(info.getID(),info);
 		}
 		return map;
@@ -469,7 +441,6 @@ private static HashMap liquorMap;
 				retString = clob.getSubString(1,(int)clob.length());
 			}
 		}catch(SQLException sqle){
-			logger.error(sqle,sqle);
 		}
 		return retString;
 	}
@@ -480,7 +451,6 @@ private static HashMap liquorMap;
 							)throws Exception{
 								
 		String sMethodName	= pField.getTransformMethod();
-		logger.info("SQLUtilHelper: transformHelper() " + sMethodName);
 		if(sMethodName == null){
 			return pValue;
 		}
@@ -507,7 +477,6 @@ private static HashMap liquorMap;
 				
 			}
 		catch(Exception e) {
-			logger.error("ERROR IN METHOD TRANSFORMATION :" , e);
 		}
 		return pValue;
 	}
@@ -516,7 +485,6 @@ private static HashMap liquorMap;
 	Methods to control transaction.
 	*/
 	public static void beginTransaction(String connectionName){
-		logger.info("Executing query BEGIN");	
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		try{
@@ -529,7 +497,6 @@ private static HashMap liquorMap;
 
 	}
 	public static void rollbackTransaction(String connectionName){
-		logger.info("Executing query ROLLBACK");	
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		try{
@@ -541,7 +508,6 @@ private static HashMap liquorMap;
 	
 	}
 	public static void commitTransaction(String connectionName){
-		logger.info("Executing query COMMIT");	
 		DBConnectionManager connectionManager	= DBConnectionManager.getInstance();
 		Connection connection					= connectionManager.getConnection(connectionName);
 		try{
@@ -563,11 +529,8 @@ private static HashMap liquorMap;
 		}
 		else {
 			try{
-				logger.info("TRANSFORMING DOUBLE :" + pValue.toString());
-				logger.info("TRANSFORMED DOUBLE :" + NumberFormatUtils.formatCommaNumber(pValue.toString()));
 				return (NumberFormatUtils.formatCommaNumber(pValue.toString()));
 			}catch(Exception e) {
-				logger.error("Error while transforming double:" , e);
 			}
 			return pValue.toString();
 		}
@@ -600,7 +563,6 @@ private static HashMap liquorMap;
 			return BaseUtils.getCountryName(countryId.toString());
 		}
 		catch (Exception e){
-			logger.error(e,e);
 		}
 		return "";
 	}
@@ -610,7 +572,6 @@ private static HashMap liquorMap;
 			//return PortalUtils.getEntityType(entityTypeID.toString());
 			return BaseUtils.getEntityType(entityTypeID.toString());    //For Product_Seperation_BL By Amar Singh.
 		}catch(Exception e){
-			logger.error(e,e);
 		}
 		return "";
 	}
@@ -619,7 +580,6 @@ private static HashMap liquorMap;
 			//return PortalUtils.getStoreStatus(storeID.toString());
 			return BaseUtils.getStoreStatus(storeID.toString());    //For Product_Seperation_BL By Amar Singh.
 		}catch(Exception e){
-			logger.error(e,e);
 		}
 		return "";
 	}
@@ -655,7 +615,6 @@ private static HashMap liquorMap;
 		try{
 			return BaseUtils.getTransName(transID.toString());   //For Product_Seperation_BL By Amar Singh.
 		}catch(Exception e){
-			logger.error(e,e);
 		}
 		return "";
      }

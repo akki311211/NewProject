@@ -1,4 +1,4 @@
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 /**
  * This class is used as POJO for sync fields across tabs/modules.

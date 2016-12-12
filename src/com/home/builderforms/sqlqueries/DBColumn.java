@@ -1,7 +1,7 @@
 /**
  * @author abhishek gupta
  */
-package com.appnetix.app.util.sqlqueries;
+package com.home.builderforms.sqlqueries;
 
 public class DBColumn
 {

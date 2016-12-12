@@ -7,21 +7,19 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 
 import com.appnetix.app.components.adminmgr.manager.AdminMgr;
 import com.appnetix.app.components.builderformmgr.manager.dao.BuilderFormDAO;
 import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
 import com.appnetix.app.struts.actions.AbstractAppAction;
-import com.appnetix.app.util.FieldNames;
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StrutsUtil;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StrutsUtil;
 import com.home.builderforms.Info;
 
 public class ChangeOptionSequenceAction extends AbstractAppAction
 {
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(ChangeOptionSequenceAction.class);
 	
 	@SuppressWarnings("unchecked")
 	public String execute() throws Exception 

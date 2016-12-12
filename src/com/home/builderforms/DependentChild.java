@@ -1,6 +1,6 @@
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 
 /**
  * This class is used as bean class for dependent child objects.

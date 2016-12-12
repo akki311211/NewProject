@@ -12,22 +12,19 @@ PW_FORM_VERSION				15 July 2013	Veerpal Singh		Allow modification of Audit Forms
 ----------------------------------------------------------------------------------------------------------------
 */
 
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
-
-import com.appnetix.app.util.SequenceMap;
-import com.appnetix.app.util.StringUtil;
-import com.appnetix.app.util.xmldao.TableXMLDAO;
-import com.appnetix.app.util.xmldao.XMLUtil;
+import com.home.builderforms.SequenceMap;
+import com.home.builderforms.StringUtil;
+import com.home.builderforms.TableXMLDAO;
+import com.home.builderforms.XMLUtil;
 
 public class FormMetaData {
-	private final static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(XMLUtil.class);
 	
 	public static final String ZERO = "0";
 	public static final String ONE = "1";
@@ -148,7 +145,6 @@ public class FormMetaData {
 			}
 			return hdrColumn;
 		} catch(Exception e) {
-			logger.error(e);
 			return null;
 		}
 	}
@@ -171,7 +167,6 @@ public class FormMetaData {
 			}
 			return formTab;
 		} catch(Exception e) {
-			logger.error(e);
 			return null;
 		}
 	}
@@ -217,7 +212,6 @@ public class FormMetaData {
 			}
 			return formTab;
 		} catch(Exception e) {
-			logger.error(e);
 			return null;
 		}
 	}

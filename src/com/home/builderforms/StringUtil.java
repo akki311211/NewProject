@@ -307,7 +307,6 @@ public class StringUtil extends Object implements java.io.Serializable {
                     br.close();
                     br = null;
                 } catch (Exception e) {
-                    logger.error("Exception ", e);
                 }
             }
             return sb.toString();
@@ -573,7 +572,6 @@ public class StringUtil extends Object implements java.io.Serializable {
                  }
              }
          } catch (Exception e) {
-             logger.error("Exception ", e);
          }
          return nameBuffer.toString().trim();
      }
@@ -2027,7 +2025,6 @@ public static String filterInvalidHtml(String value){
 			if(subject==null)return modifiedSub;
 			if(subject.length()<=25)return subject;
 			StringTokenizer sToken                   = new StringTokenizer(subject , " ");
-			logger.info("subject----->"+subject);
 			while(sToken.hasMoreTokens()){
 				if(modifiedSub.length()<25)
 				modifiedSub+=" "+sToken.nextToken();
@@ -2036,7 +2033,6 @@ public static String filterInvalidHtml(String value){
 					//return modifiedSub;
 
 			}
-			logger.info("modifiedSub----->"+modifiedSub);
 			if(modifiedSub.length()>25){
 				StringTokenizer sToken1                   = new StringTokenizer(modifiedSub , " ");
 				int tokenCount=sToken1.countTokens();
@@ -2051,7 +2047,6 @@ public static String filterInvalidHtml(String value){
 			}
 						
 			}catch(Exception e){
-				logger.error("exception while manipulating title",e);
 			}
 			
 return modifiedSub+"..";
@@ -2069,7 +2064,6 @@ return modifiedSub+"..";
 			if(subject==null)return modifiedSub;
 			if(subject.length()<=stringSize)return subject;
 			StringTokenizer sToken                   = new StringTokenizer(subject , " ");
-			logger.info("subject----->"+subject);
 			if(sToken.countTokens() >1) flag= true;
 			while(sToken.hasMoreTokens()){
 
@@ -2080,7 +2074,6 @@ return modifiedSub+"..";
 					//return modifiedSub;
 
 			}
-			logger.info("modifiedSub----->"+modifiedSub);
 			if(modifiedSub.length()>stringSize){
 				StringTokenizer sToken1                   = new StringTokenizer(modifiedSub , " ");
 				int tokenCount=sToken1.countTokens();
@@ -2095,7 +2088,6 @@ return modifiedSub+"..";
 			}
 						
 			}catch(Exception e){
-				logger.error("exception while manipulating title",e);
 			}
 			if(flag) modifiedSub = modifiedSub+"..";
 return modifiedSub ;
@@ -2288,7 +2280,6 @@ public static String formatLongStringToPrint(String inputStr)
  						}
  					}
  					inputStr = inputStr.trim().substring(0, i+1)+inputStr.trim().substring(i+repeatIndex);
- 					logger.info("check@:i=:"+i+"repeatIndex=:"+repeatIndex+", inputStr=:"+inputStr+":");
  				}
  			}
  		}else{
@@ -2322,7 +2313,6 @@ public static String formatLongStringToPrint(String inputStr)
 
         //remove starting and ending double-quotes (") if any. Also, if there is consecutive double-quotes in the data, replace by single double-quote.
         for(int i=0 ; i < fieldNames.length ; i++){
-            logger.info("Split Fields::"+fieldNames[i]);
             if (fieldNames[i].startsWith("\""))
                 fieldNames[i] = fieldNames[i].substring(1);
             if (fieldNames[i].endsWith("\"")){
@@ -2332,7 +2322,6 @@ public static String formatLongStringToPrint(String inputStr)
 			fieldNames[i] = "";
 	    }
             fieldNames[i] = fieldNames[i].replaceAll("\"\"","\"").trim();
-            logger.info("Split Fields after manipulation::"+fieldNames[i]);
         }
         return fieldNames;
     }
@@ -2880,7 +2869,6 @@ public static String formatLongStringToPrint(String inputStr)
 			 }
 			 returnString=temp.substring(0,temp.toString().length()-1);
 			 }catch(Exception ex){
-				 logger.info("Exception Occured in StringUtil.java [stringArrayToValidStringArrary(String st)]::"+ex);
 				 returnString=st;
 			 }
 			 return returnString;
@@ -3300,12 +3288,7 @@ public static String replaceAnchorWithText(String content, String uniqueInAnchor
 		Matcher m1 = p1.matcher(content);
 		String text = "";
 		while(m.find()){
-			logger.info("Pattern >>>>"+m.pattern().toString());
-			logger.info("Starting index that pattern >>>>"+m.start());
-			logger.info("Ending index that pattern >>>>"+m.end());
-			logger.info(content.subSequence(m.end(), content.indexOf("</a>", m.end())));
 			text = m1.replaceAll(content.substring(m.end(), content.indexOf("</a>", m.end())));
-			logger.info("Replaced text>>>>>"+text);
 		}
 		return text;
 	} else {
@@ -3537,7 +3520,6 @@ public static String truncateString(String originalString,int limit)
 		}
 		catch(Exception e)
 		{
-			logger.info("Exception in truncateString() StringUtil.java",e);
 			return originalString;
 		}
     }
@@ -3741,7 +3723,6 @@ public static String revertBrackets(String val){
 			}
 			catch(Exception e)
 			{
-				logger.info("Exception in truncateString() StringUtil.java",e);
 				return originalString;
 			}
 		}

@@ -2,11 +2,11 @@
  * @author abhishek gupta
  * @Date 26 Jul 2012
  */
-package com.appnetix.app.util.database;
+package com.home.builderforms;
 
 import java.util.HashMap;
 
-import com.appnetix.app.util.SequenceMap;
+import com.home.builderforms.SequenceMap;
 
 public class MainField {
 	private SequenceMap msTableFieldMap			= null;

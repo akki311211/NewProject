@@ -84,7 +84,6 @@ public class DBConnectionManager
 				pool.freeConnection(con);
 			}else
 			{
-				logger.error("Error: In Freeing Connection pool is null.");
 			}
 		//}
 	}
@@ -107,7 +106,6 @@ public class DBConnectionManager
 				con = pool.getConnection();
 			}else
 			{
-				logger.error("Error: In Calling for Connection pool is null.");
 			}
 		return con;
 	}
@@ -129,7 +127,6 @@ public class DBConnectionManager
 				con = pool.getConnection(time);
 			}else
 			{
-				logger.error("Error: In Calling for Connection with time stamp pool is null.");
 			}
 		return con;
 	}
@@ -150,10 +147,8 @@ public class DBConnectionManager
 				try
 				{
 					DriverManager.deregisterDriver(driver);
-					logger.info("Deregistered JDBC driver " + driver.getClass().getName());
 				}catch(SQLException e)
 				{
-					logger.error("Can't deregister JDBC driver: " + driver.getClass().getName(), e);
 				}
 			}
 	 }
@@ -199,11 +194,9 @@ public class DBConnectionManager
 			}catch(NumberFormatException e)
 			{
 				max = 0;
-				logger.error("Invalid maxconn value " + maxconn + " for " + poolName);
 			}
 			DBConnectionPool pool = new DBConnectionPool(poolName, url, user, password, max);
 			pools.put(poolName, pool);
-			logger.info("DbConnectionPool has been created with name :" + poolName);
 		}
 	}
 
@@ -225,10 +218,8 @@ public class DBConnectionManager
 				Driver driver = (Driver) Class.forName(driverClassName).newInstance();
 				DriverManager.registerDriver(driver);
 				drivers.add(driver);
-				logger.info("Registered JDBC driver " + driverClassName);
 			}catch(Exception e)
 			{
-				logger.error("Can't register JDBC driver: " + driverClassName,e);
 			}
 		}
 
@@ -244,7 +235,6 @@ public class DBConnectionManager
 			{
 			}catch(Exception e)
 			{
-				logger.error("Can't read the properties file.\nMake sure db.properties is in the CLASSPATH", e);
 				return;
 			}finally
 			{
@@ -253,7 +243,6 @@ public class DBConnectionManager
 					is.close();
 				}catch(IOException e)
 				{
-					logger.error("Exception in Initializing database pool for tenant\t" + tenantName, e);
 				}
 			}
 			loadDrivers(dbProps);
@@ -325,7 +314,6 @@ public class DBConnectionManager
 
 			checkedOut--;
 
-			logger.debug(name + " - Active Connections : " + checkedOut + " | Idle Connections : " + freeConnections.size());
 
 			notifyAll();
 		}
@@ -349,7 +337,6 @@ public class DBConnectionManager
 			catch(SQLException e)
 			{
 
-				logger.error("Connection is dead ",e);
 			}
 
 			return alive;
@@ -376,7 +363,6 @@ public class DBConnectionManager
 				if(!isAlive(con))
 				{
 
-					logger.info("Removed bad connection from " + name);
 
 					con = getConnection();
 				}
@@ -394,7 +380,6 @@ public class DBConnectionManager
 				checkedOut++;
 			}
 
-			logger.debug(name + " - Active Connections : " + checkedOut + " | Idle Connections : " + freeConnections.size());
 
 			return con;
 		}
@@ -432,7 +417,6 @@ public class DBConnectionManager
 				}
 			}
 			
-			logger.debug(name + " - Active Connections : " + checkedOut + " | Idle Connections : " + freeConnections.size());
 			
 			return con;
 		}
@@ -450,11 +434,9 @@ public class DBConnectionManager
 				try
 				{
 					con.close();
-					logger.info("Closed connection for pool " + name);
 					
 				}catch(SQLException e)
 				{
-					logger.error("Can't close connection for pool " + name, e);
 				}
 			}
 			freeConnections.removeAllElements();
@@ -481,7 +463,6 @@ public class DBConnectionManager
 
 			}catch(SQLException e)
 			{
-				logger.error("Can't create a new connection for " + URL, e);
 			}
 			return con;
 		}
