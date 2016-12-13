@@ -1569,7 +1569,7 @@ public class CommonSyncFieldManipulator implements Manipulator {
 
 
 	private void triggerUpdate(String eventType,String idField,SequenceMap eventMap, HttpServletRequest request,Map<String, Info> triggerMap){
-		CommonUtil commonUtil=new CommonUtil();
+		/*CommonUtil commonUtil=new CommonUtil();
 		try{
 			Info auditInfo=new Info();
 			int gEventType = 0;
@@ -1620,10 +1620,10 @@ public class CommonSyncFieldManipulator implements Manipulator {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}
+		}*/
 	}
 	private void triggerUpdateMultiPart(String eventType,String idField,SequenceMap eventMap, MultipartRequest request,Map<String, Info> triggerMap){
-		CommonUtil commonUtil=new CommonUtil();
+		/*CommonUtil commonUtil=new CommonUtil();
 		try{
 			int gEventType = 0;
 			if(eventType.equals(EventType.CREATE))gEventType = 0;
@@ -1676,7 +1676,7 @@ public class CommonSyncFieldManipulator implements Manipulator {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	//P_ENH_SYNC_FIELD start

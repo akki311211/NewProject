@@ -83,7 +83,10 @@ package com.home.builderforms;
 
 
 
+import java.util.Iterator;
+
 import com.home.builderforms.sqlqueries.ResultSet;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -223,6 +226,53 @@ public class NewPortalUtils {
         }
         return returncolumnValue;
 
+    }
+	
+	public static String getRegionalOwnersMap(String userNo) {
+        return getRegionalOwnersMap(userNo, false);
+    }
+    public static String getRegionalOwnersMap(String userNo, boolean fromWhere) { //30-Mar-2015 CODEBASE_ISSUE IN_90010_13FEB15
+        String key;
+        BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+        String userIdTemp = "";
+        SequenceMap ownersMap = new SequenceMap();
+        String check = "no";
+        if (!"fs".equals(_baseConstants.INCLUDED_MODULES.toLowerCase())) {
+            String modules = _baseConstants.INCLUDED_MODULES.toLowerCase();
+            boolean isFsExist = modules.contains("fs");
+            if (isFsExist) {
+                check = "yes";
+              //30-Mar-2015 CODEBASE_ISSUE IN_90010_13FEB15
+                if(fromWhere) {
+                    ownersMap = AdminMgr.newInstance().getUsersDAO().getOwnerSMapForFS(null, true, userNo, null,"all", fromWhere);//P_E_DEACTIVATE_WITHOUT_REASSIGN
+                }
+                else {
+                    ownersMap = AdminMgr.newInstance().getUsersDAO().getOwnerSMapForFS(null, true, userNo, null,"all");//P_E_DEACTIVATE_WITHOUT_REASSIGN
+                }
+    //30-Mar-2015 CODEBASE_ISSUE IN_90010_13FEB15
+            }
+        }
+       /* if ("no".equals(check)) {
+            ownersMap = LocationMgr.newInstance().getLocationsDAO().getOwnerSMap(null, true, userNo);
+        }*/
+        Iterator iter = ownersMap.values().iterator();
+        key = null;
+        String value = null;
+        StringBuffer userIds1 = new StringBuffer();
+        while (iter.hasNext()) {
+            Info currentInfo = (Info) iter.next();
+            key = (String) currentInfo.get("userNo");
+            userIds1.append(key).append(",");
+
+        }
+        if (StringUtil.isValid(userIds1.toString())) {
+            userIdTemp = userIds1.toString() + "-1";
+        }
+        else
+        {
+        	userIdTemp=userNo;
+        }
+        return userIdTemp;
     }
 }
 

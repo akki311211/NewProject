@@ -34,7 +34,7 @@ public class FsLeadSource2DAO extends BaseDAO {
 	*  Constructor for the LeadStatusDAO object
 	*/
 	public FsLeadSource2DAO() {
-		this.tableAnchor = TableAnchors.FS_LEAD_SOURCE2;
+		this.tableAnchor = "fsLeadSource2";
 
 	}
 	
@@ -807,26 +807,26 @@ public class FsLeadSource2DAO extends BaseDAO {
       		}else if("-1".equals(leadNames) && Constants.USER_LEVEL_DIVISION.equals(userLevel))
  			{
  				leadParam=leadParam+" AND ( ";
- 				if(StringUtil.isValidNew(DivisionUtil.getAllDivisionLeadIds(divisionIds))){
+ 				/*if(StringUtil.isValidNew(DivisionUtil.getAllDivisionLeadIds(divisionIds))){
  					leadParam=leadParam+"  FLD.LEAD_ID IN ( " + DivisionUtil.getAllDivisionLeadIds(divisionIds) + " ) OR  ";
- 				}
+ 				}*/
  				leadParam=leadParam+" FLD.LEAD_OWNER_ID IN ( "
  						+ NewPortalUtils.getRegionalOwnersMap(userNo) + ") ) ";
 
  			}
       		String coApplicantAsLeadParam = "";   //P_ENH_COAPPLICANT_AS_LEAD starts
-     		if("0".equals(MultiTenancyUtil.getTenantConstants().IS_COAPPLICANT_AS_LEAD_CONFIGURED) && "true".equals(coApplicantAsLead))
+     		/*if("0".equals(MultiTenancyUtil.getTenantConstants().IS_COAPPLICANT_AS_LEAD_CONFIGURED) && "true".equals(coApplicantAsLead))
     		{
      			coApplicantAsLeadParam = " AND (FLD.COAPPLICANT_TYPE <> 'C' OR FLD.COAPPLICANT_TYPE IS NULL) ";
-    		}							//P_ENH_COAPPLICANT_AS_LEAD ends
+    		}		*/					//P_ENH_COAPPLICANT_AS_LEAD ends
      		String divisionIdsParam = FieldNames.EMPTY_STRING;
-     		if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && StringUtil.isValidNew(division_Ids))
+     		/*if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && StringUtil.isValidNew(division_Ids))
             {
             	String leadIds = DivisionUtil.getAllDivisionLeadIds(division_Ids);
     			if(StringUtil.isValid(leadIds)){
     				divisionIdsParam = " AND FLD.LEAD_ID IN ("+leadIds+") ";
     			}
-            }
+            }*/
       		if(StringUtil.isValidNew(source))//jyotsna_123
       		{
       			String souceID[]=source.replaceAll(" ","").split(",");
@@ -1084,7 +1084,7 @@ public class FsLeadSource2DAO extends BaseDAO {
 	    public SequenceMap getSourceOwnerBrandMap(String leadSource2ID,String assignMentType) 
 	    {
 	    	SequenceMap sMap = null;
-	    	Info info =null;
+	    	/*Info info =null;
 	    	ResultSet result=null;
 	    	StringBuffer query=null;
 	    	int i=0;
@@ -1126,7 +1126,7 @@ public class FsLeadSource2DAO extends BaseDAO {
 	    	finally
 	    	{
 	    		QueryUtil.releaseResultSet(result);
-	    	}
+	    	}*/
 
 	    	return sMap;
 	    }

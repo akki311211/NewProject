@@ -561,7 +561,6 @@ public static boolean isWeekDay(String date){
  */  
 public static int getNoOfWeeks(String startDate , String endDate){
 	int iReturn		= 0;
-	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 	try{
 			String startMM		= startDate.substring(0,2);
 			String startDD		= startDate.substring(3,5);
@@ -613,7 +612,7 @@ public static int getNoOfWeeks(String startDate , String endDate){
 			if(cmpDate <= 0){
 				//p_caringtransitions_cal_sync  start
 				//int noOfDays		= (int)getDaysBetweenDates(nextSunDate , endDate)-1;
-				int noOfDays		= (int)getDaysBetweenDates(DateTime.getRequiredFormat(nextSunDate,"MM-dd-yyyy",_baseConstants.DISPLAY_FORMAT),DateTime.getRequiredFormat( endDate,"MM-dd-yyyy",_baseConstants.DISPLAY_FORMAT) )-1;
+				int noOfDays		= (int)getDaysBetweenDates(DateTime.getRequiredFormat(nextSunDate,"MM-dd-yyyy",Constants.DISPLAY_FORMAT),DateTime.getRequiredFormat( endDate,"MM-dd-yyyy",Constants.DISPLAY_FORMAT) )-1;
 				//p_caringtransitions_cal_sync  end
 				iReturn				= (noOfDays/7) + 1;
 			}
@@ -1095,7 +1094,7 @@ public static String getMonth(String date){
         }
         SimpleDateFormat formatterSql = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //P_E_DATE_FORMAT Changed By Nikhil Verma for export Section on 29/05/2008
-        SimpleDateFormat formatterStd = new SimpleDateFormat(MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT+" HH:mm");
+        SimpleDateFormat formatterStd = new SimpleDateFormat(Constants.DISPLAY_FORMAT+" HH:mm");
         Date dateObj = null;
         String finalDate = null;
         ParsePosition pos = new ParsePosition(0);
@@ -1622,27 +1621,26 @@ public static String getMonth(String date){
 
 	public static Timestamp getTimestamp(String strDate)
 	{
-		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		if (strDate == null ) return null;
 	//	String formatString1 = "MM/dd/yyyy";
 	//	String formatString2 = "MM/dd/yyyy HH:mm";
 	//	String formatString3 = "MM/dd/yyyy HH:mm:ss";
 
-		if (strDate.length() == _baseConstants.DISPLAY_FORMAT_HMS.length())
+		if (strDate.length() == Constants.DISPLAY_FORMAT_HMS.length())
 		{
-			return getTimestamp(strDate,_baseConstants.DISPLAY_FORMAT_HMS);
+			return getTimestamp(strDate,Constants.DISPLAY_FORMAT_HMS);
 		}
-		if (strDate.length() == _baseConstants.DISPLAY_FORMAT_HM.length())
+		if (strDate.length() == Constants.DISPLAY_FORMAT_HM.length())
 		{
-			return getTimestamp(strDate,_baseConstants.DISPLAY_FORMAT_HM);
+			return getTimestamp(strDate,Constants.DISPLAY_FORMAT_HM);
 		}
-		if ( strDate.length() == _baseConstants.DISPLAY_FORMAT.length() -1)
+		if ( strDate.length() == Constants.DISPLAY_FORMAT.length() -1)
 		{
 			strDate = "0"+strDate;
 		}
-		if (strDate.length() == _baseConstants.DISPLAY_FORMAT.length())
+		if (strDate.length() == Constants.DISPLAY_FORMAT.length())
 		{
-			return getTimestamp(strDate,_baseConstants.DISPLAY_FORMAT);
+			return getTimestamp(strDate,Constants.DISPLAY_FORMAT);
 		}
 		Debug.println("Unknown format Date :"+strDate);
 		return null;
@@ -1701,7 +1699,6 @@ public static String getMonth(String date){
      */
 	public static String getDisplayDate(String str,String time){
             String returnString	 = "";
-            BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         try {
             if(time!=null && time.equals("time") && str != null && str.length() > 10){
 
@@ -1722,9 +1719,9 @@ public static String getMonth(String date){
             	String mm	 = str.substring(5,7);
             	String yy	= str.substring(0,4);
             	//SC_DIS_B_14671
-            	if(_baseConstants.DISPLAY_FORMAT.equalsIgnoreCase("MM/dd/yyyy"))
+            	if(Constants.DISPLAY_FORMAT.equalsIgnoreCase("MM/dd/yyyy"))
             	returnString = mm+ "/" + dd + "/" + yy;
-            	else if(_baseConstants.DISPLAY_FORMAT.equalsIgnoreCase("dd/MM/yyyy"))
+            	else if(Constants.DISPLAY_FORMAT.equalsIgnoreCase("dd/MM/yyyy"))
             	returnString = dd+ "/" + mm + "/" + yy;
             	//SC_DIS_B_14671 ENDS
             }
@@ -1831,11 +1828,11 @@ public static String getMonth(String date){
 	
     public static String getDisplayPeriod(String period){
         String returnPeriod= "  ";
-        if (period == null){
+        /*if (period == null){
             return 	returnPeriod;
         } else if (period.length() > 0){
             returnPeriod= period.substring(6)+" "+MultiTenancyUtil.getTenantConstants().months[Integer.parseInt(period.substring(4,6))-1] + " " + period.substring(0,4);
-        }
+        }*/
         return returnPeriod;
     }
 /**
@@ -2419,7 +2416,6 @@ public static String getMonth(String date){
  * @return long : no of days
  */
 	public static long getDaysBetweenDates(String fromDate , String toDate){
-		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		long diff		= 0;
 		try{
 			String mm		= null;
@@ -2429,7 +2425,8 @@ public static String getMonth(String date){
 			if(fromDate != null  && fromDate.length() == 10 && toDate != null && toDate.length() == 10)
 			{
 				//P_DATE_FORMAT Sanjeev K
-				if(!"calendar2".equals(_baseConstants.CALENDAR_INDEX))
+				//if(!"calendar2".equals(Constants.CALENDAR_INDEX))
+				if(true)
 				{
 					dd			= fromDate.substring(0,2);
 					mm			= fromDate.substring(3,5);
@@ -2450,7 +2447,8 @@ public static String getMonth(String date){
 				//OTRS_2008102010000722 Ends
 				fromCal.set(Calendar.YEAR , Integer.parseInt(yy));
 				//P_DATE_FORMAT Sanjeev K
-				if(!"calendar2".equals(_baseConstants.CALENDAR_INDEX))
+				//if(!"calendar2".equals(_baseConstants.CALENDAR_INDEX))
+				if(true)
 				{
 					dd			= toDate.substring(0,2);
 					mm			= toDate.substring(3,5);
@@ -2919,36 +2917,36 @@ public static String getMonth(String date){
 	// P_int_B_41791 Ends
 	 @SuppressWarnings("deprecation")
 	 public static String getDateInTopFormat(Calendar calendar){
-		 BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+		 //BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 			String topFormatDate = null;
-			if(_baseConstants.isUSDateFormat){
+			/*if(_baseConstants.isUSDateFormat){
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayNamesArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+ LanguageUtil.getString(_baseConstants.months[calendar.get(Calendar.MONTH)]) + " "+calendar.get(Calendar.DAY_OF_MONTH)+ ", "+calendar.get(Calendar.YEAR);	//P_SCH_CAL_DAY
 			}else{
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayNamesArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+calendar.get(Calendar.DAY_OF_MONTH)+ " " + LanguageUtil.getString(_baseConstants.months[calendar.get(Calendar.MONTH)])+", "+calendar.get(Calendar.YEAR);		//P_SCH_CAL_DAY
-			}
+			}*/
 			return topFormatDate; 
 		}
 	 
 	 @SuppressWarnings("deprecation")
 	public static String getDateInFullFormat(Calendar calendar){
-		 BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+		// BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 			String topFormatDate = null;
-			if(_baseConstants.isUSDateFormat){
+			/*if(_baseConstants.isUSDateFormat){
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayNamesArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+ LanguageUtil.getString(_baseConstants.months[calendar.get(Calendar.MONTH)]) + " "+calendar.get(Calendar.DAY_OF_MONTH)+ ", "+calendar.get(Calendar.YEAR);	//P_SCH_CAL_DAY
 			}else{
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayNamesArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+calendar.get(Calendar.DAY_OF_MONTH)+ " " + LanguageUtil.getString(_baseConstants.months[calendar.get(Calendar.MONTH)])+", "+calendar.get(Calendar.YEAR);		//P_SCH_CAL_DAY
-			}
+			}*/
 			return topFormatDate; 
 		}
 	 @SuppressWarnings("deprecation")
 	 public static String getDateInShortFormat(Calendar calendar){
-		 BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+		 //BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 			String topFormatDate = null;
-			if(_baseConstants.isUSDateFormat){
+			/*if(_baseConstants.isUSDateFormat){
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+ LanguageUtil.getString(_baseConstants.monthSortNames[calendar.get(Calendar.MONTH)]) + " "+calendar.get(Calendar.DAY_OF_MONTH)+ ", "+calendar.get(Calendar.YEAR);	//P_SCH_CAL_DAY
 			}else{
 				topFormatDate = LanguageUtil.getString(_baseConstants.dayArray[calendar.getTime().getDay()-_baseConstants.CALENDAR_START_DAY_OFFSET])+", "+calendar.get(Calendar.DAY_OF_MONTH)+ " " + LanguageUtil.getString(_baseConstants.monthSortNames[calendar.get(Calendar.MONTH)])+", "+calendar.get(Calendar.YEAR);	//P_SCH_CAL_DAY
-			}
+			}*/
 			return topFormatDate; 
 		}
 	 @SuppressWarnings("deprecation")
@@ -3087,12 +3085,12 @@ public static String getMonth(String date){
 		 */
 	 	@SuppressWarnings("deprecation")
 		public static String getDateInWeekFormat(Date startDate,Date endDate){
-	 		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+	 		//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 			Calendar startCal = null;
 			Calendar endCal = null;
 			String weekStartDate = null;
 			String weekEndDate = null;
-			startCal = Calendar.getInstance();
+			/*startCal = Calendar.getInstance();
 			endCal = Calendar.getInstance();
 			
 			if(startDate != null){
@@ -3113,7 +3111,7 @@ public static String getMonth(String date){
 			}
 			
 			weekEndDate = endCal.get(Calendar.DAY_OF_MONTH)+ " " + _baseConstants.monthSortNames[endCal.get(Calendar.MONTH)]+", "+endCal.get(Calendar.YEAR);
-			
+			*/
 			return weekStartDate + "  &#8212; " + weekEndDate;
 		}
 		

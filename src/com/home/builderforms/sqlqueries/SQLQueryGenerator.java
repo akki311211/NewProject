@@ -17,7 +17,6 @@ import java.util.Map;
 
 
 
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.home.builderforms.DBConnectionManager;
 import com.home.builderforms.DateTime;
 import com.home.builderforms.DateUtil;
@@ -830,7 +829,7 @@ public class SQLQueryGenerator{
 						}
 					}
 					//strBuff.append(") ENGINE=MyISAM DEFAULT CHARSET=utf8");//P_E_ENCODING
-					strBuff.append(") ENGINE=").append("yes".equalsIgnoreCase((String) MultiTenancyUtil.getTenantContext().getAttribute("isInnoDB"))?"InnoDB":"MyISAM").append(" DEFAULT CHARSET=utf8");//P_E_ENCODING
+					strBuff.append(") ENGINE=").append("yes".equalsIgnoreCase("no")?"InnoDB":"MyISAM").append(" DEFAULT CHARSET=utf8");//P_E_ENCODING
 					return strBuff.toString();
 				} else {
 					return "";
@@ -879,7 +878,7 @@ public class SQLQueryGenerator{
 						Map<String, String> parameters = new HashMap<String, String>();
 						parameters.put("action", "create");
 						parameters.put("query", strBuff.toString());
-						BaseUtils.syncData("formgeneratorsync", null, parameters);
+						//BaseUtils.syncData("formgeneratorsync", null, parameters);
 					}
 					
 					return strBuff.toString();

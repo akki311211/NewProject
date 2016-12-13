@@ -141,6 +141,8 @@ package com.home.builderforms;
 
 import java.util.StringTokenizer;
 
+import com.home.builderforms.sqlqueries.ResultSet;
+
 /**
  * This class contains some frequently used general utility methods being used
  * in the portal All methods have been declared static
@@ -280,6 +282,134 @@ public static String forSpecialCharForDB(String pValue) {
 	}
 	return (result.toString());
 
+}
+
+public static Info getIdValueInfo(String table, String idField, String valueField)
+{
+	Info returnInfo = new Info();
+	try 
+	{
+    	String query = "SELECT "+idField+ " , "+valueField+" FROM "+table+" ORDER BY "+valueField;
+    	ResultSet  resultSet = QueryUtil.getResult(query.toString(), new Object[]{});
+  	  	while(resultSet.next()) 
+  	  	{
+  	  		returnInfo.set(resultSet.getString(idField), LanguageUtil.getString(resultSet.getString(valueField)));
+  	  	}
+	} catch (Exception e) 
+	{
+	}
+	return returnInfo;
+}
+//KSZCB-20150317-003 Start
+public static Info getIdValueInfo(String table, String idField, String valueField, String orderByColumn, String orderByValue,String orderByValue1, String orderBy1, String orderBy2)
+{
+	Info returnInfo = new Info();
+	try 
+	{
+    	//String query = "SELECT "+idField+ " , "+valueField+" FROM "+table+" ORDER BY IF("+orderBy1;
+    	
+    	StringBuffer query =new StringBuffer();
+    	query.append("SELECT ").append(idField).append(" , ").append(valueField).append(" FROM ").append(table).append(" ORDER BY CASE ").append(orderByColumn).append(" WHEN '").append(orderByValue).append("' THEN ").append(orderBy1).append(" END, CASE ").append(orderByColumn).append(" WHEN '").append(orderByValue1).append("' THEN ").append(orderBy2).append(" END");
+    	ResultSet  resultSet = QueryUtil.getResult(query.toString(), new Object[]{});
+  	  	while(resultSet.next()) 
+  	  	{
+  	  		returnInfo.set(resultSet.getString(idField), LanguageUtil.getString(resultSet.getString(valueField)));
+  	  	}
+	} catch (Exception e) 
+	{
+	}
+	return returnInfo;
+}
+public static String getMonthName(int month1){
+	
+    String month = "";
+    String monthNames[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+
+    for(int count=0;count<12;count++){
+        if(month1==count){
+            month=monthNames[count];
+        }
+    }
+
+return month;
+
+}
+public static String formatPhoneNo(String phone) {
+	if (phone == null)
+		return "";
+	StringBuffer sb = new StringBuffer(phone);
+	try {
+		String validChars = "0123456789,";
+		for (int count = 0; count < sb.length(); count++) {
+			if (validChars.indexOf(sb.charAt(count)) == -1) {
+				sb = sb.deleteCharAt(count);
+				count = -1;
+			}
+		}
+
+		/*
+		 * if (sb.length() > 10){ int difference = sb.length()-10; sb = new
+		 * StringBuffer(sb.substring(0,sb.length()-difference)); }
+		 */
+		if (sb.length() == 10) {
+			sb.insert(0, '(');
+			sb.insert(4, ')');
+			// Modified by Anuj 14-Nov-2004
+			// sb.insert(5,'-');
+			sb.insert(5, ' ');
+			sb.insert(9, '-');
+		}
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+
+	return sb.toString();
+}
+public static String formatPhoneNo(String phone, String country) {
+	if (phone == null)
+		phone = "";
+	StringBuffer sb = new StringBuffer(phone);
+	try {
+		if(StringUtil.isInt(country)) {//Wee Watch phone numbers starts
+			//country = PortalUtils.getCountryNameById(country);
+		}//Wee Watch phone numbers ends
+		if (country != null && country.equals("USA")) {
+		String validChars = "0123456789";
+		for (int count = 0; count < sb.length(); count++) {
+			if (validChars.indexOf(sb.charAt(count)) == -1) {
+				sb = sb.deleteCharAt(count);
+				count = -1;
+			}
+		}
+
+//Sanjeev K F_Phone_formating			
+		/**	if (sb.length() > 10) {
+				int difference = sb.length() - 10;
+				sb = new StringBuffer(sb.substring(0, sb.length()
+						- difference));
+			}*/
+
+		if(country != null && country.equals("USA")) {
+			if (sb.length() == 10) {
+				sb.insert(0, '(');
+				sb.insert(4, ')');
+				// Modified by Anuj 14-Nov-2004
+				// sb.insert(5,'-');
+				sb.insert(5, ' ');
+				sb.insert(9, '-');
+			}
+			else
+			{
+				//else part added by sekhar for bug#53323
+				sb = new StringBuffer(phone);
+			}
+		}
+		}
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+
+	return sb.toString();
 }
 }//end class
 

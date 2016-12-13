@@ -97,7 +97,7 @@ public class UserRole implements java.io.Serializable
 	public void setRoleName(String name)
 	{
 		if("Default Divisional Role".equals(name)){
-			name = "Default "+MultiTenancyUtil.getTenantConstants().DIVISION_LABEL+" Role";
+			name = "Default Divisional Role";
 		}
 		this.roleName = name;
 	}

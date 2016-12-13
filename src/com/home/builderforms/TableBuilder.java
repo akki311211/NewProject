@@ -10,11 +10,9 @@ package com.home.builderforms;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-import com.home.builderforms.*;
 import com.home.builderforms.DBConnectionManager;
 import com.home.builderforms.Info;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;//TSTE-20150204-004
-import com.home.BuilderFormFieldNames;
+import com.home.builderforms.BuilderFormFieldNames;
 
 
 public class TableBuilder extends BaseBuilder{
@@ -126,7 +124,7 @@ public class TableBuilder extends BaseBuilder{
             //TSTE-20150204-004 starts
             	where = where.replace("$param3$", BuilderConstants.SINGLE_QUOTE + (String)tableParameters.get("builderModuleName") + BuilderConstants.SINGLE_QUOTE);
 
-            	if(MultiTenancyUtil.getTenantConstants().QA_TAB_INTEGRATION && "fim".equals((String)tableParameters.get("builderModuleName")) && ModuleUtil.auditImplemented())
+            	if(false && "fim".equals((String)tableParameters.get("builderModuleName")) && ModuleUtil.auditImplemented())
             		where = where.replace("$param4$", BuilderConstants.SINGLE_QUOTE + "19" + BuilderConstants.SINGLE_QUOTE);//codebase805_issue
             	else
             		where = where.replace("$param4$", BuilderConstants.SINGLE_QUOTE +FieldNames.EMPTY_STRING + BuilderConstants.SINGLE_QUOTE);//codebase805_issue
@@ -416,7 +414,7 @@ public class TableBuilder extends BaseBuilder{
             //TSTE-20150204-004 starts
             	where = where.replace("$param3$", BuilderConstants.SINGLE_QUOTE + (String)tableParameters.get("builderModuleName") + BuilderConstants.SINGLE_QUOTE);
 
-            	if(MultiTenancyUtil.getTenantConstants().QA_TAB_INTEGRATION && "fim".equals((String)tableParameters.get("builderModuleName")) && ModuleUtil.auditImplemented())
+            	if(false && "fim".equals((String)tableParameters.get("builderModuleName")) && ModuleUtil.auditImplemented())
             		where = where.replace("$param4$", BuilderConstants.SINGLE_QUOTE + "23" + BuilderConstants.SINGLE_QUOTE);//codebase805_issue
             	else
             		where = where.replace("$param4$", BuilderConstants.SINGLE_QUOTE +FieldNames.EMPTY_STRING + BuilderConstants.SINGLE_QUOTE);//codebase805_issue

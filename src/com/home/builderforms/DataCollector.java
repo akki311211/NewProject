@@ -17,28 +17,22 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.appnetix.app.components.adminmgr.manager.AdminMgr;
-import com.appnetix.app.components.commonmgr.manager.CommonMgr;
-import com.appnetix.app.components.locationmgr.manager.LocationMgr;
-import com.appnetix.app.components.masterdatamgr.manager.MasterDataMgr;
-import com.appnetix.app.components.regionmgr.manager.RegionMgr;
-import com.appnetix.app.components.taskmgr.manager.TaskMgr;
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
-import com.appnetix.app.portal.FormCustomization.BuilderFormFieldNames;
-import com.appnetix.app.portal.calendar.UserTimezoneMap;
-import com.appnetix.app.portal.role.UserRoleMap;
+import com.home.builderforms.AdminMgr;
+import com.home.builderforms.CommonMgr;
+//import com.appnetix.app.components.locationmgr.manager.LocationMgr;
+import com.home.builderforms.MasterDataMgr;
+import com.home.builderforms.RegionMgr;
+import com.home.builderforms.BuilderFormWebImpl;
+import com.home.builderforms.BuilderFormFieldNames;
+import com.home.builderforms.UserTimezoneMap;
+import com.home.builderforms.UserRoleMap;
 import com.home.builderforms.CommonUtil;
 import com.home.builderforms.Constants;
 import com.home.builderforms.DBUtil;
 import com.home.builderforms.DateTime;
 import com.home.builderforms.DateUtil;
-import com.home.builderforms.DispatchBoardUtil;
-import com.home.builderforms.DivisionUtil;
 import com.home.builderforms.FieldNames;
 import com.home.builderforms.LanguageUtil;
-import com.home.builderforms.MasterEntities;
 import com.home.builderforms.ModuleUtil;
 import com.home.builderforms.NewPortalUtils;
 import com.home.builderforms.PortalUtils;
@@ -54,14 +48,14 @@ import com.home.builderforms.ForeignTable;
 import com.home.builderforms.HeaderField;
 import com.home.builderforms.HeaderMap;
 import com.home.builderforms.SyncWithField;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
-import com.home.builderforms.tabs.UserTabConfig;
-import com.home.builderforms.tabs.UserTabConfigUtil;
-import com.home.builderforms.tagutils.CheckBox;
-import com.home.builderforms.tagutils.Combo;
-import com.home.builderforms.tagutils.Radio;
+import com.home.builderforms.UserTabConfig;
+import com.home.builderforms.UserTabConfigUtil;
+import com.home.builderforms.CheckBox;
+import com.home.builderforms.Combo;
+import com.home.builderforms.Radio;
 
 
 
@@ -77,7 +71,7 @@ import com.home.builderforms.tagutils.Radio;
  */
 public class DataCollector  {
 	private static HttpServletRequest request		= null;
-	private static final Logger logger		= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(DataCollector.class);
+	private static final Logger logger		= Logger.getLogger(DataCollector.class);
 	static DataManipulator collector = new DataManipulator();
 	public static Method[] methodRef		 = null;
 	static public HashMap  sMap		 = null;
@@ -218,28 +212,28 @@ public class DataCollector  {
 		return combo;
 	}
 	
-	public static Combo getTransferStatusCombo(Field fld,Boolean isModify)
+	/*public static Combo getTransferStatusCombo(Field fld,Boolean isModify)
 	{
 		Info comboInfo = AdminMgr.newInstance().getFimTransferlDAO().getTransferStatusValue();
 		Combo combo = new Combo(fld.getDisplayName());
 		combo.setInfo(comboInfo);
 		return combo;
-	}
+	}*/
 	
-	public static Combo getStoreTypeCombo(Field fld,Boolean isModify)
+	/*public static Combo getStoreTypeCombo(Field fld,Boolean isModify)
 	{
 		Info comboInfo = LocationMgr.newInstance().getLocationsDAO().getAllStoreTypeInfo();
 		Combo combo = new Combo(fld.getDisplayName());
 		combo.setInfo(comboInfo);
 		return combo;
-	}
+	}*/
 	
-	public static Combo comboFimState(Field fld,String countryID,Boolean isModify)
+	/*public static Combo comboFimState(Field fld,String countryID,Boolean isModify)
 	{
 		Combo combo = new Combo(fld.getDisplayName());
 		Info comboInfo = new Info();
 		if(!isModify){
-			countryID = MultiTenancyUtil.getTenantConstants().DEFAULT_COUNTRY_ID;
+			countryID = "1";
 		} else {
 			if(countryID.equals("0")) {
 //				countryID = MultiTenancyUtil.getTenantConstants().DEFAULT_COUNTRY_ID;
@@ -351,7 +345,7 @@ public class DataCollector  {
 		comboInfo.setFields((SequenceMap)countryMap.cloneInfo());
 		combo.setInfo(comboInfo);
 		return combo;
-	}
+	}*/
 	
 	
 	public static Combo getSearchStateCombo(Field fld,Boolean isModify)
@@ -379,7 +373,7 @@ public class DataCollector  {
 		comboInfo.insert(1,"-1", LanguageUtil.getString("Select Country"));
 		combo.setInfo(comboInfo);
 		if(!isModify)
-			combo.setComboValue(MultiTenancyUtil.getTenantConstants().DEFAULT_COUNTRY_ID);
+			combo.setComboValue("1");
 		
 		return combo;
 	}
@@ -1147,7 +1141,6 @@ public class DataCollector  {
     public static String generateCheckBoxHtml(Field fld, String value, String condVal, Boolean isModify){
 		String chkCondtFldVal = fld.getCheckboxConditionFieldValue();
 		String visibility = "";
-		  BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		if(isModify && StringUtil.isValid(condVal) && (condVal).equals(chkCondtFldVal)) {
 			visibility = "visible";
 		} else if(isModify && StringUtil.isValid(condVal) && !(condVal).equals(chkCondtFldVal)) {
@@ -1177,7 +1170,7 @@ public class DataCollector  {
 				int count=0;
 				for (UserTabConfig userTabConfig : userTabConfigList) {		
 					
-					if(ModuleUtil.auditImplemented() && _baseConstants.QA_TAB_INTEGRATION && "QA History".equalsIgnoreCase(userTabConfig.getName().trim()))//P_PW_ENH_FIM_EXPORT
+					if(ModuleUtil.auditImplemented() && false && "QA History".equalsIgnoreCase(userTabConfig.getName().trim()))//P_PW_ENH_FIM_EXPORT
 						continue;
 					
 					if(!userTabConfig.getName().equalsIgnoreCase("SmartConnect") && !userTabConfig.getName().equalsIgnoreCase("Center Info") && !userTabConfig.getName().equalsIgnoreCase("Owners") && !userTabConfig.getName().equalsIgnoreCase("Contact History") && !userTabConfig.getName().equalsIgnoreCase("Users") && !userTabConfig.getName().equalsIgnoreCase("Pictures") && !userTabConfig.getName().equalsIgnoreCase("Previous Franchisees") && !userTabConfig.getName().equalsIgnoreCase("Transfer"))
@@ -1189,7 +1182,7 @@ public class DataCollector  {
 				int i = 0;
 				for (UserTabConfig userTabConfig : userTabConfigList) 
 				{		
-					if(ModuleUtil.auditImplemented() && _baseConstants.QA_TAB_INTEGRATION && "QA History".equalsIgnoreCase(userTabConfig.getName().trim()))//P_PW_ENH_FIM_EXPORT
+					if(ModuleUtil.auditImplemented() && false && "QA History".equalsIgnoreCase(userTabConfig.getName().trim()))//P_PW_ENH_FIM_EXPORT
 						continue;
 					
 					if(!userTabConfig.getName().equalsIgnoreCase("SmartConnect") && !userTabConfig.getName().equalsIgnoreCase("Center Info") && !userTabConfig.getName().equalsIgnoreCase("Owners") && !userTabConfig.getName().equalsIgnoreCase("Contact History") && !userTabConfig.getName().equalsIgnoreCase("Users") && !userTabConfig.getName().equalsIgnoreCase("Pictures") && !userTabConfig.getName().equalsIgnoreCase("Previous Franchisees") && !userTabConfig.getName().equalsIgnoreCase("Transfer"))
@@ -1269,10 +1262,10 @@ public class DataCollector  {
     	}
     }
     
-    public static String getTextFieldData(Field fld, String value){
+    /*public static String getTextFieldData(Field fld, String value){
     		String val = ""; 
     		if(fld.getFieldName().equals("seller")) {
-    			val = (String)((Info)LocationMgr.newInstance().getLocationsDAO().getOwnerMap().get(value)).getString(FieldNames.OWNER_NAME);
+    			//val = (String)((Info)LocationMgr.newInstance().getLocationsDAO().getOwnerMap().get(value)).getString(FieldNames.OWNER_NAME);
     		} else if(fld.getFieldName().equals("shareholder")) {
     			SequenceMap guarantorMap = CommonMgr.newInstance().getCommonFimDAO().getGuarantorData(value);
     			Iterator guarantorIt = guarantorMap.values().iterator();
@@ -1290,7 +1283,7 @@ public class DataCollector  {
     		}
     		
     		return val;
-    }
+    }*/
     //P_CM_Enh_BuilderForm starts
     public static Combo getComboFromSrc(Field fld,Boolean isModify) {
  		try{
@@ -1344,7 +1337,7 @@ public class DataCollector  {
  	}
     
     
-    public static Combo getComboForContactType(Field fld,Boolean isModify)
+    /*public static Combo getComboForContactType(Field fld,Boolean isModify)
     {
     	Combo combo = new Combo(fld.getDisplayName());
     	if(!"0".equals(MultiTenancyUtil.getTenantConstants().getContactTypeDisplay())) {
@@ -1353,12 +1346,12 @@ public class DataCollector  {
 				combo.setInfo(CommonMgr.newInstance().getCommonCmDAO().getDefaultContactTypeInfoCM(null));	
 			}
     	return combo;
-    }
+    }*/
     
     /**
 	 * get info for add lead page
 	 */
-	public static Combo getLeadTypeInfo(Field fld,Boolean isModify) {
+	/*public static Combo getLeadTypeInfo(Field fld,Boolean isModify) {
 		try{
  			Combo combo = new Combo(fld.getDisplayName());
 			combo.setInfo(CommonMgr.newInstance().getCommonCmDAO().getLeadTypeInfo());
@@ -1385,7 +1378,7 @@ public class DataCollector  {
  			return null;
  		}
 		
-	}
+	}*/
 	
 	//ENH_PW_SMART_QUESTIONS_STARTS
 	/**
@@ -1476,7 +1469,7 @@ public class DataCollector  {
  		}
 		
 	}
-	public static Combo getSourceCombo(Field fld,String franchiseeNo,Boolean isModify){
+	/*public static Combo getSourceCombo(Field fld,String franchiseeNo,Boolean isModify){
 		try{
  			Combo combo = new Combo(fld.getDisplayName());
  			String fieldName=fld.getFieldName();
@@ -1496,7 +1489,7 @@ public class DataCollector  {
  			return null;
  		}
 		
-	}
+	}*/
 	public static Combo getSMSCampaignCombo(Field fld,HttpServletRequest request,Boolean isModify)
 	{
 		
@@ -1609,7 +1602,8 @@ public class DataCollector  {
 		Combo combo = new Combo(fld.getDisplayName());
 		Info comboInfo = new Info();
 //		SequenceMap countryMap = com.home.builderforms.CacheDataUtil.getActiveCountryMap();
-		SequenceMap countryMap = PortalUtils.getCountries();
+		//SequenceMap countryMap = PortalUtils.getCountries();
+		SequenceMap countryMap = new SequenceMap();
 //		comboInfo.setFields(new SequenceMap(countryMap.getHashMap()));
 		comboInfo.setFields((SequenceMap)countryMap.cloneInfo());
 		combo.setInfo(comboInfo);
@@ -1638,7 +1632,7 @@ public class DataCollector  {
 		//BB-20150203-259 (Dynamic Response based on parent field response) ends
 		comboInfo.insert(1,"-1", LanguageUtil.getString("Select Country"));
 		if(!isModify)
-			combo.setComboValue(MultiTenancyUtil.getTenantConstants().DEFAULT_COUNTRY_ID);
+			combo.setComboValue("1");
 		return combo;
 	}
 	public static Combo comboCMCountry(Field fld,Boolean isModify)
@@ -1646,7 +1640,8 @@ public class DataCollector  {
 		Combo combo = new Combo(fld.getDisplayName());
 		Info comboInfo = new Info();
 //		SequenceMap countryMap = com.home.builderforms.CacheDataUtil.getActiveCountryMap();
-		SequenceMap countryMap = PortalUtils.getCountries();
+		//SequenceMap countryMap = PortalUtils.getCountries();
+				SequenceMap countryMap = new SequenceMap();
 //		comboInfo.setFields(new SequenceMap(countryMap.getHashMap()));
 		comboInfo.setFields((SequenceMap)countryMap.cloneInfo());
 		combo.setInfo(comboInfo);
@@ -1655,12 +1650,12 @@ public class DataCollector  {
 			combo.setJScript("onchange=\"getCombo('state',this.value,'"+fld.getDependentField()+"', '-1');hideShowCheckBox(this.value);\"");
 		comboInfo.insert(1,"-1", LanguageUtil.getString("Select Country"));
 		if(!isModify)
-			combo.setComboValue(MultiTenancyUtil.getTenantConstants().DEFAULT_COUNTRY_ID);
+			combo.setComboValue("1");
 		return combo;
 	}//BBP-20140530-255 ends
 	
 	//BOEFLY_INTEGRATION : START
-    public static String generateBoeflyUrl(String urlMailMerge,String leadId)
+    /*public static String generateBoeflyUrl(String urlMailMerge,String leadId)
 	{		  BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		StringBuffer returnVal = new StringBuffer();
 		if("on".equals(_baseConstants.BOEFLY_INTEGRATION_STATUS))
@@ -1668,7 +1663,7 @@ public class DataCollector  {
 			returnVal.append(_baseConstants.BOEFLY_URL).append("&fcid=").append(leadId);
 		}
 		return returnVal.toString();
-	}
+	}*/
     //BOEFLY_INTEGRATION : END
     
     /**
@@ -1789,25 +1784,24 @@ public class DataCollector  {
   	{
 
   		Combo combo = new Combo(field.getDisplayName());
-  		combo.setInfo(AdminMgr.newInstance().getCallDAO().getCallStatus());
+  		/*combo.setInfo(AdminMgr.newInstance().getCallDAO().getCallStatus());
   		if(!isModify){
   			combo.setComboValue("0");
-  		}
+  		}*/
   		return combo;
   	}
   	public static Combo getCallType(Field field,Boolean isModify)
   	{
 
   		Combo combo = new Combo(field.getDisplayName());
-  		combo.setInfo(AdminMgr.newInstance().getCallDAO().getCallTypes());
+  		/*combo.setInfo(AdminMgr.newInstance().getCallDAO().getCallTypes());
   		if(!isModify){
   			combo.setComboValue("7");
-  		}
+  		}*/
   		return combo;
   	}
   	public static void handleFsLeadCallTimeAdded(Field field, Info builderDetailsInfo, HttpServletRequest request,Info builderInfo,Info totalInfo,Boolean isModify)throws Exception
   	{
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		Info combInfo = new Info();
   		for (int i = 1; i <= 12; i++) {
   			combInfo.set(i + "", i + "");
@@ -1849,8 +1843,8 @@ public class DataCollector  {
   				}
   				String startDatetime="";
   				startDatetime = TimeZoneUtils.performUTCConversion(
-                                      _baseConstants.DB_TIMEZONE_TIMEZONEUTILS,userTimeZone,
-                                      DateTime.getRequiredFormat(callDate, _baseConstants.DISPLAY_FORMAT_HMS, "yyyy-MM-dd HH:mm:ss"),
+                                      Constants.DB_TIMEZONE_TIMEZONEUTILS,userTimeZone,
+                                      DateTime.getRequiredFormat(callDate, Constants.DISPLAY_FORMAT_HMS, "yyyy-MM-dd HH:mm:ss"),
                                       TimeZoneUtils.DB_DATETIME,
                                       TimeZoneUtils.DB_DATETIME );
   				timeAdedd = startDatetime.substring(11);
@@ -1979,7 +1973,7 @@ public class DataCollector  {
   	}
   	public static void getAssignedToComboForTask(Field field, Info builderDetailsInfo, HttpServletRequest request,Info builderInfo,Info totalInfo,Boolean isModify,String contactId,String franchiseeNo,String areaID,int ownerCount )throws Exception
   	{
-  		boolean bModify = false;
+  		/*boolean bModify = false;
   		TaskMgr taskMgr = TaskMgr.newInstance();
           String taskID = request.getParameter("taskID");
           String foreignID = request.getParameter(FieldNames.FOREIGN_ID);
@@ -2076,10 +2070,10 @@ public class DataCollector  {
   		} else
   		{
   			String tempVal = franchiseeNo;
-  			/*if(fromViewAll) {
+  			if(fromViewAll) {
   				String[] temp = CommonUtil.getFranchiseeAndOwner(request);
   				tempVal = temp[0]; 
-  			}*/
+  			}
   			comboci = taskMgr.getTaskDAO().getAllUsers1(userLevel, franchiseeNo, privlidgeId, userID, moduleId,areaID,tempVal,CMUserRoleMap, divisionIds,true);
   		}
   		String[] selectedValArr=null;//P_ENH_ASSIGN_TO_USERS_TASK
@@ -2217,7 +2211,7 @@ public class DataCollector  {
   		if(field.getColspan().equals("2")) {
   			builderDetailsInfo.set(BuilderFormFieldNames.COL_SPAN, "2");
   		}
-  		builderDetailsInfo.set("value", htmlContent);
+  		builderDetailsInfo.set("value", htmlContent);*/
   	}
   	public static Combo getTaskStatus(Field field,Boolean isModify)
   	{
@@ -2233,10 +2227,10 @@ public class DataCollector  {
   	{
 
   		Combo combo = new Combo(field.getDisplayName());
-  		combo.setInfo(NewPortalUtils.getInfoFromMap(TaskMgr.newInstance().getTaskDAO().getTaskType()));
+  		/*combo.setInfo(NewPortalUtils.getInfoFromMap(TaskMgr.newInstance().getTaskDAO().getTaskType()));
   		if(!isModify){
   			combo.setComboValue("1");
-  		}
+  		}*/
   		return combo;
   	}
   	public static Combo getTaskPriority(Field field,Boolean isModify)
@@ -2286,7 +2280,6 @@ public class DataCollector  {
   				.getTimezone(
   						(String) (request.getSession()
   								.getAttribute("user_no")));
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		if (!isModify)
   		{
   			userTimeZone = (String) request.getSession().getAttribute("userTimeZone");
@@ -2299,7 +2292,7 @@ public class DataCollector  {
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.DATE);
 
-  				starDate = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   				
   				if (infoDetails.get(FieldNames.TIMELESS_TASK) == null || !"Y".equals(infoDetails.get(FieldNames.TIMELESS_TASK)))
   				{
@@ -2487,7 +2480,6 @@ public class DataCollector  {
   				.getTimezone(
   						(String) (request.getSession()
   								.getAttribute("user_no")));
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		if (!isModify)
   		{
   			userTimeZone = (String) request.getSession().getAttribute("userTimeZone");
@@ -2500,7 +2492,7 @@ public class DataCollector  {
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.DATE);
 
-  				starDate = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   				
   				if (infoDetails.get(FieldNames.TIMELESS_TASK) == null || !"Y".equals(infoDetails.get(FieldNames.TIMELESS_TASK)))
   				{
@@ -2741,7 +2733,6 @@ public class DataCollector  {
   		String dateString="";
   		String starDate = null;
   		String starDate1 = null;
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		String userTimeZone = UserTimezoneMap.newInstance()
   				.getTimezone(
   						(String) (request.getSession()
@@ -2751,12 +2742,12 @@ public class DataCollector  {
   			if (infoDetails.getObject(FieldNames.DATE) != null)
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.DATE);
-  				starDate = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   			}
   			if (infoDetails.getObject(FieldNames.REMINDER_TIME) != null)
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.REMINDER_TIME);
-  				starDate1 = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate1 = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   			} else if (starDate1 == null && ("0").equals(infoDetails.getString(FieldNames.SCHEDULE_TIME)))
   			{
   				starDate1 = starDate;
@@ -2797,7 +2788,6 @@ public class DataCollector  {
   				.getTimezone(
   						(String) (request.getSession()
   								.getAttribute("user_no")));
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		String disabled = "disabled";
   		// for create page date and time will be populated as current date time
   		if (!isModify)
@@ -2811,7 +2801,7 @@ public class DataCollector  {
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.DATE);
 
-  				starDate = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   				
   				if (infoDetails.get(FieldNames.TIMELESS_TASK) == null || !"Y".equals(infoDetails.get(FieldNames.TIMELESS_TASK)))
   				{
@@ -2973,7 +2963,6 @@ public class DataCollector  {
           String value="";
           String starDate = null;
   		String starDate1 = null;
-  		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   		StringBuffer sBuff = new StringBuffer();
   		String userTimeZone = UserTimezoneMap.newInstance()
   				.getTimezone(
@@ -2985,12 +2974,12 @@ public class DataCollector  {
   			if (infoDetails.getObject(FieldNames.DATE) != null)
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.DATE);
-  				starDate = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   			}
   			if (infoDetails.getObject(FieldNames.REMINDER_TIME) != null)
   			{
   				java.sql.Timestamp dateStamp = (java.sql.Timestamp) infoDetails.getObject(FieldNames.REMINDER_TIME);
-  				starDate1 = DateTime.getDateTime(dateStamp, _baseConstants.DISPLAY_FORMAT);
+  				starDate1 = DateTime.getDateTime(dateStamp, Constants.DISPLAY_FORMAT);
   			} else if (starDate1 == null && ("0").equals(infoDetails.getString(FieldNames.SCHEDULE_TIME)))
   			{
   				starDate1 = starDate;
@@ -3002,7 +2991,7 @@ public class DataCollector  {
           	value = starDate;
           } else
           {
-          	value= DateTime.getRequiredFormat(currentUserTime, TimeZoneUtils.DB_DATETIME, _baseConstants.DISPLAY_FORMAT);
+          	value= DateTime.getRequiredFormat(currentUserTime, TimeZoneUtils.DB_DATETIME, Constants.DISPLAY_FORMAT);
           }
           sBuff.append("<input class=\"fTextBoxDate\" name=\"startDate\"  onblur=\"dateUtility(this,form.name)\" onchange=\"showAvailabilityDiv()\" id=\"startDate\"  value=\""+value +"\"  type=\"text\" />");  //P_B_25595
           sBuff.append("&nbsp;&nbsp;&nbsp;<a tabindex=\"-1\" href=\"#\" id=\"startdateCal1\"><img border=\"0\"  align=\"\" src=\"").append(request.getContextPath()).append("/static").append(Constants.STATIC_KEY).append("/images/smallcalendar.gif\"/></a>");
@@ -3017,7 +3006,7 @@ public class DataCollector  {
   	}
   	
   	public static void divisionBrandCombos(Info builderDetailsInfo, Info builderInfo, String franchiseeNo) {
-  		boolean brandFlag = false;
+  		/*boolean brandFlag = false;
 		boolean divisionFlag = false;
 		String userLevel = (String)StrutsUtil.getHttpSession().getAttribute("user_level");
 		//case for division
@@ -3138,7 +3127,7 @@ public class DataCollector  {
 				builderDetailsInfo.set("value", brandId);
 				builderInfo.set("brandValueModify", builderDetailsInfo);
 			}
-		}
+		}*/
   	}
   	
   	public static void getAddToCalendarCheckBox(Field field, Info builderDetailsInfo, HttpServletRequest request,Info builderInfo,Info totalInfo,Boolean isModify,Info infoDetails){
@@ -3151,7 +3140,7 @@ public class DataCollector  {
   				{
   					//completed task should not be checked as add to calendar in case of modify
   					arr.add(infoDetails.getString(FieldNames.TASK_ID));
-  					TaskMgr.newInstance().getTaskDAO().modifyTasksToCalendar(arr);
+  					//TaskMgr.newInstance().getTaskDAO().modifyTasksToCalendar(arr);
   				}
   				
   				  sBuff.append(" checked");
@@ -3173,7 +3162,6 @@ public class DataCollector  {
   	public static void modifyValues(Field fld,String[] arrValue,String[] arrDisp,int index, Info totalInfo,String fieldName,HttpServletRequest request,String moduleId)
   	{
   		try {
-  			BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
   			String newValue=null;
   			String newDisplayName=null;
   			HttpSession ses=request.getSession();
@@ -3287,7 +3275,7 @@ public class DataCollector  {
   				spanName="otherChargesPeriod";
   				id="pCombo";
   			}
-  			Info info1=MasterDataMgr.newInstance().getMasterDataDAO().getMasterInfo(Integer.parseInt(MasterEntities.PERIOD));
+  			Info info1=MasterDataMgr.newInstance().getMasterDataDAO().getMasterInfo(Integer.parseInt("8022"));
   			StringBuffer stringForCOmbp=new StringBuffer();
   			stringForCOmbp.append("<select name='"+comboName+"' id='"+comboName+"' class='multiList' onchange=\"show('"+spanName+"',this)\"><option value='-1' ");
 

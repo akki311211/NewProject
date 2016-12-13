@@ -18,7 +18,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
 import com.home.builderforms.AppException;
 import com.home.builderforms.BaseUtils;
 import com.home.builderforms.ConnectionException;
@@ -99,7 +98,6 @@ public class UserRoleMgr
 
 		if(StringUtil.isValid(id))
 		{
-			BaseConstants _baseConstants = MultiTenancyUtil.getTenantConstants();
 
 			role = UserRole.newInstance();
 			role.setRoleID(id);
@@ -121,17 +119,17 @@ public class UserRoleMgr
 					role.setFranchiseeNo(rs.getString("FRANCHISEE_NO"));
 					isAdmin = rs.getString("IS_ADMIN");
 				}
-				if(_baseConstants.CG_ENABLED && otherParams !=null && otherParams.get("isPremium")!=null)
+				if(false && otherParams !=null && otherParams.get("isPremium")!=null)
 				{ 	String priv="";
 						String isTrial =otherParams.containsKey("isTrial")?(String)otherParams.get("isTrial"):"false";
 						String isPaid = otherParams.containsKey("nonTrialPremium")?(String)otherParams.get("nonTrialPremium"):"false";
 						String fromViewAll = otherParams.containsKey("fromViewAll")?(String)otherParams.get("fromViewAll"):"false";
-						if( "true".equals(otherParams.get("isPremium")) && "true".equals(_baseConstants.PAYMENT_ON_CONTACT))
+						if( "true".equals(otherParams.get("isPremium")) && "true".equals("false"))
 						{ 
 							query = "SELECT IS_CONTENT,PRIVILEGE_ID FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND ( IS_CONTENT = 0 || IS_CONTENT = 1)";
 						}
 						else
-						if( "true".equals(otherParams.get("isPremium")) && "false".equals(_baseConstants.PAYMENT_ON_CONTACT))
+						if( "true".equals(otherParams.get("isPremium")) && "false".equals("false"))
 						{ 
 							if("true".equals(isTrial) && "false".equals(isPaid))
 							{
@@ -143,7 +141,7 @@ public class UserRoleMgr
 								query = "SELECT * FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND IS_CONTENT = 0 AND PRIVILEGE_ID IN ("+chopmethod(allPriv)+")";
 	
 							}else{
-									priv=SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "BASIC_PRIVILEGES", "PP_ID",  _baseConstants.ZCB_ROLE_ID);
+									priv=SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "BASIC_PRIVILEGES", "PP_ID",  "false");
 									priv=chopmethod(priv);
 									priv=priv+",";
 									priv+=SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "PREMIUM_PREVILEGES", "PP_ID",(String)otherParams.get("optedPackageId"));
@@ -152,17 +150,19 @@ public class UserRoleMgr
 						}
 						else if("true".equals(otherParams.get("fromPremium")))
 						{
-							if("false".equals(_baseConstants.PAYMENT_ON_CONTACT)){
+							if("false".equals("false")){
 								priv= SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "PREMIUM_PREVILEGES", "PP_ID",(String)otherParams.get("optedPackageId"));
 								query="SELECT * FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND IS_CONTENT = 0 AND PRIVILEGE_ID " +
 								"IN ("+priv+")";
 							}else{
-									query="SELECT * FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND IS_CONTENT = 0 AND PRIVILEGE_ID IN ( SELECT PRIVILEGE_ID FROM ROLE_PRIVILEGES WHERE ROLE_ID ="+("2".equals(isAdmin)?_baseConstants.ZCB_REGIONAL_ROLE_ID:_baseConstants.ZCB_ROLE_ID)+" AND  IS_CONTENT = 0)";
+									//query="SELECT * FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND IS_CONTENT = 0 AND PRIVILEGE_ID IN ( SELECT PRIVILEGE_ID FROM ROLE_PRIVILEGES WHERE ROLE_ID ="+("2".equals(isAdmin)?_baseConstants.ZCB_REGIONAL_ROLE_ID:_baseConstants.ZCB_ROLE_ID)+" AND  IS_CONTENT = 0)";
+								query ="";
 							}
 						}
 						else
 						{
-							priv= SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "BASIC_PRIVILEGES", "PP_ID", _baseConstants.ZCB_ROLE_ID);
+							//priv= SQLUtil.getColumnValue("ZCUBATOR_CG_PRIVILEGES_PLAN_MAPPING", "BASIC_PRIVILEGES", "PP_ID", _baseConstants.ZCB_ROLE_ID);
+							priv = null;
 							query="SELECT * FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND IS_CONTENT = 0 AND " +
 							"PRIVILEGE_ID IN ("+priv+" )";
 						}
@@ -172,10 +172,10 @@ public class UserRoleMgr
                 			query = "SELECT IS_CONTENT,PRIVILEGE_ID FROM ROLE_PRIVILEGES WHERE ROLE_ID = ? AND ( IS_CONTENT = 0 || IS_CONTENT = 1)";
                 }
 				
-				if(ModuleUtil.cmImplemented() && !_baseConstants.IS_ACCOUNT_ENABLED && StringUtil.isValid(_baseConstants.ACCOUNT_PRIVILEGES)){//P_CM_B_68658
+				/*if(ModuleUtil.cmImplemented() && !_baseConstants.IS_ACCOUNT_ENABLED && StringUtil.isValid(_baseConstants.ACCOUNT_PRIVILEGES)){//P_CM_B_68658
 					
 					query+=" AND PRIVILEGE_ID NOT IN("+_baseConstants.ACCOUNT_PRIVILEGES+")";
-				}
+				}*/
 				
 				
 				rs = QueryUtil.getResult(query, new Object[] { id });
@@ -883,7 +883,7 @@ public boolean regionalUserRoleCheck(String roleId,boolean flag)
 			queries.add("DELETE FROM mvnforumCategoryGroup WHERE GroupID =" + roleId);
 			queries.add("DELETE FROM mvnforumGroupForum WHERE GroupID =" + roleId);
 			queries.add("DELETE FROM ROLE_PRIVILEGES WHERE ROLE_ID =" + roleId);
-			//BB-20151201-455  Starts
+			/*//BB-20151201-455  Starts
 			if(MultiTenancyUtil.getTenantConstants().IS_AD_INTEGRATION_ENABLED){
 				 queries.add("DELETE FROM AD_GROUP_ROLE_MAPPING WHERE ROLE_ID =" + roleId);
 	        }//BB-20151201-455  Ends
@@ -898,7 +898,7 @@ public boolean regionalUserRoleCheck(String roleId,boolean flag)
 			}catch(AppException appEx)
 			{
 				logger.error("Exception while deleting a role with Id:" + roleId, appEx);
-			}
+			}*/
 		}
 		return success;
 	}

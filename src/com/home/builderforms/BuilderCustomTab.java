@@ -10,12 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.appnetix.app.control.web.multitenancy.resources.constants.BuilderFormConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-
-
-import com.home.BuilderFormFieldNames;
-import com.home.ExportModules;
+import com.home.builderforms.BuilderFormFieldNames;
+import com.home.builderforms.ExportModules;
 import com.home.builderforms.BaseUtils;
 import com.home.builderforms.Constants;
 import com.home.builderforms.DBUtil;
@@ -24,12 +20,12 @@ import com.home.builderforms.ModuleUtil;
 import com.home.builderforms.ModuleUtil.MODULE_NAME;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
-import com.home.builderforms.TabUtil;
+//import com.home.builderforms.TabUtil;
 import com.home.builderforms.FieldMappings;
 import com.home.builderforms.ForeignTable;
 import com.home.builderforms.LinkField;
 import com.home.builderforms.Info;
-import com.home.builderforms.tabs.Tab;
+//import com.home.builderforms.tabs.Tab;
 import com.home.builderforms.TableXMLDAO;
 import java.util.Set;
 import java.util.HashSet;
@@ -42,17 +38,17 @@ public class BuilderCustomTab
 	
 	public static BuilderCustomTab newInstance()
 	{
-        BuilderFormConstants _constants = MultiTenancyUtil.getTenantFormBuilderConstants();
+        /*BuilderFormConstants _constants = MultiTenancyUtil.getTenantFormBuilderConstants();
 		if(_constants.tabGeneratorMap == null)
 		{
             _constants.tabGeneratorMap	= new SequenceMap();
-		}
+		}*/
 		return new BuilderCustomTab();
 	}
 	
 	public SequenceMap getAllTabsMap()
 	{		
-		String location 			= getCustomTabConfig();
+		/*String location 			= getCustomTabConfig();
 		File customTabFile 			= new File(location);
 		long lastModified 			= customTabFile.lastModified();
         BuilderFormConstants _constants = MultiTenancyUtil.getTenantFormBuilderConstants();
@@ -72,7 +68,8 @@ public class BuilderCustomTab
 		{
 		}
 		
-		return _constants.tabGeneratorMap;
+		return _constants.tabGeneratorMap;*/
+		return new SequenceMap();
 	}
 	
 	public SequenceMap getCustomTab(String moduleName)
@@ -142,10 +139,10 @@ public class BuilderCustomTab
 			submoduleName="area";
 		}
 		//BOEFLY_INTEGRATION : END
-		if(submoduleName!=null)
+		/*if(submoduleName!=null)
 		{
 			submoduleName = TabUtil.getSubModuleMapping(moduleName,submoduleName);
-		}
+		}*/
 				
 		if(tabGeneratorMap != null && tabGeneratorMap.size() > 0)
 		{
@@ -528,7 +525,7 @@ public class BuilderCustomTab
 	
 	private String getCustomTabConfig()
 	{
-			StringBuffer configPath = new StringBuffer(MultiTenancyUtil.getTenantConstants().XML_DIRECTORY).append("tables/admin/").append(BuilderConstants.TAB_MAPPING_XML);
+			StringBuffer configPath = new StringBuffer(Constants.XML_DIRECTORY).append("tables/admin/").append(BuilderConstants.TAB_MAPPING_XML);
 			return configPath.toString();
 	}
 	

@@ -10,12 +10,11 @@
  * PW_ENH_APPROVE_TSK_STATUS  24-Apr-2015	Rohit Jain   Approve/Reject status will show on task status.  
  */
 
-package com.appnetix.app.components.masterdatamgr.manager.dao;
+package com.home.builderforms;
 
 import java.util.Calendar;
-import com.appnetix.app.components.BaseDAO;
-import com.home.builderforms.*;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.BaseDAO;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
 import org.apache.log4j.Logger;
@@ -25,10 +24,10 @@ import java.util.HashMap;
 
 public class MasterDataDAO extends BaseDAO {
 
-	static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(MasterDataDAO.class);
+	static Logger logger = Logger.getLogger(MasterDataDAO.class);
 
 	public MasterDataDAO() {
-		this.tableAnchor = TableAnchors.MASTER_DATA;
+		this.tableAnchor = "masterData";
 
 	}
 
@@ -750,7 +749,7 @@ ResultSet result=null;
  	   StringBuffer query = new StringBuffer("SELECT DATA_VALUE FROM MASTER_DATA WHERE DATA_TYPE=?");
  	   String dataValue ="";
  	   boolean domainName=true;
- 	   com.home.builderforms.sqlqueries.ResultSet result = QueryUtil.getResult(query.toString(), new Object[]{MasterEntities.CAPTIVATE_MAIL_DOMAIN});
+ 	   com.home.builderforms.sqlqueries.ResultSet result = QueryUtil.getResult(query.toString(), new Object[]{"3034"});
  	   if(result.next()) 
  	   {
             dataValue=result.getString("DATA_VALUE");

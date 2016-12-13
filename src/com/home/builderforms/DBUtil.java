@@ -54,7 +54,8 @@ public class DBUtil
 
 	public HashMap getTableMappings()
 	{
-		HashMap tableMappings 		= (HashMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableMappingsKey);
+		//HashMap tableMappings 		= (HashMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableMappingsKey);
+		HashMap tableMappings = null;
 		HashMap customTableMappings = new HashMap();
 		HashMap tabularSectionMappings=new HashMap();
 		if (tableMappings == null)
@@ -87,7 +88,7 @@ public class DBUtil
 				}
 				//AUDIT_ENHANCEMENT_CHANGES ends
 				
-                MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableMappingsKey,tableMappings);
+                //MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableMappingsKey,tableMappings);
 				
 			}
 			catch(Exception e)
@@ -106,7 +107,8 @@ public class DBUtil
 	
 	public HashMap getTableVsUrlMappings(String url)
 	{
-		HashMap<String,HashMap> tableVsUrlMappings = (HashMap<String,HashMap>)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableVsUrlMappingsKey);
+		//HashMap<String,HashMap> tableVsUrlMappings = (HashMap<String,HashMap>)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableVsUrlMappingsKey);
+		HashMap<String,HashMap> tableVsUrlMappings = null;
 		//System.out.println("tableVsUrlMappings============================"+tableVsUrlMappings);
 		HashMap<String,String> tableVsUrlMapping = new HashMap<String, String>();
 		if (tableVsUrlMappings == null)
@@ -115,7 +117,7 @@ public class DBUtil
 			{
 				String tableVsUrlMappingsUrl = Constants.XML_DIRECTORY + "tableVsUrlMappings.xml";
 				tableVsUrlMappings = TableXMLDAO.getTableVsUrlMappings(tableVsUrlMappingsUrl);
-                MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableVsUrlMappingsKey, tableVsUrlMappings);
+               // MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableVsUrlMappingsKey, tableVsUrlMappings);
 			}
 			catch(Exception e)
 			{
@@ -131,14 +133,15 @@ public class DBUtil
 	}
 	public HashMap<String,String>[] getTableVsUrlMappingsByTag(String tagName,String keyTagName, String moduleName)//P_B_FIM_60836
 	{
-		HashMap<String,String>[] tableVsUrlMappings = (HashMap[])MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableVsUrlMappingsKey+tagName);
+		//HashMap<String,String>[] tableVsUrlMappings = (HashMap[])MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableVsUrlMappingsKey+tagName);
+		HashMap<String,String>[] tableVsUrlMappings = null;
 		if (tableVsUrlMappings == null)
 		{
 			try
 			{
 				String tableVsUrlMappingsUrl = Constants.XML_DIRECTORY + "tableVsUrlMappings.xml";
 				tableVsUrlMappings = TableXMLDAO.getTableVsUrlMappingsByTag(tableVsUrlMappingsUrl,tagName,keyTagName,moduleName);
-                MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableVsUrlMappingsKey+tagName, tableVsUrlMappings);
+                //MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableVsUrlMappingsKey+tagName, tableVsUrlMappings);
 			}
 			catch(Exception e)
 			{
@@ -359,7 +362,7 @@ public class DBUtil
 			{
 				for(int i = 0; i < noOfChilds; i++) {
 					loc		= (String)getTableMappings().get(childTableAnchor[i]);
-					location = _baseConstants.XML_DIRECTORY + loc;
+					location = Constants.XML_DIRECTORY + loc;
 					fieldMappings = 	TableXMLDAO.getValidationFieldMappings(location,childTableAnchor[i],fieldMappings,i);
 					
 				}					
@@ -384,16 +387,17 @@ public class DBUtil
 		if(sLocation == null){
 			throw new AppException("XML for " + psTableAnchor + " does not exist");
 		}
-		TableXMLDAO.setTriggers(MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + sLocation, pFieldMappings);
+		TableXMLDAO.setTriggers(Constants.XML_DIRECTORY + sLocation, pFieldMappings);
 	}
 	public SyncMap getTableFieldMappings()
 	{
-		SyncMap tableFieldMappings =(SyncMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableFieldMappingsKey);
+		//SyncMap tableFieldMappings =(SyncMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.TableFieldMappingsKey);
+		SyncMap tableFieldMappings = null;
 		if (tableFieldMappings==null)
 		{
 
 			tableFieldMappings = new SyncMap(new HashMap());
-            MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableFieldMappingsKey,tableFieldMappings);
+            //MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.TableFieldMappingsKey,tableFieldMappings);
 		}
 		return tableFieldMappings;
 	}
@@ -415,20 +419,20 @@ public class DBUtil
 
 	public HashMap getSQLQueriesMap(String mgrName, boolean bFromXML)
 	{
-		HashMap sqlQueriesMap	= (HashMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.SQLQueriesMapKey + mgrName);
-
+		//HashMap sqlQueriesMap	= (HashMap)MultiTenancyUtil.getTenantContext().getAttribute(WebKeys.SQLQueriesMapKey + mgrName);
+		HashMap sqlQueriesMap	= null;
 		if (sqlQueriesMap == null || bFromXML)
 		{
 			String url = null;
 			try
 			{
-				url = MultiTenancyUtil.getTenantConstants().XML_DIRECTORY + "sqlqueries/"+mgrName+"/sqlqueries.xml";
+				url = Constants.XML_DIRECTORY + "sqlqueries/"+mgrName+"/sqlqueries.xml";
 			}
 			catch (Exception e)
 			{
 			}
 			sqlQueriesMap = SQLQueriesXMLDAO.getSQLQueries(url);
-            MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.SQLQueriesMapKey+mgrName,sqlQueriesMap);
+            //MultiTenancyUtil.getTenantContext().setAttribute(WebKeys.SQLQueriesMapKey+mgrName,sqlQueriesMap);
 		}
 
 		return sqlQueriesMap;
@@ -461,12 +465,12 @@ public class DBUtil
 
 	public void clearTableMappings()
 	{
-        MultiTenancyUtil.getTenantContext().removeAttribute(WebKeys.TableMappingsKey);
+        //MultiTenancyUtil.getTenantContext().removeAttribute(WebKeys.TableMappingsKey);
 	}
 
 	public void clearSQLQueriesMap(String mgrName)
 	{
-        MultiTenancyUtil.getTenantContext().removeAttribute(WebKeys.SQLQueriesMapKey+mgrName);
+        //MultiTenancyUtil.getTenantContext().removeAttribute(WebKeys.SQLQueriesMapKey+mgrName);
 	}
 	
 	 
@@ -628,7 +632,7 @@ public class DBUtil
     }*/
     private String getMaxKeyword(String tableAnchor)
     {
-        String maxKeyword = FieldNames.EMPTY_STRING;
+        /*String maxKeyword = FieldNames.EMPTY_STRING;
         if(fimTables.indexOf(tableAnchor)!=-1)
         {
             FimTabs tab = FimTabs.valueOf(tableAnchor);
@@ -637,8 +641,8 @@ public class DBUtil
             {
                 maxKeyword =  result.getString("COUNT");
             }
-        }
-        return maxKeyword;
+        }*/
+        return "";
     }
     public static String getKeywordString(Map fieldsMap)
     {

@@ -2,6 +2,7 @@ package com.home.builderforms;
 
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +16,8 @@ import com.home.builderforms.CommonMgr;
 
 import org.apache.log4j.Logger;
 
-import com.home.builderforms.LocationMgr;
+
+//import com.home.builderforms.LocationMgr;
 import com.home.builderforms.MasterDataMgr;
 import com.home.builderforms.MasterDataDAO;
 import com.home.builderforms.BuilderFormWebImpl;
@@ -32,18 +34,15 @@ import com.home.builderforms.QueryUtil;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
 import com.home.builderforms.StrutsUtil;
-import com.appnetix.app.portal.role.UserRoleMap;
+import com.home.builderforms.UserRoleMap;
 import com.home.builderforms.TimeZoneUtils;
-import com.home.builderforms.cache.CacheMgr;
 import com.home.builderforms.Field;
 import com.home.builderforms.FieldMappings;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.BaseUtils;
-import com.home.builderforms.NumberFormatUtils;
 import com.home.builderforms.LanguageUtil;
 
-import static com.home.builderforms.base.BaseFieldNames.EMPTY_STRING;
 
 /**
  * @see  com.appnetix.app.portal.builderforms.DataManipulator
@@ -69,7 +68,7 @@ public class DataManipulator {
 	static public HashMap  sMap				= null;
 	private static HashMap checkBoxMap;
 	private static HashMap<String, String> siteLocationTypeMap; //P_Enh_Site_Clearance
-	static Logger logger			= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(DataManipulator.class);
+	static Logger logger			= Logger.getLogger(DataManipulator.class);
 	private static String boeflyUrl;//BOEFLY_INTEGRATION
 	public static String userTimeZone=FieldNames.EMPTY_STRING;
 	static {
@@ -151,7 +150,7 @@ public class DataManipulator {
   		try{
   			if(StringUtil.isInt(id)) {
 //  				country=(String)com.home.builderforms.CacheDataUtil.getCountryMap().get(id);
-  				country = PortalUtils.getCountryNameById(id);
+  				//country = PortalUtils.getCountryNameById(id);
   			} else {
   				country = id;
   			}
@@ -228,7 +227,7 @@ public class DataManipulator {
    			return locationName;
 		try{
 //			locationName =	(String)com.home.builderforms.CacheDataUtil.getAllActiveLocationMap().get(locationId);
-			locationName =	(String)CommonMgr.newInstance().getCommonFsDAO().getAllActiveLocationMap().get(locationId);
+			//locationName =	(String)CommonMgr.newInstance().getCommonFsDAO().getAllActiveLocationMap().get(locationId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -240,7 +239,8 @@ public class DataManipulator {
 			if(id == null || id.length()==0|| "-1".equals(id)|| "19".equals(id))
     			return FieldNames.EMPTY_STRING;			
 			else
-				return (String)com.home.builderforms.CacheDataUtil.getMasterDataMap().get(id);
+				return FieldNames.EMPTY_STRING;		
+				//return (String)com.home.builderforms.CacheDataUtil.getMasterDataMap().get(id);
 				//return MasterDataMgr.newInstance().getMasterDataDAO().getValueForId("8022",icpStatus);
 		} catch (Exception e) {
 			e.printStackTrace(); 
@@ -435,7 +435,7 @@ public class DataManipulator {
 			else {
 				String forType = fieldName.substring(0,fieldName.length()-1);
 				String order = fieldName.substring(fieldName.length()-1);;
-				return LocationMgr.newInstance().getLocationsDAO().getAddress(forType,order,id);
+				return "";
 			}
 		}
 		catch (Exception e){
@@ -446,7 +446,8 @@ public class DataManipulator {
 	
 	public static String transformcallstatusToValue(String pDataId) {
 		try {
-			return AdminMgr.newInstance().getCallDAO().getCallStatusName(pDataId);
+			//return AdminMgr.newInstance().getCallDAO().getCallStatusName(pDataId);
+			return "";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -492,19 +493,6 @@ public class DataManipulator {
 		return stateMap;
 	}
 	
-	public static String transFormCmMasterData(String id){
-
-		try {
-			if(id == null || id.length()==0|| "-1".equals(id))
-    			return FieldNames.EMPTY_STRING;			
-			else
-				return  CacheMgr.getCmMasterDataCache().getCmMasterDataValue(id);
-		} catch (Exception e) {
-			e.printStackTrace(); 
-		}
-		
-		return "";	
-	}
  public static String transFormCmStages(String id) {
 		 
 	     String val=null;
@@ -550,7 +538,7 @@ public class DataManipulator {
 	{
 		String returnDate="";
 		try{
-			returnDate = DateUtil.getDisplayDate(id,MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT_HMA);
+			returnDate = DateUtil.getDisplayDate(id,Constants.DISPLAY_FORMAT_HMA);
 	    }catch (Exception e){
 			logger.info("exception"+e);
 		}
@@ -563,8 +551,8 @@ public class DataManipulator {
 		{
 			if(id == null || id.equals("-1")) 
 				return "";
-			else
-				return AdminMgr.newInstance().getFimTransferlDAO().getTransferStatusValue().getString(id);
+			//else
+				//return AdminMgr.newInstance().getFimTransferlDAO().getTransferStatusValue().getString(id);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -589,8 +577,9 @@ public class DataManipulator {
  	
  	public static String transformMailText(String templateVersionID)
 	{
- 		String content=CommonMgr.newInstance().getCommonFsDAO().getTemplateText(templateVersionID);
-		return replaceHref(content);
+ 		//String content=CommonMgr.newInstance().getCommonFsDAO().getTemplateText(templateVersionID);
+		//return replaceHref(content);
+ 		return "";
 	}
  	
  	public static String transformToManipulateValue(String value) {
@@ -692,8 +681,8 @@ public class DataManipulator {
 		{
 			if(id == null) 
 				return "";
-			else
-				return (String)LocationMgr.newInstance().getLocationsDAO().getFtName(id);
+			//else
+				//return (String)LocationMgr.newInstance().getLocationsDAO().getFtName(id);
 		} catch (Exception e)
 		{
 		e.printStackTrace();
@@ -769,7 +758,7 @@ public class DataManipulator {
 		String country = FieldNames.EMPTY_STRING;
 		try{
 //			country=(String)com.home.builderforms.CacheDataUtil.getCountryMap().get(id);
-			country = PortalUtils.getCountryNameById(id);
+			//country = PortalUtils.getCountryNameById(id);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -788,7 +777,8 @@ public class DataManipulator {
    */
   public static String transformCountyId(String countyID) {
 	  String countyName = "";
-		Map<String,String> countyMap = CacheMgr.getCountyCache().getCounty(countyID);
+		//Map<String,String> countyMap = CacheMgr.getCountyCache().getCounty(countyID);
+	  Map<String,String> countyMap = null;
 		if (countyMap != null && !countyMap.isEmpty()) {
 			countyName = (String)countyMap.get(FieldNames.COUNTY_NAME);
 		}
@@ -892,7 +882,7 @@ public class DataManipulator {
    */
   public static String getLeadOwnerId(String id) throws Exception {
 	  try {
-			return CommonMgr.newInstance().getCommonFsDAO().getAllLeadOwners().get(id);
+			//return CommonMgr.newInstance().getCommonFsDAO().getAllLeadOwners().get(id);
 		} catch(Exception e) {
 			//Debug.print(e);
 			e.printStackTrace();
@@ -907,7 +897,8 @@ public class DataManipulator {
    * @throws Exception
    */
   public static String getRatingName(String id) throws Exception {
-	  String leadRatingName = CommonMgr.newInstance().getCommonFsDAO().getLeadRatingValue(id);
+	  //String leadRatingName = CommonMgr.newInstance().getCommonFsDAO().getLeadRatingValue(id);
+	  String leadRatingName = "";
 		if (!StringUtil.isValidNew(leadRatingName)) {
 			leadRatingName = "";
 		}
@@ -992,14 +983,14 @@ public class DataManipulator {
 	}
 	
 	public static String transformTimeFormat(String time,String date)
-	{		  BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+	{
 		String tZConvertedDateTime = "";
 		String formatedTime=FieldNames.EMPTY_STRING;
 		if(date!=null){
 			try{
 				date = DateUtil.getDisplayDate(date);
 				date = date+" "+time;	
-		 		tZConvertedDateTime =TimeZoneUtils.performUTCConversion(_baseConstants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, DateTime.getRequiredFormat(date, _baseConstants.DISPLAY_FORMAT_HMS, "yyyy-MM-dd HH:mm:ss"), TimeZoneUtils.DB_DATETIME, TimeZoneUtils.DB_DATETIME );
+		 		tZConvertedDateTime =TimeZoneUtils.performUTCConversion(Constants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, DateTime.getRequiredFormat(date, Constants.DISPLAY_FORMAT_HMS, "yyyy-MM-dd HH:mm:ss"), TimeZoneUtils.DB_DATETIME, TimeZoneUtils.DB_DATETIME );
 				time = tZConvertedDateTime.substring(11,tZConvertedDateTime.length());
 			}catch(Exception e){
 				time = "";
@@ -1089,7 +1080,7 @@ public class DataManipulator {
 	{
 		
 		String returnValue=id;
-		try
+		/*try
 		{
 			if(!AdminMgr.newInstance().getStoreDAO().isFranchisee(franchiseeNo))
 				franchiseeNo="1";
@@ -1097,7 +1088,7 @@ public class DataManipulator {
 		}catch (Exception e)
 		{
 			logger.error(e);
-		}
+		}*/
 		
 		return returnValue;
 	}
@@ -1308,15 +1299,16 @@ public class DataManipulator {
 	}
 	
 	public static String formatCommaNumber(String value) {
-		return NumberFormatUtils.formatCommaNumber(value,true);
+		//return NumberFormatUtils.formatCommaNumber(value,true);
+		return value;
 	}
 	
 	public static String  formatPhoneNoAccCountry(String id,String countryID) {
 		try{
 			String country="";
-			if(StringUtil.isRequestParamValid(countryID)){
+			/*if(StringUtil.isRequestParamValid(countryID)){
 				country=NewPortalUtils.getCountryName(countryID);
-			}
+			}*/
 			if(id == null || id.equals("-1") ) return "";
 			else
 				return PortalUtils.formatPhoneNo(id,country);                
@@ -1336,10 +1328,10 @@ public class DataManipulator {
 	  //BOEFLY_INTEGRATION : START
 	  public String generateBoeflyUrl(String urlMailMerge,String leadId){
 		  StringBuilder returnVal = new StringBuilder();
-		  if("on".equals(MultiTenancyUtil.getTenantConstants().BOEFLY_INTEGRATION_STATUS))
+		  if("on".equals("off"))
 		  {
 			  if(boeflyUrl==null){
-				  boeflyUrl = SQLUtil.getColumnValue("FS_BQUAL_INTEGRATION_DETAILS","BOEFLY_URL",EMPTY_STRING,EMPTY_STRING);
+				  boeflyUrl = SQLUtil.getColumnValue("FS_BQUAL_INTEGRATION_DETAILS","BOEFLY_URL","","");
 				  if(boeflyUrl.charAt(boeflyUrl.length())!='?'){
 					  returnVal.append('?');
 				  }
@@ -1358,17 +1350,22 @@ public class DataManipulator {
 			}
 			return retVal;
 		}
-		public static String transformDateWithTime(String value) throws Exception
-		{		  BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+		public static String transformDateWithTime(String value) 
+		{
 			if(StringUtil.isValid(value)){
 				String[] tempArr =  value.split(" ");
 				value = DateUtil.getDisplayDate(tempArr[0]);
 				if(tempArr.length > 1){
-					value = value + " " + convertTime(tempArr[1]);
+					try {
+						value = value + " " + convertTime(tempArr[1]);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					value = TimeZoneUtils.performUTCConversion(
-							_baseConstants.DB_TIMEZONE_TIMEZONEUTILS, _baseConstants.USER_TIME_ZONE,
-							value, _baseConstants.DISPLAY_FORMAT_HMA,
-                            _baseConstants.DISPLAY_FORMAT_HMA);
+							Constants.DB_TIMEZONE_TIMEZONEUTILS, Constants.USER_TIME_ZONE,
+							value, Constants.DISPLAY_FORMAT_HMA,
+                            Constants.DISPLAY_FORMAT_HMA);
 				}else{
 					value = DateUtil.getDisplayDate(value);
 				}
@@ -1600,7 +1597,8 @@ public class DataManipulator {
 		// Added By Amit Tanwani CRM_OPPORTUNITY_INFO Ends
 		//P_Enh_ContactHistory_FormBuilder starts
 		public static String getLeadName(String leadId,String forArchived){
-	    	return CommonMgr.newInstance().getCommonFsDAO().getLeadName(leadId, forArchived);	
+	    	//return CommonMgr.newInstance().getCommonFsDAO().getLeadName(leadId, forArchived);
+			return "";
 	    }
 		public static String transformDateTimeForTimeLessTask(String time,String duration)
 		{
@@ -1633,7 +1631,7 @@ public class DataManipulator {
 				if(id == null) 
 					return "";
 				else
-					return (String)PortalUtils.getUserName(Integer.parseInt(id));
+					return (String)BaseUtils.getUserName1(Integer.parseInt(id));
 			} catch (Exception e)
 			{
 			e.printStackTrace();
@@ -1647,7 +1645,7 @@ public class DataManipulator {
 				else{
 					
 					try{
-						name =PortalUtils.getUserName(id);
+						name =BaseUtils.getUserName(id);
 					}catch(Exception e){
 					
 					}
@@ -1674,10 +1672,12 @@ public class DataManipulator {
 		 }
 		 public static String getCallTypeName(String callTypeId)
 		 {
-			 return AdminMgr.newInstance().getCallDAO().getCallTypeName(callTypeId);
+			 //return AdminMgr.newInstance().getCallDAO().getCallTypeName(callTypeId);
+			 return callTypeId;
 		 }
 		 public static String transformcalltypeToValue(String callTypeId){
-			 return AdminMgr.newInstance().getCallDAO().getCallTypeName(callTypeId);
+			// return AdminMgr.newInstance().getCallDAO().getCallTypeName(callTypeId);
+			 return callTypeId;
 		 }
 		 
 		 public static String getHotActivity(String noUseParam){
@@ -1689,9 +1689,9 @@ public class DataManipulator {
 			 String forArchived=(String)request.getSession().getAttribute("forArchived");
 			 
 			 String hotActivity="";
-			 if(contactID!=null){
+			/* if(contactID!=null){
 				 hotActivity=AdminMgr.newInstance().getCmContactHotActivityDAO().getActivity(contactID, user_No, forArchived);
-			 }
+			 }*/
 			 
 			 return hotActivity;
 		 }
@@ -1710,7 +1710,7 @@ public class DataManipulator {
 					assignTo =	result.getString("ASSIGN_TO");
 					if(StringUtil.isValid(assignTo))
 		             {
-		            		 name = PortalUtils.getUserName(assignTo);
+		            		 name = BaseUtils.getUserName(assignTo);
 		            		 if(StringUtil.isValid(name)){
 		            			 if(count == 0){
 		            				 name1 = name;

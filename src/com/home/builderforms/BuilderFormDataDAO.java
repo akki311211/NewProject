@@ -13,7 +13,7 @@ public class BuilderFormDataDAO extends FormDAO {
 	*  Constructor for the BuilderFormDataDAO object
 	*/
 	public BuilderFormDataDAO() {
-		this.tableAnchor = TableAnchors.BUILDER_FORM_DATA;
+		this.tableAnchor = "builderFormData";
 
 	}
 }

@@ -458,7 +458,7 @@ public class XMLUtil
 		{
 			String filePath = FieldNames.EMPTY_STRING;
 			BufferedWriter output = null;
-			String tempDirPath = MultiTenancyUtil.getTenantConstants().DOCUMENTS_DIRECTORY + File.separator + path;
+			String tempDirPath = Constants.DOCUMENTS_DIRECTORY + File.separator + path;
 			if(!(new File(tempDirPath)).exists())
 			{
 				boolean success = (new File(tempDirPath)).mkdirs();

@@ -98,7 +98,7 @@ public class DBConnectionManager
 	public Connection getConnection(String name)
 	{
 
-		
+		Connection con = null;
 			DBConnectionPool pool = (DBConnectionPool) pools.get(name);
 
 			if(pool != null)
@@ -235,12 +235,6 @@ public class DBConnectionManager
 				return;
 			}finally
 			{
-				try
-				{
-					is.close();
-				}catch(IOException e)
-				{
-				}
 			}
 			loadDrivers(dbProps);
 			createPool(dbProps);

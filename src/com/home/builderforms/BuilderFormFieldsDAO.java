@@ -2,6 +2,7 @@ package com.home.builderforms;
 
 
 import com.home.builderforms.*;
+import com.home.builderforms.sqlqueries.ResultSet;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class BuilderFormFieldsDAO extends BaseDAO {
 
 	public BuilderFormFieldsDAO() {
-		this.tableAnchor = TableAnchors.BUILDER_FORM_FIELDS;
+		this.tableAnchor = "builderFormFields";
 
 	}
 	public SequenceMap getFullData(String table,Integer recordID){

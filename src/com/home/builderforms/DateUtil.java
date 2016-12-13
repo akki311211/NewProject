@@ -43,8 +43,6 @@ import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import org.apache.log4j.Logger;
 
 

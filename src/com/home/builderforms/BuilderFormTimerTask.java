@@ -55,7 +55,6 @@ public class BuilderFormTimerTask implements Runnable {
 		return flag;
 	}
 
-	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
 		try {
@@ -74,8 +73,8 @@ public class BuilderFormTimerTask implements Runnable {
 			// TODO: handle exception
 			e.printStackTrace();
 		} finally {
-			MultiTenancyUtil.getTenantConstants().IS_FORMBUILDER_PROGRESS = false;
-			MultiTenancyUtil.getTenantConstants().IS_THREAD_RUNNING = false;
+			//MultiTenancyUtil.getTenantConstants().IS_FORMBUILDER_PROGRESS = false;
+			//MultiTenancyUtil.getTenantConstants().IS_THREAD_RUNNING = false;
 		}
 	}
 

@@ -15,7 +15,7 @@ P_FS_E_2121          10/12/07    Suchita Agrawal         Tab()           Added g
 -------------------------------------------------------------------------------------------------------------
 **/
 
-package com.home.builderforms.tabs;
+package com.home.builderforms;
 
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;

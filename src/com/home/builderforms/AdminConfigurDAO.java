@@ -117,7 +117,8 @@ public class AdminConfigurDAO extends BaseDAO {
                 
                 if(StringUtil.isValidNew(result.getString("USER_NO")))
                 {
-                	 info.set(FieldNames.EMAIL_ID, NewPortalUtils.getUserEmailId(result.getString("USER_NO")));
+                	 //info.set(FieldNames.EMAIL_ID, NewPortalUtils.getUserEmailId(result.getString("USER_NO")));
+                	info.set(FieldNames.EMAIL_ID, result.getString("EMAIL_ID"));
                 }
                 else
                 	info.set(FieldNames.EMAIL_ID, result.getString("EMAIL_ID"));
@@ -641,7 +642,8 @@ public class AdminConfigurDAO extends BaseDAO {
             		 {
             			 if(StringUtil.isValidNew(result.getString("USER_NO")))
                          {
-            			 franBuzzMails = franBuzzMails + NewPortalUtils.getUserEmailId(result.getString("USER_NO")) + ",";
+            			 //franBuzzMails = franBuzzMails + NewPortalUtils.getUserEmailId(result.getString("USER_NO")) + ",";
+            				 franBuzzMails = franBuzzMails + result.getString("EMAIL_ID") + ",";
             		     }
             			 else
             				 franBuzzMails = franBuzzMails + result.getString("EMAIL_ID") + ",";
@@ -651,7 +653,8 @@ public class AdminConfigurDAO extends BaseDAO {
             		 {
                 	 if(StringUtil.isValidNew(result.getString("USER_NO")))
                      {
-            			 forumMails = forumMails + NewPortalUtils.getUserEmailId(result.getString("USER_NO")) + ",";
+            			 //forumMails = forumMails + NewPortalUtils.getUserEmailId(result.getString("USER_NO")) + ",";
+                		 forumMails = forumMails + result.getString("EMAIL_ID") + ",";
             		 }
                 	 else
                 		 forumMails = forumMails + result.getString("EMAIL_ID") + ",";
@@ -1536,7 +1539,7 @@ public static String isDefaultTheme(String themeId,String userNo){
 			
 		int count=0;
 				
-		String query ="UPDATE MASTER_DATA SET DATA_VALUE= '"+datavalue+"' WHERE DATA_TYPE = '"+MasterEntities.ROUND_DECIMAL_PLACES+"'";
+		String query ="UPDATE MASTER_DATA SET DATA_VALUE= '"+datavalue+"' WHERE DATA_TYPE = '3043'";
 		try {
 			count = QueryUtil.update(query, new String[]{});
 			//MultiTenancyUtil.getTenantConstants().MAX_ROUNDED_DIGITS=datavalue;
@@ -1556,7 +1559,7 @@ public static String isDefaultTheme(String themeId,String userNo){
 		String query ="DELETE FROM MESSAGE_SIGNATURE WHERE SIGNATURE_NO="+signaturenum;
 		try {
 			count = QueryUtil.update(query, new String[]{});
-			CacheMgr.getUserCache().removeSignature(userNo);
+			//CacheMgr.getUserCache().removeSignature(userNo);
 		} catch (Exception e) {		
 			logger.info("@@@updateDecimalPlaceSetting--->Exception::"+e);
 			e.printStackTrace();
@@ -1582,7 +1585,7 @@ public static String isDefaultTheme(String themeId,String userNo){
     				QueryUtil.update(insertQuery, null);
     			}
     			//ZCubator_Social_Signatures : added franchisee no in where clause starts
-    			NewPortalUtils.reorderTableValues("SOCIAL_NETWORKING_SIGNATURES", "ORDER_SEQUENCE","FRANCHISEE_NO="+f_no,"LINK_TITLE", order.replaceAll("1", ""));
+    			//NewPortalUtils.reorderTableValues("SOCIAL_NETWORKING_SIGNATURES", "ORDER_SEQUENCE","FRANCHISEE_NO="+f_no,"LINK_TITLE", order.replaceAll("1", ""));
     			SQLUtil.toUpdateColumn("SOCIAL_NETWORKING_SIGNATURES", "ROW_DISPLAY",rowDisplayVal,"1=1 AND FRANCHISEE_NO="+f_no);
     			//ZCubator_Social_Signatures ends
     		}
@@ -1596,7 +1599,7 @@ public static String isDefaultTheme(String themeId,String userNo){
    	public void updateSocialNetworkingSignature(String eventType, String franchiseeNo, String franNo,String address,String address2,String city,String state,String country,String zipcode,String foreignType,String fromBoarding,String userNo,String signature,String signEvent,String signatureNo,HttpServletRequest request,Map<String, String> dataMap) throws AppException //ZCubator_Social_Signatures 
     {
     	if(StringUtil.isValid(franNo) && "1".equals(franNo)){
-    		AdminMgr.newInstance().getBillingShippingAddressDAO().udateAddress(franNo,address,address2,city,state,country,zipcode,foreignType);  
+    		//AdminMgr.newInstance().getBillingShippingAddressDAO().udateAddress(franNo,address,address2,city,state,country,zipcode,foreignType);  
     	}
 		//ZCubator_Unsubscribe_Message ends
     	

@@ -12,18 +12,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.portal.export.ExportModules;
-import com.appnetix.app.portal.role.Privilege;
+import com.home.builderforms.ExportModules;
+import com.home.builderforms.Privilege;
 import com.home.builderforms.Constants;
 import com.home.builderforms.FieldNames;
-import com.home.builderforms.MasterEntities;
 //import com.home.builderforms.NewPortalUtils;
 import com.home.builderforms.QueryUtil;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
 
@@ -43,7 +40,7 @@ P_B_FIM_68824   6 Jan 2011      Neeti Solanki                              for c
 -----------------------------------------------------------------------------------------------------------
 */
 
-import com.home.builderforms.xmldao.TabXMLDAO;
+import com.home.builderforms.TabXMLDAO;
 
 public class UserTabConfigUtil 
 {
@@ -609,14 +606,13 @@ public class UserTabConfigUtil
         public static void configUserTabFIN(String basePath)
 	{
             try{
-            	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
                 String filePath="";
                 String directoryPath="";
                 String fileName = "FIM_IFFINANCIALkeywords.txt";
                 String dirName ="FIMIFFINANCIAL_Keywords";
                 String directoryName = "mailmerge";
-                directoryPath=_baseConstants.DOCUMENTS_DIRECTORY + "/Documents/" +directoryName +"/"+dirName;
-                filePath = _baseConstants.DOCUMENTS_DIRECTORY + "/Documents/" + directoryName + "/" + fileName;
+                directoryPath=Constants.DOCUMENTS_DIRECTORY + "/Documents/" +directoryName +"/"+dirName;
+                filePath = Constants.DOCUMENTS_DIRECTORY + "/Documents/" + directoryName + "/" + fileName;
                 File dir = new File(directoryPath); 
                 
                 String[] fileList = dir.list(); 
@@ -697,14 +693,13 @@ public class UserTabConfigUtil
         public static void configUserTab(String basePath)
 	{
             try{
-            	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
                 String filePath="";
                 String directoryPath="";
                 String fileName ="FIM_keywords.txt";
                 String dirName = "FIM_Keywords";
                 String directoryName = "mailmerge";
-                directoryPath=_baseConstants.DOCUMENTS_DIRECTORY + "/Documents/" +directoryName +"/"+dirName;
-                filePath = _baseConstants.DOCUMENTS_DIRECTORY + "/Documents/" + directoryName + "/" + fileName;
+                directoryPath=Constants.DOCUMENTS_DIRECTORY + "/Documents/" +directoryName +"/"+dirName;
+                filePath = Constants.DOCUMENTS_DIRECTORY + "/Documents/" + directoryName + "/" + fileName;
                 File dir = new File(directoryPath);
 
 

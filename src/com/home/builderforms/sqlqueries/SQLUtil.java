@@ -27,9 +27,19 @@ import java.util.Map;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
 
+import org.springframework.util.ConcurrencyThrottleSupport;
+
 import com.home.builderforms.AppException;
+import com.home.builderforms.BaseUtils;
+import com.home.builderforms.CollectionUtil;
+import com.home.builderforms.Constants;
+import com.home.builderforms.DateUtil;
 import com.home.builderforms.Field;
 import com.home.builderforms.FieldMappings;
+import com.home.builderforms.FieldNames;
+import com.home.builderforms.LanguageUtil;
+import com.home.builderforms.QueryUtil;
+import com.home.builderforms.ResultList;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.sqlqueries.ResultSet;
 
@@ -40,7 +50,7 @@ public class SQLUtil {
         String sqlQueryString = sqlQuery.getString();
         String[] columnArray = sqlQuery.getColumnList().getColumnArray();
         Field[] fieldArray = sqlQuery.getColumnList().getFieldArray();
-        ResultSet result = SQLUtilHelper.getResultSet(sqlQueryString, params, MultiTenancyUtil.getTenantName());
+        ResultSet result = SQLUtilHelper.getResultSet(sqlQueryString, params, Constants.TENANT_NAME);
         ArrayList list = new ArrayList();
         while (result.next()) {
             Info info = new Info();
@@ -386,12 +396,12 @@ Methods to control transaction.
         String queryString = SQLQueryGenerator.getCountQueryString(fieldMappings, paramMap);
         ResultSet result = getResultSetForQuery(queryString, fieldMappings, paramMap);
         if (result == null) {
-            return IntConstants.DEFAULT_INT;
+            return -1;
         }
         if (result.next()) {
             return result.getInteger(1).intValue();
         }
-        return IntConstants.DEFAULT_INT;
+        return -1;
     }
     /**
      * This Method returns map of all table data according to limit of pagging parameters
@@ -551,7 +561,7 @@ Methods to control transaction.
     }
 
     public static void executeProcedure(String procedureName, Object[] params) {
-        executeProcedure(procedureName, params, MultiTenancyUtil.getTenantName());
+        executeProcedure(procedureName, params, Constants.TENANT_NAME);
     }
 
     public static void createTables(String tableName, String columnName[], String DataType[], String signedOrUnsigned[], String nullOrNot[], String DefaultValue[], String primaryKey, String autoIncrementColumn) {
@@ -2078,7 +2088,6 @@ Methods to control transaction.
 
 	    }catch(Exception e){
 
-	      Debug.print(e);
 
           System.out.println("Error in closing resultset" + e);
 
@@ -2102,10 +2111,6 @@ Methods to control transaction.
 
 	    }catch(Exception e){
 
-	      Debug.print(e);
-
-          Debug.println("Error in closing statement" + e,3);
-
 	   }   
 
 	}
@@ -2125,8 +2130,6 @@ Methods to control transaction.
            } 
 
 	    }catch(Exception e){
-
-	      Debug.print(e);
 
           System.out.println("Error in closing statement" + e);
 

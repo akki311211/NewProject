@@ -34,31 +34,29 @@ public class FsLeadStatusDAO extends BaseDAO {
 	*  Constructor for the LeadStatusDAO object
 	*/
     public void setUserNo (String userno){
-    	ParamResolver.getResolver().put("userNo",userno);
     }
     
     public String getUserNo (){
-    	return (String)ParamResolver.getResolver().get("userNo");
+    	return "1";
     }
     
     public void setUserLevel (String userlevel){
-    	ParamResolver.getResolver().put("userLevel",userlevel);
     }
     
     public String getUserLevel (){
-    	return (String)ParamResolver.getResolver().get("userLevel");
+    	return "0";
     }
     public void setAreaId (String areaid){
-    	ParamResolver.getResolver().put("areaId",areaid);
+    	
     }
     
     public String getAreaId (){
-    	return (String)ParamResolver.getResolver().get("areaId");
+    	return null;
     }
 	
     
     public FsLeadStatusDAO() {
-		this.tableAnchor = TableAnchors.FS_LEAD_STATUS;
+		this.tableAnchor = "fsLeadStatus";
 
 	}
 	
@@ -124,20 +122,20 @@ public class FsLeadStatusDAO extends BaseDAO {
 			selectQuery1 =  new StringBuffer("SELECT LEAD_OWNER_ID , COUNT(LEAD_ID) AS COUNT FROM FS_LEAD_DETAILS WHERE");
 			selectQuery1.append(" REQUEST_DATE >='").append(fromDate).append("' and REQUEST_DATE <= '").append(toDate ).append("'");
 			selectQuery1.append(" AND LEAD_ID NOT IN (SELECT DISTINCT(LEAD_ID) FROM FS_LEAD_CALL)");
-			if("0".equals(MultiTenancyUtil.getTenantConstants().IS_COAPPLICANT_AS_LEAD_CONFIGURED) && "true".equals(coApplicantAsLead))			//P_ENH_COAPPLICANT_AS_LEAD starts
+			if(true && "true".equals(coApplicantAsLead))			//P_ENH_COAPPLICANT_AS_LEAD starts
 			{
 				selectQuery.append(" AND (COAPPLICANT_TYPE <> 'C' OR COAPPLICANT_TYPE IS NULL) ");
 				selectQuery1.append(" AND (COAPPLICANT_TYPE <> 'C' OR COAPPLICANT_TYPE IS NULL) ");
 			}
 			//P_ENH_COAPPLICANT_AS_LEAD ends
-			if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && StringUtil.isValidNew(division_Ids))
+			/*if(true && StringUtil.isValidNew(division_Ids))
 			{
 				String leadIds = DivisionUtil.getAllDivisionLeadIds(division_Ids);
 				if(StringUtil.isValid(leadIds)){
 					selectQuery.append(" AND LEAD_ID IN ("+leadIds+") ");
 					selectQuery1.append(" AND LEAD_ID IN ("+leadIds+") ");
 				}
-			}
+			}*/
             //CODEBASE_ISSUE IN_90010_13FEB15 starts
             if(viewAllLeads) {
                 if ("2".equals(userLevel)) {
@@ -150,7 +148,7 @@ public class FsLeadStatusDAO extends BaseDAO {
             }
             
             if(viewAllLeads) {
-            	if (Constants.USER_LEVEL_DIVISION.equals(userLevel)) {
+            	/*if (Constants.USER_LEVEL_DIVISION.equals(userLevel)) {
             		selectQuery1.append(" AND ( ");
             		if(StringUtil.isValid(DivisionUtil.getAllDivisionLeadIds(divisionIds))){
             			selectQuery1.append("  FS_LEAD_DETAILS.LEAD_ID IN ( ").append(DivisionUtil.getAllDivisionLeadIds(divisionIds)).append(" ) OR ");
@@ -163,7 +161,7 @@ public class FsLeadStatusDAO extends BaseDAO {
             		}
             		selectQuery.append(" LEAD_OWNER_ID IN (").append(NewPortalUtils.getRegionalOwnersMap(userNo)).append("))");
 
-            	}
+            	}*/
             } else {
                 selectQuery1.append(" AND  LEAD_OWNER_ID = (").append(userNo).append(")");
                 selectQuery.append(" AND  LEAD_OWNER_ID = (").append(userNo).append(")");
@@ -228,18 +226,18 @@ public class FsLeadStatusDAO extends BaseDAO {
             }
             //CODEBASE_ISSUE IN_90010_13FEB15 ends
                 
-            if("0".equals(MultiTenancyUtil.getTenantConstants().IS_COAPPLICANT_AS_LEAD_CONFIGURED) && "true".equals(coApplicantAsLead))		//P_ENH_COAPPLICANT_AS_LEAD starts
+            if(true && "true".equals(coApplicantAsLead))		//P_ENH_COAPPLICANT_AS_LEAD starts
             {
             	query = query +" AND (COAPPLICANT_TYPE <> 'C' OR COAPPLICANT_TYPE IS NULL) ";
             }				//P_ENH_COAPPLICANT_AS_LEAD ends
             
-            if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && StringUtil.isValidNew(division_Ids))
+            /*if(true && StringUtil.isValidNew(division_Ids))
 			{
 				String leadIds = DivisionUtil.getAllDivisionLeadIds(division_Ids);
 				if(StringUtil.isValid(leadIds)){
 					query = query +" AND LEAD_ID IN ("+leadIds+") ";
 				}
-			}
+			}*/
             
                 query = query +" AND  FS_LEAD_CALL.DATE>= '"+fromDate+"' AND FS_LEAD_CALL.DATE<='"+toDate+"'  GROUP BY LOGGED_BY_ID ORDER BY LOGGED_BY_ID";
                 

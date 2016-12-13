@@ -25,7 +25,7 @@ public class FsLeadSource3DAO extends BaseDAO {
 	*  Constructor for the LeadStatusDAO object
 	*/
 	public FsLeadSource3DAO() {
-		this.tableAnchor = TableAnchors.FS_LEAD_SOURCE3;
+		this.tableAnchor = "fsLeadSource3";
 
 	}
 	
@@ -296,7 +296,7 @@ public class FsLeadSource3DAO extends BaseDAO {
    			SQLUtil.closeStmt(pstmt);
    			SQLUtil.closeResultSet(rs);
 
-   			PortalUtils.closePreparedStatements(pstmt, rs);
+   			//PortalUtils.closePreparedStatements(pstmt, rs);
    			try {
    				if (con != null)
    					DBConnectionManager.getInstance().freeConnection(con);

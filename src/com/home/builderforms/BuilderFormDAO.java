@@ -2302,7 +2302,7 @@ public class BuilderFormDAO extends FormBaseDAO {
                 			childElement.appendChild(getElementNode(doc, TableXMLDAO.DROPDOWN_OPTION, combooption));
 
                 			Element eleN = getElementNode(doc, TableXMLDAO.COMBO, null);
-                			eleN.appendChild(getElementNode(doc, TableXMLDAO.PARENT, Constants.TRUE));
+                			eleN.appendChild(getElementNode(doc, TableXMLDAO.PARENT, "true"));
                 			eleN.appendChild(getElementNode(doc, TableXMLDAO.DEPENDENT_FIELD, getValueFromMap(dataMap, BuilderFormFieldNames.FIELD_NAME+"1")));
                 			eleN.appendChild(getElementNode(doc, TableXMLDAO.COMBO_SOURCE_VALUES_METHOD, BuilderConstants.COMBO_COUNTRY_METHOD));
                 			childElement.appendChild(eleN);

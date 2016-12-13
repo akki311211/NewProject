@@ -515,7 +515,7 @@ public class FormDAO{
 	
 	public SequenceMap getFimFormBuilderFields(String tableName, String colName, String formId) throws SQLException, RecordNotFoundException {
 		String query = "SELECT BUILDER_FORM_ID,TABLE_ANCHOR FROM BUILDER_WEB_FORMS where BUILDER_FORM_ID=" + Integer.parseInt(formId) + " ";//BB_Naming_Convention
-		ResultSet result = SQLUtilHelper.getResultSet(query, new Object[] {}, MultiTenancyUtil.getTenantName());
+		ResultSet result = SQLUtilHelper.getResultSet(query, new Object[] {}, Constants.TENANT_NAME);
 		SequenceMap map = new SequenceMap();
 		
 		return map;

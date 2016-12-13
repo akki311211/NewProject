@@ -53,8 +53,8 @@ import com.home.builderforms.OtherTable;
 import com.home.builderforms.Question;
 import com.home.builderforms.QuestionField;
 import com.home.builderforms.QuestionOption;
-import com.home.builderforms.ScoreMappings;
-import com.home.builderforms.ScoreSection;
+//import com.home.builderforms.ScoreMappings;
+//import com.home.builderforms.ScoreSection;
 import com.home.builderforms.SyncWithField;
 import com.home.builderforms.TableField;
 import com.home.builderforms.Trigger;
@@ -611,7 +611,7 @@ public class TableXMLDAO {
     	try {
 //    		System.out.println("location in parsin xml file -- "+location);
         Element root					= XMLUtil.loadDocument(location);
-        String connectionName		 	= MultiTenancyUtil.getTenantName();
+        String connectionName		 	= Constants.TENANT_NAME;
         String tableName 				= XMLUtil.getTagText(root,TABLE_NAME);
 		String tableDisplayName 		= XMLUtil.getTagText(root,TABLE_DISPLAY_NAME);
 		String entityTableDisplayName 		= XMLUtil.getTagText(root,ENTITY_TABLE_DISPLAY_NAME);
@@ -1532,7 +1532,7 @@ public class TableXMLDAO {
     public static FieldMappings getBuilderValidationFieldMappings(String location, String childTableAnchor , FieldMappings fieldMappings,int appendor)
     {
         Element root			= XMLUtil.loadDocument(location);
-        String connectionName 	= MultiTenancyUtil.getTenantName();
+        String connectionName 	= Constants.TENANT_NAME;
         String tableName 		= XMLUtil.getTagText(root,TABLE_NAME);
 		String tableDisplayName = XMLUtil.getTagText(root,TABLE_DISPLAY_NAME);
 		//P_B_FIM_75246 added by neeti starts
@@ -1555,7 +1555,7 @@ public class TableXMLDAO {
             //Added by Anuj 2005-07-23 for Export Layout
 			String colspan			= XMLUtil.getAttributeValue(node,COLSPAN) != null ? XMLUtil.getAttributeValue(node,COLSPAN) : "1";
 
-			boolean summary 		= (MultiTenancyUtil.getTenantConstants().TRUE.equalsIgnoreCase(summaryString));
+			boolean summary 		= ("true".equalsIgnoreCase(summaryString));
 			String fieldName		= XMLUtil.getTagText(node,FIELD_NAME);
 			fieldName				= childTableAnchor+"_"+appendor+fieldName;
 			String dbField			= XMLUtil.getTagText(node,DB_FIELD);
@@ -1615,7 +1615,7 @@ public class TableXMLDAO {
 	public static FieldMappings getValidationFieldMappings(String location, String childTableAnchor , FieldMappings fieldMappings,int appendor)
     {
         Element root			= XMLUtil.loadDocument(location);
-        String connectionName 	= MultiTenancyUtil.getTenantName();
+        String connectionName 	= Constants.TENANT_NAME;
         String tableName 		= XMLUtil.getTagText(root,TABLE_NAME);
 		String tableDisplayName = XMLUtil.getTagText(root,TABLE_DISPLAY_NAME);
 		//P_B_FIM_75246 added by neeti starts
@@ -1638,7 +1638,7 @@ public class TableXMLDAO {
             //Added by Anuj 2005-07-23 for Export Layout
 			String colspan			= XMLUtil.getAttributeValue(node,COLSPAN) != null ? XMLUtil.getAttributeValue(node,COLSPAN) : "1";
 
-			boolean summary 		= (MultiTenancyUtil.getTenantConstants().TRUE.equalsIgnoreCase(summaryString));
+			boolean summary 		= ("true".equalsIgnoreCase(summaryString));
 			String fieldName		= XMLUtil.getTagText(node,FIELD_NAME);
 			fieldName				= childTableAnchor+"_"+appendor+fieldName;
 			String dbField			= XMLUtil.getTagText(node,DB_FIELD);
@@ -1777,10 +1777,10 @@ public class TableXMLDAO {
 //    	FieldMappings map		= getFieldMappings(sLocation);
 //		map.setRecordTrigger(trig);
 //		setTriggers(sLocation, map);
-    	ScoreMappings map		= getScoresMappings(sLocation);
+    	/*ScoreMappings map		= getScoresMappings(sLocation);
     	String[] strArray = map.scoreFields();
     	for(int i=0; i < strArray.length; i++) {
     		System.out.println(strArray[i]);
-    	}
+    	}*/
     }
 }

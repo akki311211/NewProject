@@ -1213,7 +1213,7 @@ public class Constants
     public static final String LL_MODULE_ENABLE_MASTER_DATA_KEY = "21"; //ZCUB-20150319-123
     public static final String LBL_CONFIGURE_BUSSINESS_CATEGORIES = "Configure Business Categories";
     public static void setMuTabs() {
-    	    		DISABLE_MU_TABS = Constants.YES_LBL.equals(SQLUtil.getColumnValue("MASTER_DATA", "DATA_VALUE", "DATA_TYPE", MasterEntities.DISABLE_MU_TABS));
+    	    		DISABLE_MU_TABS = Constants.YES_LBL.equals(SQLUtil.getColumnValue("MASTER_DATA", "DATA_VALUE", "DATA_TYPE", "8114"));
     	   	}
     public static final String ADD_REVIEW_URL_KEY = "216";//ZCUB-20150408-129
     
@@ -1385,4 +1385,11 @@ public class Constants
 	 public static final String TENANT_NAME="default";
 	 public static final boolean SECURE = false;
 	 public static final String HOST_NAME = "www.franconnect.com";
+	 public static final String DB_TIMEZONE_TIMEZONEUTILS = "";
+	    
+	    
+	    public static final String DISPLAY_FORMAT_HMS = DateUtil.DB_FORMAT + " HH:mm:ss";
+	    public  static final String DISPLAY_FORMAT_HMA = "hh:mm a";
+	    public  static final String DISPLAY_FORMAT_HM = "hh:mm";
+	    public static String USER_TIME_ZONE = "";
 }

@@ -31,7 +31,7 @@ import com.home.builderforms.BaseUtils;
 import com.home.builderforms.DBConnectionManager;
 import com.home.builderforms.Debug;
 import com.home.builderforms.IntConstants;
-import com.home.builderforms.NumberFormatUtils;
+//import com.home.builderforms.NumberFormatUtils;
 //import com.home.builderforms.PortalUtils;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
@@ -528,10 +528,10 @@ private static HashMap liquorMap;
 			return null;
 		}
 		else {
-			try{
+			/*try{
 				return (NumberFormatUtils.formatCommaNumber(pValue.toString()));
 			}catch(Exception e) {
-			}
+			}*/
 			return pValue.toString();
 		}
 
