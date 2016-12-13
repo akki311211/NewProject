@@ -1,16 +1,12 @@
-package com.appnetix.app.components.adminmgr.manager.dao;
+package com.home.builderforms;
 
-import com.appnetix.app.components.BaseDAO;
-import com.appnetix.app.components.adminmgr.manager.AdminMgr;
-import com.appnetix.app.components.masterdatamgr.manager.MasterDataMgr;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.appnetix.app.exception.AppException;
-import com.appnetix.app.portal.HTMLLinkExtrator;
-import com.appnetix.app.portal.HTMLLinkExtrator.HtmlLink;
-import com.appnetix.app.struts.EventHandler.EventType;
+import com.home.builderforms.BaseDAO;
+import com.home.builderforms.AdminMgr;
+import com.home.builderforms.MasterDataMgr;
+//import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
+import com.home.builderforms.AppException;
 import com.home.builderforms.*;
-import com.home.builderforms.cache.CacheMgr;
-import com.home.builderforms.information.Info;
+import com.home.builderforms.Info;
 import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLUtil;
 import org.apache.log4j.Logger;
@@ -40,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class AdminConfigurDAO extends BaseDAO {
 
-    static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(AdminConfigurDAO.class);
+    static Logger logger = Logger.getLogger(AdminConfigurDAO.class);
 
     public AdminConfigurDAO() {
     	
@@ -1543,7 +1539,7 @@ public static String isDefaultTheme(String themeId,String userNo){
 		String query ="UPDATE MASTER_DATA SET DATA_VALUE= '"+datavalue+"' WHERE DATA_TYPE = '"+MasterEntities.ROUND_DECIMAL_PLACES+"'";
 		try {
 			count = QueryUtil.update(query, new String[]{});
-			MultiTenancyUtil.getTenantConstants().MAX_ROUNDED_DIGITS=datavalue;
+			//MultiTenancyUtil.getTenantConstants().MAX_ROUNDED_DIGITS=datavalue;
 		} catch (Exception e) {		
 			logger.info("@@@updateDecimalPlaceSetting--->Exception::"+e);
 			e.printStackTrace();
@@ -1570,46 +1566,8 @@ public static String isDefaultTheme(String themeId,String userNo){
    	 * P_ZC_AS_a_FC_Marketing_Module Point_20
    	 */
    	public String addModifySignature(String defaultsignature,String userno,String signatureName,String signature,String signaturenum,String action){
-		 boolean flag;
-		 String lastInserted = null;
-		 if(StringUtil.isValid(signature))
-		 {
-			 HTMLLinkExtrator hle=new HTMLLinkExtrator();
-			 Vector<HtmlLink> v =hle.grabHTMLLinks(signature);
-			 String page1 ="";
-			 for(int i=0;i<v.size();i++){
-				 HtmlLink htmlLinks = v.get(i);
-				 if (htmlLinks.link != null && !htmlLinks.link.equals("")) {
-					 String htmlLink = htmlLinks.link.toLowerCase();
-					 if ((htmlLink.indexOf("http://") == -1 && htmlLink.indexOf("https://") == -1 && htmlLink.indexOf("mailto:")==-1)) {
-						 page1 = "http://" + htmlLinks.link;
-						 page1 = page1.replaceAll("\"","").trim();
-						 signature = signature.replaceAll("href=" + htmlLinks.link
-								 , "href=\""+page1 + "\"");
-					 }
-				 }                     
-			 }
-		 }
-
-		 MessageSignatureDAO signatureDAO = AdminMgr.newInstance().getMessageSignatureDAO();		 
-
-		 if((defaultsignature != null) && (defaultsignature.equals("1")))
-		 {
-			 String query = "UPDATE MESSAGE_SIGNATURE SET DEFAULT_SIGNATURE = 0 WHERE USER_NO ='"+userno+"'";
-			 flag = signatureDAO.updatedefaultSignature(query);
-		 }
-
-		 CacheMgr.getUserCache().updateSignature(userno);
-		 if(StringUtil.isValid(signaturenum) && !"add".equals(action))
-		 {
-			 flag = signatureDAO.updateSignature(userno,signature,signatureName,defaultsignature,signaturenum);
-		 }else{
-			 flag = signatureDAO.submitSignature(defaultsignature,userno,signatureName,signature,signaturenum );
-			 lastInserted = QueryUtil.getLastInsertId();
-
-		 }
-		 return lastInserted;
-	 }
+   		return "";
+   	}
    	/**
    	 * P_ZC_AS_a_FC_Marketing_Module Point_14
    	 */
@@ -1659,7 +1617,7 @@ public static String isDefaultTheme(String themeId,String userNo){
             	param = dataMap.get(linkTitle);
             }
             //ZCubator_Social_Signatures starts
-            if(EventType.CREATE.equals(eventType))
+            if("create".equals(eventType))
             {
             	if(request!=null){
             		description = request.getParameter(linkTitle+"_"+FieldNames.DESCRIPTION);
