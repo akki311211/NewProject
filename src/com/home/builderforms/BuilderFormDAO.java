@@ -40,8 +40,7 @@ import org.xml.sax.SAXException;
 
 import com.home.builderforms.*;
 //import com.appnetix.app.control.web.ParamResolver;
-import com.home.BuilderFormFieldNames;
-import com.home.admin.WebCacheBypass;
+import com.home.builderforms.BuilderFormFieldNames;
 import com.home.builderforms.BaseFormFactory;
 import com.home.builderforms.BuilderConstants;
 import com.home.builderforms.BuilderCustomTab;
@@ -53,7 +52,6 @@ import com.home.builderforms.DBUtil;
 import com.home.builderforms.DateUtil;
 import com.home.builderforms.Debug;
 import com.home.builderforms.FieldNames;
-import com.home.builderforms.FileUtil;
 import com.home.builderforms.IDGenerator;
 import com.home.builderforms.LanguageUtil;
 import com.home.builderforms.ModuleUtil;
@@ -79,7 +77,7 @@ import com.home.builderforms.sqlqueries.ResultSet;
 import com.home.builderforms.sqlqueries.SQLQueryGenerator;
 import com.home.builderforms.TableXMLDAO;
 import com.home.builderforms.XMLUtil;
-import com.appnetix.app.control.web.webimpl.BuilderFormWebImpl;
+import com.home.builderforms.BuilderFormWebImpl;
 import com.home.builderforms.AppException;
 
 /**
@@ -205,8 +203,8 @@ public class BuilderFormDAO extends FormBaseDAO {
 		}
 		dataMap.put(BuilderFormFieldNames.BUILDER_MODULE_NAME, moduleName);
 		
-		WebCacheBypass webCacheIP = new WebCacheBypass(request);
-		dataMap.put("userIP", webCacheIP.getRemoteAddr());
+		//WebCacheBypass webCacheIP = new WebCacheBypass(request);
+		dataMap.put("userIP", "");
 		
 		SequenceMap baseBuilder1 = null;
 		String userNo = (String)request.getSession().getAttribute("user_no");
@@ -366,8 +364,8 @@ public class BuilderFormDAO extends FormBaseDAO {
                 //logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_DATETIME_FORMAT));
                 logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                 logInfo.set(BuilderFormFieldNames.USER_NO, (String)request.getSession().getAttribute("user_no"));
-                WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                String userIP = webCacheIP.getRemoteAddr();
+                //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                String userIP = "";
                 logInfo.set(BuilderFormFieldNames.IP_ADDRESS, userIP);
                 logInfo.set(BuilderFormFieldNames.MODULE_NAME, (String)(request.getSession().getAttribute(BuilderFormFieldNames.BUILDER_MODULE_NAME)));//ENH_MODULE_CUSTOM_TABS
 
@@ -626,8 +624,8 @@ public class BuilderFormDAO extends FormBaseDAO {
                 infoLogs.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));
                 infoLogs.set(BuilderFormFieldNames.USER_NO, (String)request.getSession().getAttribute("user_no"));
 
-                WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                String userIP = webCacheIP.getRemoteAddr();
+                //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                String userIP = "";
                 infoLogs.set(BuilderFormFieldNames.IP_ADDRESS, userIP);
 
                 infoLogs.set(BuilderFormFieldNames.ACTION_TYPE, "Delete");
@@ -771,8 +769,8 @@ public class BuilderFormDAO extends FormBaseDAO {
                 //logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_DATETIME_FORMAT));
                 logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                 logInfo.set(BuilderFormFieldNames.USER_NO, (String)request.getSession().getAttribute("user_no"));
-                WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                String userIP = webCacheIP.getRemoteAddr();
+                //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                String userIP = "";
                 logInfo.set(BuilderFormFieldNames.IP_ADDRESS, userIP);
                 logInfo.set(BuilderFormFieldNames.ACTION_TYPE, "Delete");
                 logInfo.set(BuilderFormFieldNames.MODULE_NAME, (String)(request.getSession().getAttribute(BuilderFormFieldNames.BUILDER_MODULE_NAME)));//ENH_MODULE_CUSTOM_TABS
@@ -2614,8 +2612,8 @@ public class BuilderFormDAO extends FormBaseDAO {
                 logInfo.set(BuilderFormFieldNames.IS_BUILD_SECTION, getRequestValue(request, BuilderFormFieldNames.IS_BUILD_SECTION));
                 logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));
                 logInfo.set(BuilderFormFieldNames.USER_NO, (String)request.getSession().getAttribute("user_no"));
-                WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                String userIP = webCacheIP.getRemoteAddr();
+               // WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                String userIP = "";
                 logInfo.set(BuilderFormFieldNames.IP_ADDRESS, userIP);
                 logInfo.set(BuilderFormFieldNames.ACTION_TYPE, "Modify");
                 logInfo.set(BuilderFormFieldNames.MODULE_NAME, (String)(request.getSession().getAttribute(BuilderFormFieldNames.BUILDER_MODULE_NAME)));
@@ -2671,8 +2669,8 @@ public class BuilderFormDAO extends FormBaseDAO {
                 //logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_DATETIME_FORMAT));
                 logInfo.set(BuilderFormFieldNames.CREATION_DATE, DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                 logInfo.set(BuilderFormFieldNames.USER_NO, (String)request.getSession().getAttribute("user_no"));
-                WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                String userIP = webCacheIP.getRemoteAddr();
+                //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                String userIP = "";
                 logInfo.set(BuilderFormFieldNames.IP_ADDRESS, userIP);
                 logInfo.set(BuilderFormFieldNames.ACTION_TYPE, "Create");
                 logInfo.set(BuilderFormFieldNames.MODULE_NAME, (String)(request.getSession().getAttribute(BuilderFormFieldNames.BUILDER_MODULE_NAME)));//ENH_MODULE_CUSTOM_TABS
@@ -7717,8 +7715,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                             tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                             tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                            WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                            String userIP = webCacheIP.getRemoteAddr();
+                            //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                            String userIP = "";
 
                             tabInfo.set("IP_ADDRESS", userIP);
 
@@ -7858,8 +7856,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                             tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                             tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                            WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                            String userIP = webCacheIP.getRemoteAddr();
+                            //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                            String userIP = "";
 
                             tabInfo.set("IP_ADDRESS", userIP);
 
@@ -8094,8 +8092,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                                     tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                                    String userIP = webCacheIP.getRemoteAddr();
+//                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                                    String userIP = "";
 
                                     tabInfo.set("IP_ADDRESS", userIP);
 
@@ -8171,8 +8169,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                                     tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                                    String userIP = webCacheIP.getRemoteAddr();
+                                    //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                                    String userIP = "";
 
                                     tabInfo.set("IP_ADDRESS", userIP);
 
@@ -8245,8 +8243,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                                     tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                                    String userIP = webCacheIP.getRemoteAddr();
+                                    //WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                                    String userIP = "";
 
                                     tabInfo.set("IP_ADDRESS", userIP);
 
@@ -8339,8 +8337,8 @@ public boolean isQuickFormFieldExist(String tableAnchor, String fieldName) {
                                     tabInfo.set("CHANGE_DATE", DateUtil.formatDate(DateUtil.getDate(), DateUtil.DB_FORMAT_HMS));//BUG_48699
                                     tabInfo.set("USER_NO",  (String)request.getSession().getAttribute("user_no"));
 
-                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
-                                    String userIP = webCacheIP.getRemoteAddr();
+//                                    WebCacheBypass webCacheIP = new WebCacheBypass(request);
+                                    String userIP = "";
 
                                     tabInfo.set("IP_ADDRESS", userIP);
 
