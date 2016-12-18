@@ -62,26 +62,26 @@ public class DateUtil
     //Added to make date format configurable, it is called from FCInitHandlerServlet
     public static void loadFormats(String dateformat)
     {
-        com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants _base = MultiTenancyUtil.getTenantConstants();
+        //com.appnetix.app.control.web.multitenancy.resources.constants.BaseConstants Constants = Constants;
         int i = getDateFormatIndex(dateformat);
-        _base.DISPLAY_FORMAT = DATEFORMATS[i];
-        _base.DISPLAY_FORMAT_HM = _base.DISPLAY_FORMAT + " HH:mm";
-        _base.DISPLAY_FORMAT_HMS = _base.DISPLAY_FORMAT + " HH:mm:ss";
+        Constants.DISPLAY_FORMAT = DATEFORMATS[i];
+        Constants.DISPLAY_FORMAT_HM = Constants.DISPLAY_FORMAT + " HH:mm";
+        Constants.DISPLAY_FORMAT_HMS = Constants.DISPLAY_FORMAT + " HH:mm:ss";
 
         // Additional format added
-        _base.DISPLAY_FORMAT_HMS_AMPM = _base.DISPLAY_FORMAT + " HH:mm:ss a";
-        _base.DISPLAY_FORMAT_HMA = _base.DISPLAY_FORMAT + " hh:mm a";
-        _base.CALENDAR_INDEX = "calendar" + i;
+        Constants.DISPLAY_FORMAT_HMS_AMPM = Constants.DISPLAY_FORMAT + " HH:mm:ss a";
+        Constants.DISPLAY_FORMAT_HMA = Constants.DISPLAY_FORMAT + " hh:mm a";
+        Constants.CALENDAR_INDEX = "calendar" + i;
 
-        if (_base.DISPLAY_FORMAT.equalsIgnoreCase("DD/MM/YYYY"))
+        if (Constants.DISPLAY_FORMAT.equalsIgnoreCase("DD/MM/YYYY"))
         {
-            _base.LBL_DISPLAY_FORMAT = "DD/MM/YYYY";
-            _base.isUSDateFormat = false;
-        } else if (_base.DISPLAY_FORMAT.equalsIgnoreCase("mm/dd/yyyy"))
+            Constants.LBL_DISPLAY_FORMAT = "DD/MM/YYYY";
+            Constants.isUSDateFormat = false;
+        } else if (Constants.DISPLAY_FORMAT.equalsIgnoreCase("mm/dd/yyyy"))
         {
-            _base.LBL_DISPLAY_FORMAT = "MM/DD/YYYY";
+            Constants.LBL_DISPLAY_FORMAT = "MM/DD/YYYY";
         }
-        _base.DISPLAY_FORMAT_DASH = _base.DISPLAY_FORMAT.replaceAll("/", "-");
+        Constants.DISPLAY_FORMAT_DASH = Constants.DISPLAY_FORMAT.replaceAll("/", "-");
     }
 
     // Get the index of given format in avaibale formats, based on that it will decide which javascript to use.
@@ -110,7 +110,7 @@ public class DateUtil
             return false;
         else
         {
-            String format = (date.indexOf("-") != -1) ? DB_FORMAT : MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+            String format = (date.indexOf("-") != -1) ? DB_FORMAT : Constants.DISPLAY_FORMAT;
             return (formatDate(dt, format).equals(date));
         }
     }
@@ -118,7 +118,7 @@ public class DateUtil
     // Returns the date in Display format
     public static String getDisplayDate(String date)
     {
-        return formatDate(date, MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT);
+        return formatDate(date, Constants.DISPLAY_FORMAT);
     }
 
     public static String getDisplayDate(String date, String format)
@@ -129,7 +129,7 @@ public class DateUtil
     // Returns the date in Display formatwith having date as parameter.
     public static String getDisplayDate(Date date)
     {
-        return formatDate(date, MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT);
+        return formatDate(date, Constants.DISPLAY_FORMAT);
     }
 
 
@@ -184,7 +184,7 @@ public class DateUtil
 
                         int dateIndex = 1;
                         int monthIndex = 0;
-                        if (!"calendar2".equals(MultiTenancyUtil.getTenantConstants().CALENDAR_INDEX))
+                        if (!"calendar2".equals(Constants.CALENDAR_INDEX))
                         {
                             dateIndex = 0;
                             monthIndex = 1;
@@ -255,7 +255,6 @@ public class DateUtil
     }//BASEBUILD80_REST_API----END
 
     public static boolean checkDateValidationForDisplayFormat(String date, boolean lengthCheck, boolean yearCheck, int minYearLimit){//BASEBUILD80_REST_API
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         boolean isDateValid = true;
         boolean isDateNumeric = true;
         String seperator = (date.indexOf("-") != -1) ? "-" : "/";
@@ -280,14 +279,14 @@ public class DateUtil
 
                 if (isDateValid)
                 {
-                    if ("mm/dd/yyyy".equalsIgnoreCase(_baseConstants.DISPLAY_FORMAT))
+                    if ("mm/dd/yyyy".equalsIgnoreCase(Constants.DISPLAY_FORMAT))
                     {
                         if (!(Integer.parseInt(dateSplit[0]) >= 1 && Integer.parseInt(dateSplit[0]) <= 12))
                         {
                             isDateValid = false;
                         } else
                         {
-                            SimpleDateFormat sdf = new SimpleDateFormat(_baseConstants.DISPLAY_FORMAT);
+                            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DISPLAY_FORMAT);
                             noOfDaysInMonth = getMonthDays(sdf.parse(date));
                             if (!(Integer.parseInt(dateSplit[1]) >= 1 && Integer.parseInt(dateSplit[1]) <= noOfDaysInMonth))
                             {
@@ -304,7 +303,7 @@ public class DateUtil
                         	}
                         }//BASEBUILD80_REST_API----END
 
-                    } else if ("dd/mm/yyyy".equalsIgnoreCase(_baseConstants.DISPLAY_FORMAT))
+                    } else if ("dd/mm/yyyy".equalsIgnoreCase(Constants.DISPLAY_FORMAT))
                     {
 
                         if (!(Integer.parseInt(dateSplit[1]) >= 1 && Integer.parseInt(dateSplit[1]) <= 12))
@@ -312,7 +311,7 @@ public class DateUtil
                             isDateValid = false;
                         } else
                         {
-                            SimpleDateFormat sdf = new SimpleDateFormat(_baseConstants.DISPLAY_FORMAT);
+                            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DISPLAY_FORMAT);
                             noOfDaysInMonth = getMonthDays(sdf.parse(date));
                             if (!(Integer.parseInt(dateSplit[0]) >= 1 && Integer.parseInt(dateSplit[0]) <= noOfDaysInMonth))
                             {
@@ -348,7 +347,7 @@ public class DateUtil
             return false;
         else
         {
-            String format = (date.indexOf("-") != -1) ? DB_FORMAT : MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+            String format = (date.indexOf("-") != -1) ? DB_FORMAT : Constants.DISPLAY_FORMAT;
             date = getPaddedDate(date);
             return (formatDate(dt, format).equals(date));
         }
@@ -357,7 +356,7 @@ public class DateUtil
     @SuppressWarnings("unused")
     public static String getPaddedDate(String date)
     {
-        String format = (date.indexOf("-") != -1) ? DB_FORMAT : MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+        String format = (date.indexOf("-") != -1) ? DB_FORMAT : Constants.DISPLAY_FORMAT;
         String sep = (date.indexOf("-") != -1) ? "-" : "/";
         String dateSplit[] = date.split(sep);
         if (Integer.parseInt(dateSplit[2]) > 29 && Integer.parseInt(dateSplit[2]) < 100)
@@ -381,7 +380,7 @@ public class DateUtil
             return false;
         else
         {
-            String format = (date.indexOf("-") != -1) ? DB_FORMAT : MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+            String format = (date.indexOf("-") != -1) ? DB_FORMAT : Constants.DISPLAY_FORMAT;
             if (formatDate(dt, format).equals(date))
                 return true;
             else
@@ -497,7 +496,7 @@ public class DateUtil
     public static String formatDate(Date date, String format)
     {
         if (format == null)
-            format = MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+            format = Constants.DISPLAY_FORMAT;
 
         SimpleDateFormat sdf = new SimpleDateFormat(format, LanguageUtil.getUserLocale());
         //P_E_FIN_UPGRADE added by vivek maurya starts
@@ -526,7 +525,7 @@ public class DateUtil
         String month = "";
         String year = "";
         String date = "";
-        String format = MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+        String format = Constants.DISPLAY_FORMAT;
         if (Date != null && !Date.equals("null") && !Date.equals(""))
         {
             if (format.equalsIgnoreCase("dd/MM/YYYY"))
@@ -557,7 +556,7 @@ public class DateUtil
         String month = "";
         String year = "";
         String date = "";
-        String format = MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+        String format = Constants.DISPLAY_FORMAT;
         if (Date != null && !Date.equals("null") && !Date.equals(""))
         {
 
@@ -1118,7 +1117,7 @@ public class DateUtil
         javascriptCode.append("<script language='JavaScript'>\n");
 
         // abhishek gupta - replace hard coded calender name, use formated name for js file
-        javascriptCode.append("var " + textboxName + "= new " + MultiTenancyUtil.getTenantConstants().CALENDAR_INDEX + "(document.forms[\"" + formName + "\"].elements['" + textboxName + "']);\n");
+        javascriptCode.append("var " + textboxName + "= new " + Constants.CALENDAR_INDEX + "(document.forms[\"" + formName + "\"].elements['" + textboxName + "']);\n");
         javascriptCode.append(textboxName + ".year_scroll = " + year_scroll + ";\n");
         javascriptCode.append(textboxName + ".time_comp = " + time_comp + ";\n");
         javascriptCode.append(textboxName + ".contextname = \"" + sContextName + "\";\n");
@@ -1132,7 +1131,7 @@ public class DateUtil
     public static String getCurrentDateTime()
     {
         SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat(MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT_HMS);
+        sdf = new SimpleDateFormat(Constants.DISPLAY_FORMAT_HMS);
         return sdf.format(getCalendar().getTime());
     }
 
@@ -1563,7 +1562,7 @@ public class DateUtil
         calendar = Calendar.getInstance();
         if (StringUtil.isValidNew(date))
         {
-            if (MultiTenancyUtil.getTenantConstants().isUSDateFormat)
+            if (Constants.isUSDateFormat)
             {
                 startDay = Integer.parseInt(date.substring(3, 5));
                 startMonth = Integer.parseInt(date.substring(0, 2));
@@ -1885,7 +1884,7 @@ public class DateUtil
         int currentDate = Calendar.DATE;
 
         if (format == null)
-            format = MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT;
+            format = Constants.DISPLAY_FORMAT;
         DateFormat dateFormat = new SimpleDateFormat(format);
 
         if ("add".equals(type))
@@ -1902,9 +1901,9 @@ public class DateUtil
         String currentDate = DateUtil.getCurrentDateAsString(DateUtil.DB_FORMAT_HMS);
         try
         {
-            String userTimeZone = com.appnetix.app.portal.calendar.UserTimezoneMap.newInstance().getTimezone(userNo);
+            String userTimeZone = com.home.builderforms.UserTimezoneMap.newInstance().getTimezone(userNo);
 
-            currentDate = TimeZoneUtils.performUTCConversion(com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantConstants().DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, currentDate, DateUtil.DB_FORMAT_HMS, DateUtil.DB_FORMAT_HMS);
+            currentDate = TimeZoneUtils.performUTCConversion(Constants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, currentDate, DateUtil.DB_FORMAT_HMS, DateUtil.DB_FORMAT_HMS);
             currentDate = DateUtil.formatDate(currentDate, format);
 
         } catch (Exception e)
@@ -2033,7 +2032,7 @@ public class DateUtil
 
     public static String compareDate(String date1, String date2)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat(MultiTenancyUtil.getTenantConstants().DISPLAY_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DISPLAY_FORMAT);
         try
         {
             Date dateFirst = sdf.parse(date1);

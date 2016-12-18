@@ -33,15 +33,15 @@ package com.home.builderforms;
 
 import java.util.Locale;
 
-import com.appnetix.app.portal.admin.UTF8Properties;
-import com.appnetix.app.portal.i18n.Language;
-import com.appnetix.app.portal.i18n.LanguageHandler;
+//import com.appnetix.app.portal.admin.UTF8Properties;
+//import com.appnetix.app.portal.i18n.Language;
+//import com.appnetix.app.portal.i18n.LanguageHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.home.builderforms.i18n.UserLanguageLocal;
+//import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
+//import com.home.builderforms.i18n.UserLanguageLocal;
 import java.util.List;
 import com.home.builderforms.Constants;
 import com.home.builderforms.BaseUtils;
@@ -54,26 +54,27 @@ public class LanguageUtil {
 
 	public static String getString(String key)
     {
-		if("Access Logs".equals(key) && (!MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC || (MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC && !ModuleUtil.zcubatorImplemented()))){
+		/*if("Access Logs".equals(key) && (!MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC || (MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC && !ModuleUtil.zcubatorImplemented()))){
 			key="Access Control";
 		}
 		if(isI18nImplemented() && StringUtil.isValid(key)){
 			return getString(key, UserLanguageLocal.getUserLanguage());
 		}else{
 			return key;
-		}
+		}*/
+		return key;
 	}
 	
 	public static String getString(String key,String language){
-		if("Access Logs".equals(key) && (!MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC || (MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC && !ModuleUtil.zcubatorImplemented()))){
+	/*	if("Access Logs".equals(key) && (!MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC || (MultiTenancyUtil.getTenantConstants().WS_MODULES_SYNC && !ModuleUtil.zcubatorImplemented()))){
 			key="Access Control";
-		}
+		}*/
 		return getString(key, language,null);	//MT_PHASE_III_I18n_CHANGES //Branding Changes
 	}
 	//Branding Changes starts
 	public static String getString(String key,String language,String moduleKeyValName){
 		String returnValue=key;
-		if(isI18nImplemented())
+		/*if(isI18nImplemented())
 		{
 			if(language==null){
 				language = UserLanguageLocal.getUserLanguage();
@@ -88,7 +89,7 @@ public class LanguageUtil {
 			}else{
 				returnValue = returnValue.replaceAll("(?i)"+Constants.moduleNameMap.get(moduleKeyValName),BaseUtils.getMenuDisplayName(null,moduleKeyValName,Constants.moduleNameMap.get(moduleKeyValName)));	
 			}
-		}
+		}*/
 		return returnValue;
 	}
 	//Branding Changes ends
@@ -155,12 +156,13 @@ public class LanguageUtil {
          * @author Dravit Gupta
          */
         public static String getUserLanguage(String userNo){
-        	if(userNo==null)
+        	/*if(userNo==null)
         	{
         		return UserLanguageLocal.getUserLanguage();
         	} else{
         		return UserLanguageLocal.getUserLanguage(userNo);	
-        	}
+        	}*/
+        	return "en";
             
         }
 //P_FORUM_B_12560 ends
@@ -218,11 +220,13 @@ public class LanguageUtil {
 	}
 	
 	public static String getLangKeyValue(String key,String language){
-		return	Language.getLangKeyValue(key, language);	//MT_PHASE_III_I18n_CHANGES 
+		//return	Language.getLangKeyValue(key, language);	//MT_PHASE_III_I18n_CHANGES 
+		return "en";
 	}
 
 	public static String getLanguageContent(String lang,String menu,String tenantName){
-		return	LanguageHandler.getInstance().getLanguageContent(lang, menu,tenantName);	//MT_PHASE_III_I18n_CHANGES 
+		//return	LanguageHandler.getInstance().getLanguageContent(lang, menu,tenantName);	//MT_PHASE_III_I18n_CHANGES
+		return "en";
 	}
         
         //P_E_Mobile_SPA_92 starts By Deepak V.
@@ -234,13 +238,14 @@ public class LanguageUtil {
          * @return 
          */
         public static String getLanguageContentMobileSPA(String lang,List<String> moduleList,String tenantName){
-		return	LanguageHandler.getInstance().getLanguageContentMobileSPA(lang, moduleList,tenantName);	//MT_PHASE_III_I18n_CHANGES 
+		//return	LanguageHandler.getInstance().getLanguageContentMobileSPA(lang, moduleList,tenantName);	//MT_PHASE_III_I18n_CHANGES
+        	return "en";
 	}
         //P_E_Mobile_SPA_92 ends By Deepak V.
 	
     public static boolean isI18nImplemented()
     {
-       return i18n && "on".equals(MultiTenancyUtil.getTenantContext().getAttribute("internationalization"));
+       return false;
     }
 
     public static void setI18n(boolean _i18n)

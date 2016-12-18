@@ -2,8 +2,6 @@ package com.home.builderforms;
 
 import org.springframework.beans.factory.BeanFactory;
 
-import com.appnetix.app.control.web.FCInitHandlerServlet;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.home.builderforms.SpringUtil;
 
 /**
@@ -24,16 +22,15 @@ public class BeanHandler
 	{
 		Object _bean = null;
 
-		Object _beanFactory = MultiTenancyUtil.getTenantContext().getAttribute(BEAN_FACTORY);
+		Object _beanFactory = null;
 
 		if(_beanFactory == null)
 		{
-			String springConfigFileName = CONFIG_PATH + CONFIG_FILE.replace("config",MultiTenancyUtil.getTenantName().toLowerCase());
+			String springConfigFileName = CONFIG_PATH + CONFIG_FILE;
 			java.io.File springFile = new java.io.File(springConfigFileName);
 			if(springFile.exists()) {
-				_beanFactory = SpringUtil.prepareBeanFactory(new String[] { CONFIG_PATH + CONFIG_FILE.replace("config",MultiTenancyUtil.getTenantName().toLowerCase())});
+				_beanFactory = SpringUtil.prepareBeanFactory(new String[] { CONFIG_PATH + CONFIG_FILE});
 			}
-			MultiTenancyUtil.getTenantContext().setAttribute(BEAN_FACTORY,_beanFactory == null?NOT_AVAILABLE:_beanFactory);
 		}
 		
 		if(!NOT_AVAILABLE.equals(_beanFactory))
@@ -44,13 +41,12 @@ public class BeanHandler
 		if(_bean == null)
 		{
 
-			_beanFactory = FCInitHandlerServlet.getControllerServletContext().getAttribute(BEAN_FACTORY);
+			_beanFactory = null;
 
 			if(_beanFactory == null)
 			{
 				_beanFactory = SpringUtil.prepareBeanFactory(new String[] { CONFIG_PATH + CONFIG_FILE});
 				
-				FCInitHandlerServlet.getControllerServletContext().setAttribute(BEAN_FACTORY,_beanFactory == null?NOT_AVAILABLE:_beanFactory);
 				
 			}
 	

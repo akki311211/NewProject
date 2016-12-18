@@ -26,7 +26,7 @@ import java.util.TreeMap;
  */
 public class Constants
 {
-	public static final String DISPLAY_FORMAT = "MM/dd/yyyy";
+	public static  String DISPLAY_FORMAT = "MM/dd/yyyy";
     public static final boolean IS_COAPPLICANT_ENABLED = true;
     public static final String EXPECTED_OPENING_DATE = "Expected Opening Date";
     public static final String MAX_RSS_FEEDS = "5";
@@ -1388,11 +1388,14 @@ public class Constants
 	 public static final String DB_TIMEZONE_TIMEZONEUTILS = "";
 	    
 	    
-	    public static final String DISPLAY_FORMAT_HMS = DateUtil.DB_FORMAT + " HH:mm:ss";
-	    public  static final String DISPLAY_FORMAT_HMA = "hh:mm a";
-	    public  static final String DISPLAY_FORMAT_HM = "hh:mm";
+	    public static  String DISPLAY_FORMAT_HMS = DateUtil.DB_FORMAT + " HH:mm:ss";
+	    public  static  String DISPLAY_FORMAT_HMA = "hh:mm a";
+	    public  static  String DISPLAY_FORMAT_HM = "hh:mm";
 	    public static String USER_TIME_ZONE = "";
 	    public static final String MAX_ROUNDED_DIGITS = "2";
 	    public static final String DEFAULT_TIME_ZONE = "US/Eastern";
 	    public static final String USER_CURRENCY = "$";
+	    public static String  DISPLAY_FORMAT_HMS_AMPM, DISPLAY_FORMAT_DASH, LBL_DISPLAY_FORMAT, CALENDAR_INDEX;
+	    public static boolean isUSDateFormat;
+	    
 }
