@@ -1,14 +1,11 @@
-package com.appnetix.app.components.adminmgr.manager.dao;
+package com.home.builderforms;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.home.builderforms.*;
-import com.appnetix.app.components.BaseDAO;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
+import com.home.builderforms.BaseDAO;
 import com.home.builderforms.sqlqueries.*;
-import com.home.builderforms.information.*;
 import org.apache.log4j.Logger;
 
 /**
@@ -30,13 +27,13 @@ BBEH_FOR_GETRESULT_METHOD  22/05/2013      Rohit Jain    For pass Null parameter
 
  */
 public class FsLeadOwnerDAO extends BaseDAO {
-	static	Logger logger					= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(FsLeadOwnerDAO.class);
+	static	Logger logger					= Logger.getLogger(FsLeadOwnerDAO.class);
 	
 	/**
 	*  Constructor for the LeadStatusDAO object
 	*/
 	public FsLeadOwnerDAO() {
-		this.tableAnchor = TableAnchors.FS_SCHEDULE_LEAD_OWNER;
+		this.tableAnchor = "fsScheduleLeadOwner";
 
 	}
 
@@ -100,7 +97,7 @@ public class FsLeadOwnerDAO extends BaseDAO {
                 String lastName = result.getString("LAST_NAME");
                 if(Constants.USER_LEVEL_DIVISION.equals(result.getString("USER_LEVEL")))
                 {
-                	lastName = lastName+"("+MultiTenancyUtil.getTenantConstants().DIVISION_USER_ABBR+")";
+                	lastName = lastName+"(DU)";
                 }else if("2".equals(result.getString("USER_LEVEL")))
                 {
                 	lastName = lastName+"(RU)";
@@ -489,7 +486,7 @@ public SequenceMap getLeadAgentsMap(String regionNo) {
 	
 	public void updateRoundRobinMapping(String userToDelete) {
 		String selectQuery = "SELECT ORDER_NO, REGION_ID, SOURCE_ID FROM FS_SCHEDULE_LEAD_OWNER WHERE USER_NO IN("+userToDelete+")"; //P_FS_Enh_AssignmentBySourceDetail
-		Map<String,List<String[]>> batchMap = NewPortalUtils.getNewHashMapWithKeyValueType();
+		Map<String,List<String[]>> batchMap = BaseUtils.getNewHashMapWithKeyValueType();
 		ResultSet result = null;
 		try {
 			result = QueryUtil.getResult(selectQuery, null);

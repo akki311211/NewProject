@@ -1,15 +1,16 @@
-package com.appnetix.app.components.adminmgr.manager.dao;
+package com.home.builderforms;
 
-import com.home.builderforms.*;
-import com.appnetix.app.components.BaseDAO;
-import com.home.builderforms.sqlqueries.*;
-import com.home.builderforms.information.*;
+import com.home.builderforms.BaseDAO;
+import com.home.builderforms.sqlqueries.ResultSet;
+import com.home.builderforms.sqlqueries.SQLUtil;
+
 import org.apache.log4j.Logger;
+
 import java.util.*;
 public class FsLeadQualificationDAO extends BaseDAO {
-	static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(FsLeadQualificationDAO.class);
+	static Logger logger = Logger.getLogger(FsLeadQualificationDAO.class);
 	public FsLeadQualificationDAO(){
-		this.tableAnchor = TableAnchors.FS_LEAD_QUALIFICATION_CHECKLIST;
+		this.tableAnchor = "fsLeadQualificationCheckList";
 
 	}
 

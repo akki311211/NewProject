@@ -362,11 +362,11 @@ public class FilePart extends Part {
 
         // decode macbinary if this was sent
 
-        if (contentType.equals("application/x-macbinary")) {
+        /*if (contentType.equals("application/x-macbinary")) {
 
             out = new MacBinaryDecoderOutputStream(out);
 
-        }
+        }*/
         long size = 0;
         int read;
 
