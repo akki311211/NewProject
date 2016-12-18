@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ProductBuildScript" default="build" basedir="../">
 	<property environment="env" />
-	<property name="local.dir" value="/home/akash" />
+	<property name="local.dir" value="/home/sourabh" />
 	<property name="root.dir" value="${local.dir}/builds/StrutsHW" />
 	<property name="app.dir" value="${root.dir}/src" />
 	<property name="class.path" value="${app.dir}/WEB-INF/classes" />
