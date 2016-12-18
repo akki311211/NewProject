@@ -12,7 +12,7 @@ public class ParentTable
 
 	private Vector foreignTable = new Vector();
 	
-	public void setHeading(String value)
+	public void setHeading(String value)    
 	{
 		this.heading = value;
 	}
