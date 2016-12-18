@@ -1,8 +1,8 @@
-package com.appnetix.app.control.web.base;
+package com.home.builderforms;
 
 import org.springframework.beans.factory.BeanFactory;
 
-import com.appnetix.app.util.SpringUtil;
+import com.home.builderforms.SpringUtil;
 
 /**
  * <code>BeanHandler<code> is a helper, which avails bean from the corresponding <code>BeanFactory</code> of spring framework.
