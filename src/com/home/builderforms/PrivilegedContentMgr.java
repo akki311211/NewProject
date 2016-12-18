@@ -12,14 +12,12 @@
  */
 ////BBEH_INTRANET_SMC_OPTIMIZATION 25/07/13  Balvinder Mehla			code optimization in SMC_Intranet
 // Filename: UserRole.java
-package com.appnetix.app.portal.role;
+package com.home.builderforms;
 
 import java.io.Serializable;
 import java.util.*;
 import java.sql.*;
 
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
-import com.home.builderforms.*;
 import com.home.builderforms.sqlqueries.SQLUtil;
 
 /**

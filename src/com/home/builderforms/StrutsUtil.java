@@ -9,13 +9,12 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.StrutsStatics;
 import org.apache.struts2.dispatcher.StrutsRequestWrapper;
-import com.appnetix.app.control.web.ResponseWrapper;
-import com.appnetix.app.control.web.XSSRequestWrapper;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
+import com.home.builderforms.ResponseWrapper;
+import com.home.builderforms.XSSRequestWrapper;
 import com.opensymphony.xwork2.ActionContext;
 
 public class StrutsUtil {
-	static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(StrutsUtil.class);
+	static Logger logger = Logger.getLogger(StrutsUtil.class);
 
 	/**
 	 * Method is replacement of <code>mapping.getPath()</code> method of
@@ -113,7 +112,7 @@ public class StrutsUtil {
 			_request.setAttribute(_multiPartRequest, Boolean.TRUE);
 		} else {
 			
-			if(MultiTenancyUtil.getTenantConstants().SECURE) {
+			if(true) {
 				_request = new XSSRequestWrapper(_request); 
 			
 			}

@@ -233,11 +233,11 @@ public class NewPortalUtils {
     }
     public static String getRegionalOwnersMap(String userNo, boolean fromWhere) { //30-Mar-2015 CODEBASE_ISSUE IN_90010_13FEB15
         String key;
-        BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+        //BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
         String userIdTemp = "";
         SequenceMap ownersMap = new SequenceMap();
         String check = "no";
-        if (!"fs".equals(_baseConstants.INCLUDED_MODULES.toLowerCase())) {
+        /*if (!"fs".equals(Constants.INCLUDED_MODULES.toLowerCase())) {
             String modules = _baseConstants.INCLUDED_MODULES.toLowerCase();
             boolean isFsExist = modules.contains("fs");
             if (isFsExist) {
@@ -252,9 +252,9 @@ public class NewPortalUtils {
     //30-Mar-2015 CODEBASE_ISSUE IN_90010_13FEB15
             }
         }
-       /* if ("no".equals(check)) {
+        if ("no".equals(check)) {
             ownersMap = LocationMgr.newInstance().getLocationsDAO().getOwnerSMap(null, true, userNo);
-        }*/
+        }
         Iterator iter = ownersMap.values().iterator();
         key = null;
         String value = null;
@@ -271,8 +271,39 @@ public class NewPortalUtils {
         else
         {
         	userIdTemp=userNo;
-        }
+        }*/
         return userIdTemp;
     }
+    
+    public static void setOptimizerSearchDepthToZero()
+	{
+		try{
+			ProcessBuilder processBuilder;
+			processBuilder = new ProcessBuilder("bash","-c","set session optimizer_search_depth =0;");
+			Process pp = processBuilder.start();
+			 
+			  pp.waitFor();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	
+	}
+    public static void setOptimizerSearchDepthToOriginal()
+	{
+		try{
+			ProcessBuilder processBuilder;
+			processBuilder = new ProcessBuilder("bash","-c","set session optimizer_search_depth =62;");
+			Process pp = processBuilder.start();
+			 
+			  pp.waitFor();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	
+	}
 }
 

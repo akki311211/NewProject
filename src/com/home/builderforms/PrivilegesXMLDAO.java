@@ -1,4 +1,4 @@
-package com.appnetix.app.portal.role;
+package com.home.builderforms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,11 +15,11 @@ import org.w3c.dom.NodeList;
 
 import com.home.builderforms.Debug;
 import com.home.builderforms.StringUtil;
-import com.home.builderforms.xmldao.XMLUtil;
+import com.home.builderforms.XMLUtil;
 
 public class PrivilegesXMLDAO
 {
-	private static final Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(PrivilegesXMLDAO.class);
+	private static final Logger logger = Logger.getLogger(PrivilegesXMLDAO.class);
 	
 	private static final List<String> privilegeType = Arrays.asList("franchisee","corporate","rfm"); 
 	

@@ -22,7 +22,7 @@ public final class Debug
 {
     public static final boolean debuggingOn = false;
 
-    private static Logger logger = com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(Debug.class);
+    private static Logger logger = Logger.getLogger(Debug.class);
 
     public static String logFile, logFile1, logFile2, logFile3, logFile4, exceptionFile, errorPageExceptionsFile, errorCodeFile;
 

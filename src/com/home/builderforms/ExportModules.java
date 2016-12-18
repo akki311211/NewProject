@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 	This class is the wrapper to hold ExportModules info
  
  * Other's beans called with methods
-	com.appnetix.app.util.xmldao.XMLUtil
+	com.home.builderforms.xmldao.XMLUtil
 
  *  Updated by Parveen
  */

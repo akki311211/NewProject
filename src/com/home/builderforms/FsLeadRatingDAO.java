@@ -1,16 +1,14 @@
-package com.appnetix.app.components.adminmgr.manager.dao;
+package com.home.builderforms;
 
-import com.home.builderforms.*;
-import com.appnetix.app.components.BaseDAO;
+import com.home.builderforms.BaseDAO;
 import com.home.builderforms.sqlqueries.*;
-import com.home.builderforms.information.*;
 
 import org.apache.log4j.Logger;
-import java.util.*;
+
 public class FsLeadRatingDAO extends BaseDAO {
-	static Logger logger		=com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(FsLeadRatingDAO.class);
+	static Logger logger		= Logger.getLogger(FsLeadRatingDAO.class);
 	public FsLeadRatingDAO(){
-		this.tableAnchor = TableAnchors.FS_LEAD_RATING;
+		this.tableAnchor = "fsLeadRating";
 
 	}
 

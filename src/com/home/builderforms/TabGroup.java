@@ -7,7 +7,7 @@
  *
 **/
 
-package com.home.builderforms.tabs;
+package com.home.builderforms;
 
 import com.home.builderforms.SequenceMap;
 import java.util.ArrayList;

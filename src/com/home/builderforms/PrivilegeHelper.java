@@ -1,4 +1,4 @@
-package com.appnetix.app.portal.role;
+package com.home.builderforms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,23 +7,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.home.builderforms.FieldNames;
 import com.home.builderforms.SequenceMap;
+import com.home.builderforms.Privileges;
 
 public class PrivilegeHelper
 {
    
 	public static Privileges getPrivileges(Map<String,Privileges> _privileges)
 	{	
-		String tenantName = MultiTenancyUtil.getTenantName();
+		String tenantName = Constants.TENANT_NAME;
 		Privileges _composite = null;
 		Privileges _tenant = _privileges.get(tenantName);
 		Privileges _base = _privileges.get("base");
 		
 		if(_tenant!=null)
 		{	
-			_composite = (Privileges)MultiTenancyUtil.getTenantContext().getAttribute(tenantName+"_privileges");
+			//_composite = (Privileges)MultiTenancyUtil.getTenantContext().getAttribute(tenantName+"_privileges");
 			if(_composite != null)
 			{
 				return _composite;
@@ -33,7 +33,7 @@ public class PrivilegeHelper
 				_composite = Privileges.getInstance();
 				mergePrivilegeMap(_base,_composite,_tenant);
 				mergeModuleMap(_base,_composite,_tenant);
-				MultiTenancyUtil.getTenantContext().setAttribute(tenantName+"_privileges",_composite);
+				//MultiTenancyUtil.getTenantContext().setAttribute(tenantName+"_privileges",_composite);
 			}
 		}
 		else

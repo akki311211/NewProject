@@ -1,4 +1,6 @@
-package com.appnetix.app.portal.role;
+package com.home.builderforms;
+
+import  com.home.builderforms.ModuleMap;
 
 public class Privileges implements java.io.Serializable
 {

@@ -139,7 +139,11 @@ ENH_71BBFCNE12           20June2011           Veerpal Singh                     
 
 package com.home.builderforms;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.StringTokenizer;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.home.builderforms.sqlqueries.ResultSet;
 
@@ -365,6 +369,131 @@ public static String formatPhoneNo(String phone) {
 
 	return sb.toString();
 }
+
+public static String getAreaDocumentsData(String foreignId, String order)
+		throws ConnectionException {
+	String returnValue = "";
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	java.sql.ResultSet rs = null;
+
+	try {
+		con = DBConnectionManager.getInstance().getConnection(Constants.TENANT_NAME,2000);
+		pstmt = con
+				.prepareStatement("SELECT AD.DOCUMENT_FIM_TITLE, AD.DOCUMENT_FIM_ATTACHMENT FROM AREA_DOCUMENTS AD WHERE AD.AREA_TAB_PRIMARY_ID = ? AND AREA_ORDER_NO = ?");
+		pstmt.setString(1, foreignId);
+		pstmt.setString(2, order);
+		rs = pstmt.executeQuery();
+		if (rs.next()) {
+			String temp = null;
+			if (rs.getString("DOCUMENT_FIM_TITLE") == null
+					|| rs.getString("DOCUMENT_FIM_TITLE").equals("null"))
+				temp = "";
+			else
+				temp = rs.getString("DOCUMENT_FIM_TITLE");
+			returnValue = "Title:" + temp;
+			returnValue = returnValue + "<BR>";
+			returnValue = returnValue + "Upload Document:<BR>";
+			if (rs.getString("DOCUMENT_FIM_ATTACHMENT") != null
+					&& !rs.getString("DOCUMENT_FIM_ATTACHMENT").equals("")) {
+				temp = rs.getString("DOCUMENT_FIM_ATTACHMENT");
+				temp = temp.substring(0, temp.indexOf("_"))
+						+ temp.substring(temp.lastIndexOf("."));
+				returnValue = returnValue + temp;
+			} else
+				returnValue = returnValue + "Not Available";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			if (con != null)
+				DBConnectionManager.getInstance().freeConnection(con);
+		} catch (Exception e) {
+		}
+	}
+	return returnValue;
+}
+
+public static boolean hasDependentAddressTable(String tableName,HttpServletRequest request){
+	try{
+		String menuName = null;
+		if(request!=null){
+			menuName = request.getParameter("reportMenu")!=null?request.getParameter("reportMenu"):(String)request.getSession().getAttribute("menuName");
+		}
+		if("fim".equals(menuName)){
+			FieldMappings mappings = DBUtil.getInstance().getFieldMappings(tableName);
+			HeaderMap[] hMapArray = mappings.getHeaderMap();
+			DependentTable dTable = null;
+			for(HeaderMap headerMap: hMapArray) {
+				HeaderField hFld = headerMap.getHeaderFields();
+				DependentTable[] dependenTables = hFld.getDependentTables();
+				if(dependenTables!=null && dependenTables.length>0){
+					int dependantTableSize = dependenTables.length;
+					for(int i=0;i<dependantTableSize;i++){
+						dTable =  dependenTables[i];
+						if("address".equals(dTable.getTableAnchor())){
+							return Boolean.TRUE;
+						}
+					}
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}catch(Exception ex){
+		ex.printStackTrace();
+		return Boolean.FALSE;
+	}
+	
+}
+
+
+public  static String getPrivateFieldFormat(String privateField)
+{
+    return getPrivateFieldFormat(privateField,null);
+}
+
+
+public  static String getPrivateFieldFormat(String privateField,String bdtate)
+{
+ String privateFieldConversion = "" ;
+ //as per the requirement
+ int privateFieldNumber = 4 ;
+ int secondPrivateNo = privateFieldNumber - 2 ;
+if(privateField != null && !privateField.trim().equals("") && !privateField.trim().equals("null") && !"<a href='mailto:'></a>".equals(privateField.trim()))
+ {
+   if(privateField.indexOf("</a>")!=-1 || (bdtate !=null && !bdtate.trim().equals("") && !bdtate.trim().equalsIgnoreCase("null") && bdtate.trim().equalsIgnoreCase("bDate")))//P_CM_B_48051 
+   {
+       privateFieldConversion = "******";
+   }  
+     
+   else if(privateField.length() > privateFieldNumber)
+    {
+      
+       privateFieldConversion = "******" + privateField.substring((privateField.length() - privateFieldNumber),privateField.length());
+    }
+    else if(privateField.length()<= privateFieldNumber && privateField.length() > secondPrivateNo)
+     {
+       
+       privateFieldConversion = "******" + privateField.substring((privateField.length() - secondPrivateNo),privateField.length());
+     }
+    else if(privateField != null && (privateField.length()<= secondPrivateNo))
+    {
+      privateFieldConversion = "******";
+    }
+ }
+  return privateFieldConversion;
+}
+
 public static String formatPhoneNo(String phone, String country) {
 	if (phone == null)
 		phone = "";

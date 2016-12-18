@@ -47,7 +47,6 @@ import com.home.builderforms.SequenceMap;
 import com.home.builderforms.SequenceMapFactory;
 import com.home.builderforms.StringUtil;
 import com.home.builderforms.StrutsUtil;
-import com.home.builderforms.TableAnchors;
 import com.home.builderforms.TimeZoneUtils;
 import com.home.builderforms.BaseFieldNames;//CUSTOM_REPORT_SORTING_ISSUE
 import com.home.builderforms.DependentTable;
@@ -134,7 +133,7 @@ private int aliasFieldCount			= 1;	//count used to append to form alias of field
 /**
 	Logger
 */
-static Logger logger					= com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil.getTenantLogger(ExportDataCollector.class);
+static Logger logger					= Logger.getLogger(ExportDataCollector.class);
 
 /**
 	request object
@@ -224,9 +223,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	String tabArr[] = (String[]) request.getParameterValues("selTables");
 	String tabArrFran[] = (String[]) request.getParameterValues("selTablesFran");
 	FieldMappings mappings		= DBUtil.getInstance().getFieldMappings(sMainTable);
-	if("true".equals(fromRestAPI)){//805_REST_API_CHANGES----START
+	/*if("true".equals(fromRestAPI)){//805_REST_API_CHANGES----START
 		ExportDataManipulator.userTimeZoneFromRestAPI = DataServiceUtil.defaulUserTimeZone;
-	}
+	}*/
 	ExportDataManipulator.userTimeZone = (String)request.getSession().getAttribute("userTimeZone");
 	//805_REST_API_CHANGES----END
 	if(mappings != null){
@@ -280,7 +279,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	}
 	
 	dependentFieldsMap = new HashMap<String, Set<String>>();//P_E_Fields-20130905-035
-	if("cmContactDetails".equals(sMainTable))	//P_B_MBO_EXPORT_77802
+	/*if("cmContactDetails".equals(sMainTable))	//P_B_MBO_EXPORT_77802
 	{
 		boolean isMboIntegrationEnabled = (Boolean)ModuleBroker.getinstance().invoke("com.home.builderforms.thirdpartyintegration.mbo.MBOUtil", "isMboIntegrationEnabled", null);
     	if(!isMboIntegrationEnabled){
@@ -291,7 +290,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     		excludeFieldsList.add("mboFirstPaymentDate");
     		excludeFieldsList.add("mboFirstVisitDate");
     	}
-	}
+	}*/
 }
 
 	public void init(HttpServletRequest request, String sMainTable){
@@ -378,7 +377,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 		}
 		dependentFieldsMap = new HashMap<String, Set<String>>();//P_E_Fields-20130905-035
 		
-		if("cmContactDetails".equals(sMainTable))	//P_B_MBO_EXPORT_77802
+		/*if("cmContactDetails".equals(sMainTable))	//P_B_MBO_EXPORT_77802
 		{
 			boolean isMboIntegrationEnabled = (Boolean)ModuleBroker.getinstance().invoke("com.home.builderforms.thirdpartyintegration.mbo.MBOUtil", "isMboIntegrationEnabled", null);
 	    	if(!isMboIntegrationEnabled){
@@ -389,7 +388,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	    		excludeFieldsList.add("mboFirstPaymentDate");
 	    		excludeFieldsList.add("mboFirstVisitDate");
 	    	}
-		}
+		}*/
 	}
 
 	public SequenceMap getQueryData(String moduleName, String query) {
@@ -401,7 +400,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
          * get the java.sql.resultset for the query modified by manishS
          */
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
       //  java.sql.PreparedStatement pstmt = null; // PH_Intranet_Messages_Optimized  //BBEH_FOR_SMC_OPTIMIZATION
         java.sql.ResultSet result = null;       
         java.sql.PreparedStatement pstmt = null;	//P_OPT_CONNECTIONS       
@@ -480,7 +479,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             }
             //P_OPT_CONNECTIONS ends
             try {
-                connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+                connectionManager.freeConnection(Constants.TENANT_NAME, connection);
             } catch (Exception ex) {
                 logger.error("\nException in com/appnetix/app/portal/export - ExportDataCollector.java -->: getQueryData(moduleName,query)", ex);
             }
@@ -506,7 +505,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
          * get the java.sql.resultset for the query modified by manishS
          */
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
       //  java.sql.PreparedStatement pstmt = null; // PH_Intranet_Messages_Optimized  //BBEH_FOR_SMC_OPTIMIZATION
         java.sql.ResultSet result = null;       
         java.sql.PreparedStatement pstmt = null;	//P_OPT_CONNECTIONS       
@@ -533,7 +532,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             int i=0;
             
             boolean isFranRecord = false;
-            ParamResolver.getResolver().put("isFranRecord", false);
+            //ParamResolver.getResolver().put("isFranRecord", false);
             
             int j=0;
             while (result.next()) {
@@ -637,7 +636,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             }
             //P_OPT_CONNECTIONS ends
             try {
-                connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+                connectionManager.freeConnection(Constants.TENANT_NAME, connection);
             } catch (Exception ex) {
                 logger.error("\nException in com/appnetix/app/portal/export - ExportDataCollector.java -->: getQueryData(moduleName,query)", ex);
             }
@@ -680,7 +679,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
         SequenceMap smReturnData = new SequenceMap();
         int count = 0;
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         java.sql.ResultSet result = null;
         java.sql.PreparedStatement pstmt = null;	//P_OPT_CONNECTIONS
         int tableCount = getTableCount();
@@ -787,7 +786,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             // PH_Intranet_Messages_Optimized Start
            
             try {
-                connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+                connectionManager.freeConnection(Constants.TENANT_NAME, connection);
             } catch (Exception ex) {
                 logger.error("\nException in com/appnetix/app/portal/export - ExportDataCollector.java -->:getSearchQueryData()" + ex);
             }
@@ -803,7 +802,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
          * get the java.sql.resultset for the query modified by manishS
          */
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         java.sql.PreparedStatement pstmt = null; // PH_Intranet_Messages_Optimized 
         java.sql.ResultSet result = null;
         smReturnData.put(moduleName, new SequenceMap());
@@ -848,7 +847,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             }
             // PH_Intranet_Messages_Optimized End
             try {
-                connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+                connectionManager.freeConnection(Constants.TENANT_NAME, connection);
             } catch (Exception ex) {
                 logger.error("\nException in com/appnetix/app/portal/export - ExportDataCollector.java -->:getSearchQueryData()" + ex);
             }
@@ -859,7 +858,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 
     public int getSearchQueryCount(String query) {
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         java.sql.PreparedStatement pstmt = null; // PH_Intranet_Messages_Optimized 
         java.sql.ResultSet result = null;
         int count = 0;
@@ -893,7 +892,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             }
             // PH_Intranet_Messages_Optimized End
             try {
-                connectionManager.freeConnection(MultiTenancyUtil.getTenantName(), connection);
+                connectionManager.freeConnection(Constants.TENANT_NAME, connection);
             } catch (Exception ex) {
                 logger.error("\nException in com/appnetix/app/portal/export - ExportDataCollector.java -->: getSearchQueryCount(query)", ex);
             }
@@ -946,8 +945,8 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 						tempsmTableData = new SequenceMap();
 					}
 					//P_B_65267 STARTS
-					String franDisplayName = NewPortalUtils.getFranchiseIdDisplayName(primaryKey,result.getString("FRANCHISEE_NAME"+aliasFieldCount++));
-					tempsmdataMap.put("franchiseeName",franDisplayName);
+					//String franDisplayName = NewPortalUtils.getFranchiseIdDisplayName(primaryKey,result.getString("FRANCHISEE_NAME"+aliasFieldCount++));
+					tempsmdataMap.put("franchiseeName",result.getString("FRANCHISEE_NAME"+aliasFieldCount++));
 					//P_B_65267 ENDS
 					if ("fim".equals(menuName) && "2".equals((String) session.getAttribute("fimFlag"))){
 						
@@ -1025,7 +1024,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     
     private void collectMuFranData(String moduleName,Info result , SequenceMap smDataMap, boolean bMain,String headerName,boolean firstIteration)
     {
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	SequenceMap smTableData=null;
     	SequenceMap smData = null;
     	SequenceMap sArrTableFields = null;
@@ -1181,8 +1180,8 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 						        	isFranchisee = sFieldValue;
 						        }
 						        if("franchisees".equals(moduleName) && "isStore".equals(field.getFieldName()) && "N".equals(isFranchisee)) {
-						        	if("Y".equals(sFieldValue))
-						        		smData.put("status", _baseConstants.IN_DEVELOPMENT_LBL);
+						        	/*if("Y".equals(sFieldValue))
+						        		smData.put("status", _baseConstants.IN_DEVELOPMENT_LBL);*/
 						        	
 						        	continue;
 						        }
@@ -1231,9 +1230,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                                 {
 							        // transform field value
 						        	field.setTableName(moduleName);
-						        	if( !(sFieldValue).equals(_baseConstants.IN_DEVELOPMENT_LBL)) {
+						        	/*if( !(sFieldValue).equals(_baseConstants.IN_DEVELOPMENT_LBL)) {
 						        		sFieldValue = transform(field, sFieldValue);
-						        	}
+						        	}*/
 						        } else
                                 {
 							        // transform field value
@@ -1392,12 +1391,12 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                                 } else
                                 {	//P_B_EXPORT_61519 data not appearing whiile i18n is implemented
                                 	
-                                	if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && "marketingCodeId".equals(sFieldName) && ("cm".equals(menuName))){//P_CM_B_26948
+                                	/*if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && "marketingCodeId".equals(sFieldName) && ("cm".equals(menuName))){//P_CM_B_26948
                         				//Activity code field to be skipped when Pilot is not enabled.
                                 		continue;
                                 	}else if ("cm".equals(menuName) && "taskType".equals(field.getFieldName())){
                         				continue;
-                        			}else{
+                        			}else*/{
 	                                	if(StringUtil.isValid(field.getDisplayExportName())) {
 							            	smData.put(formatFieldNames(field.getDisplayExportName(),field), sFieldValue);//P_B_Codebase_22112013
 							            } else {
@@ -1504,11 +1503,11 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 									}
 									if(sArrSelectedFieldList !=null) {
 										if(sArrSelectedFieldList.contains(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"))) {//P_CM_B_57781
-											String data = CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab);
+											String data = "";//CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab);
 											smData.put(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"), data);//P_CM_B_57781
 										}
 									} else {
-										String data = CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName);
+										String data = "";//CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName);
 										smData.put(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"), data);//P_CM_B_57781
 									}
 								}
@@ -1639,7 +1638,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     }
     private void collectData(String moduleName,Info result , SequenceMap smDataMap, boolean bMain,String headerName,boolean firstIteration)
     {
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	SequenceMap smTableData=null;
     	SequenceMap smData = null;
     	SequenceMap sArrTableFields = null;
@@ -1802,7 +1801,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 						        }
 						        if("franchisees".equals(moduleName) && "isStore".equals(field.getFieldName()) && "N".equals(isFranchisee)) {
 						        	if("Y".equals(sFieldValue))
-						        		smData.put("status", _baseConstants.IN_DEVELOPMENT_LBL);
+						        		smData.put("status", "");//_baseConstants.IN_DEVELOPMENT_LBL);
 						        	aliasFieldCount++;//BBP-20150831-675
 						        	continue;
 						        }
@@ -1862,9 +1861,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                                 {
 							        // transform field value
 						        	field.setTableName(moduleName);
-						        	if( !(sFieldValue).equals(_baseConstants.IN_DEVELOPMENT_LBL)) {
+						        	/*if( !(sFieldValue).equals(_baseConstants.IN_DEVELOPMENT_LBL)) {
 						        		sFieldValue = transform(field, sFieldValue);
-						        	}
+						        	}*/
 						        	
 						        	if("File".equals(field.getDisplayTypeField())) { //file type
 						        		String fileName = sFieldValue;
@@ -2102,12 +2101,12 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                                 } else
                                 {	//P_B_EXPORT_61519 data not appearing whiile i18n is implemented
                                 	
-                                	if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && "marketingCodeId".equals(sFieldName) && ("cm".equals(menuName))){//P_CM_B_26948
+                                	/*if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && "marketingCodeId".equals(sFieldName) && ("cm".equals(menuName))){//P_CM_B_26948
                         				//Activity code field to be skipped when Pilot is not enabled.
                                 		continue;
                                 	}if ("cm".equals(menuName) && "taskType".equals(field.getFieldName())){
                         				continue;
-                        			}else{
+                        			}else*/{
 	                                	if(StringUtil.isValid(field.getDisplayExportName())) {
 							            	smData.put(formatFieldNames(field.getDisplayExportName(),field), sFieldValue);//P_B_Codebase_22112013
 							            } else {
@@ -2229,11 +2228,11 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 									//P_CM_B_57781 Start
 									if(sArrSelectedFieldList !=null) {
 										if(sArrSelectedFieldList.contains(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"))) {
-											String data = CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName,docTableAnchor);
+											String data = "";//CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName,docTableAnchor);
 											smData.put(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"), data);
 										}
 									} else {
-										String data = CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName,docTableAnchor);
+										String data = "";//CommonMgr.newInstance().getCommonCmDAO().getNewDocumentsDataForExport(sPrimaryKeyValue, (String)docMap.get("name"),docOption,docSub,docLab,menuName,docTableAnchor);
 										smData.put(docs[0].getDocumentTableAnchor()+"_"+docMap.get("name"), data);
 									}
                                                                         //P_CM_B_57781 End
@@ -2385,7 +2384,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     	UserRoleMap userRoleMap		= (UserRoleMap)request.getSession().getAttribute("userRoleMap");
 	    try
         {
-	    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+	    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
             SequenceMap smTableData	= (SequenceMap) smDataMap.get(moduleName);
             FieldMappings mappings = null;
 	        mappings = DBUtil.getInstance().getFieldMappings(moduleName);
@@ -2713,9 +2712,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 												sFieldValue = "";
 											}
 		                            	}
-						        		if("fim".equals(menuName) && "FRANCHISEE".equals(sDBTableName) && "N".equals(result.getString("IS_FRANCHISEE1")) && "Y".equals(result.getString("IS_STORE2")) && "status".equals(field.getFieldName())){
+						        		/*if("fim".equals(menuName) && "FRANCHISEE".equals(sDBTableName) && "N".equals(result.getString("IS_FRANCHISEE1")) && "Y".equals(result.getString("IS_STORE2")) && "status".equals(field.getFieldName())){
 						        			sFieldValue = MultiTenancyUtil.getTenantConstants().IN_DEVELOPMENT_LBL;
-						        		}
+						        		}*/
 						        		//P_CustomReport_Enh_BrokerName starts
 						        		if("leadSource3ID".equals(field.getFieldName())) {
 						        			String brokerId = result.getString("BROKER_ID");
@@ -2798,9 +2797,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 												sFieldValue = "";
 											}
 		                            	}
-						        		if("fim".equals(menuName) && "FRANCHISEE".equals(sDBTableName) && "N".equals(result.getString("IS_FRANCHISEE1")) && "Y".equals(result.getString("IS_STORE2")) && "status".equals(field.getFieldName())){
+						        		/*if("fim".equals(menuName) && "FRANCHISEE".equals(sDBTableName) && "N".equals(result.getString("IS_FRANCHISEE1")) && "Y".equals(result.getString("IS_STORE2")) && "status".equals(field.getFieldName())){
 						        			sFieldValue = MultiTenancyUtil.getTenantConstants().IN_DEVELOPMENT_LBL;
-						        		}
+						        		}*/
 						        		//P_CustomReport_Enh_BrokerName starts
 						        		if("leadSource3ID".equals(field.getFieldName())) {
 						        			String brokerId = result.getString("BROKER_ID");
@@ -3055,7 +3054,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 			        			if(tempSummryVal != null && !"null".equals(tempSummryVal)) {
 			        				String sFieldCountValue = result.getString(mappings.getTableName()+"COUNT");
 			        				//ZCUB-20151124-202 Start
-			        				if(ModuleUtil.zcubatorImplemented()){
+			        				/*if(ModuleUtil.zcubatorImplemented()){
 				        				if(_baseConstants.crSummaryTableList.size()==0){
 				        					_baseConstants.addCrSummaryTableList();
 				        				}
@@ -3066,7 +3065,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 				        					else
 				        						sFieldCountValue=new StringBuffer("<a href=\"javascript:void(0);\" onClick=\"showDetails('"+mappings.getTableName()+"', '###groupValue###','###groupColumnName###','###groupColumnType###','###groupTableName###','###groupDbTableName###')\">").append(sFieldCountValue).append("</a>").toString();
 				        				}
-			        				}
+			        				}*/
 			        				//ZCUB-20151124-202 End
 			        				if(!"".equals(tempSummryVal.trim())) {
 			        					smData.put(tempSummryVal.trim(), sFieldCountValue);
@@ -3332,7 +3331,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 						returnStr.append("<div id='").append(divId).append("' position: absolute; display: block; overflow: auto >").append(StringEscapeUtils.escapeHtml(sFieldValue));
 						returnStr.append("&nbsp;<a href='javascript:void(0)' onClick =\"javascript:lockedField('").append(divId).append("','locked','").append(StringEscapeUtils.escapeJavaScript(StringEscapeUtils.escapeHtml(PortalUtils.getPrivateFieldFormat(sFieldValue)))).append("','");
 						returnStr.append(StringEscapeUtils.escapeJavaScript(StringEscapeUtils.escapeHtml(newsFieldValue))).append("','").append(pageName).append("','").append(page).append("','").append(sPrimaryKeyValue).append("','view','").append(displayName).append("','").append(moduleName).append("','").append(field.getFieldName()).append("')\"><img src='");			//P_Enh_FC-76
-						returnStr.append(NewPortalUtils.getStaticPath(request)).append("/images/PrivateData/openLock.gif' width='16' align = 'top' height='16'    border = '0'  ></a></div>");
+						//returnStr.append(NewPortalUtils.getStaticPath(request)).append("/images/PrivateData/openLock.gif' width='16' align = 'top' height='16'    border = '0'  ></a></div>");
 					}
 				}else{    
 					if(notShowInDiv){
@@ -3345,14 +3344,14 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 						returnStr.append("<div id='").append(divId).append("' position: absolute; display: block; overflow: auto >").append(StringEscapeUtils.escapeHtml(PortalUtils.getPrivateFieldFormat(sFieldValue)));
 						returnStr.append("&nbsp;<a href='javascript:void(0)' onClick =\"javascript:unLockField('").append(divId).append("','unlocked','").append(StringEscapeUtils.escapeJavaScript(StringEscapeUtils.escapeHtml(PortalUtils.getPrivateFieldFormat(sFieldValue)))).append("','");
 						returnStr.append(StringEscapeUtils.escapeJavaScript(StringEscapeUtils.escapeHtml(newsFieldValue))).append("','").append(pageName).append("','").append(page).append("','").append(sPrimaryKeyValue).append("','view','").append(displayName).append("','").append(moduleName).append("','").append(field.getFieldName()).append("')\"><img src='");				//P_Enh_FC-76
-						returnStr.append(NewPortalUtils.getStaticPath(request)).append("/images/PrivateData/goldLock.gif' width='16' align = 'top' height='16'    border = '0'  ></a></div>");
+						//returnStr.append(NewPortalUtils.getStaticPath(request)).append("/images/PrivateData/goldLock.gif' width='16' align = 'top' height='16'    border = '0'  ></a></div>");
 					}
 				}
 			}else if(FieldNames.NO.equals(unlockPrivilege)){
 				returnStr.append(PortalUtils.getPrivateFieldFormat(sFieldValue));
 			}
 		}else if(StringUtil.isValid(sFieldValue)&&StringUtil.isValidNew(request.getParameter("forExportData"))&&"true".equals(request.getParameter("forExportData"))){//Bug 61177
-			String passwordFunctionality = com.appnetix.app.components.accesscontrolmgr.manager.AccessControlMgr.newInstance().getAccessControlDAO().getPasswordFunctionalityValue();
+			String passwordFunctionality = "on";//com.appnetix.app.components.accesscontrolmgr.manager.AccessControlMgr.newInstance().getAccessControlDAO().getPasswordFunctionalityValue();
 			if("on".equals(passwordFunctionality))
 				returnStr.append(PortalUtils.getPrivateFieldFormat(sFieldValue));
 			else 
@@ -3390,7 +3389,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 								String psValue,
 								String psDependentFieldValue, String psDependentFieldValueParam 
 							)throws Exception{
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 		String sMethodName	= pField.getTransformMethod();
 		String sMethodNameParam = pField.getTransformMethodParam();
 		if(pField.getTransformExportMethod() != null) {
@@ -3454,9 +3453,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 		{
 			String userTimeZone=(String)request.getSession().getAttribute("userTimeZone");
 			if(!StringUtil.isValid(userTimeZone) && StringUtil.isValid(ExportDataManipulator.userTimeZoneFromRestAPI)){//805_REST_API_CHANGES----START
-				sNewVal = TimeZoneUtils.performUTCConversion(_baseConstants.DB_TIMEZONE_TIMEZONEUTILS, ExportDataManipulator.userTimeZoneFromRestAPI, sNewVal, _baseConstants.DISPLAY_FORMAT_HMA, _baseConstants.DISPLAY_FORMAT_HMA);
+				sNewVal = TimeZoneUtils.performUTCConversion(Constants.DB_TIMEZONE_TIMEZONEUTILS, ExportDataManipulator.userTimeZoneFromRestAPI, sNewVal, Constants.DISPLAY_FORMAT_HMA, Constants.DISPLAY_FORMAT_HMA);
 			}else{//805_REST_API_CHANGES----END
-				sNewVal = TimeZoneUtils.performUTCConversion(_baseConstants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, sNewVal, _baseConstants.DISPLAY_FORMAT_HMA, _baseConstants.DISPLAY_FORMAT_HMA);
+				sNewVal = TimeZoneUtils.performUTCConversion(Constants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, sNewVal, Constants.DISPLAY_FORMAT_HMA, Constants.DISPLAY_FORMAT_HMA);
 			}
 		}
 
@@ -3605,7 +3604,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     public  String transform1( Field pField,
     		String psValue,
     		String psDependentFieldValue )throws Exception{
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	String sMethodName	= pField.getTransformMethod();
     	String sMethodNameParam = pField.getTransformMethodParam();
     	/**
@@ -3661,7 +3660,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
     	if(sNewVal!=null && !"".equals(sNewVal) && sNewVal.indexOf("Not Scheduled")==-1 && sNewVal.indexOf("No Time Scheduled")==-1 && sMethodName!=null && (sMethodName.equals("transformEndDateTimeForTask") || sMethodName.equals("transformDateTimeForTimeLessTask")))
     	{
     		String userTimeZone=(String)request.getSession().getAttribute("userTimeZone");
-    		sNewVal = TimeZoneUtils.performUTCConversion(_baseConstants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, sNewVal, _baseConstants.DISPLAY_FORMAT_HMA, _baseConstants.DISPLAY_FORMAT_HMA);
+    		sNewVal = TimeZoneUtils.performUTCConversion(Constants.DB_TIMEZONE_TIMEZONEUTILS, userTimeZone, sNewVal, Constants.DISPLAY_FORMAT_HMA, Constants.DISPLAY_FORMAT_HMA);
     	}
 
     	return sNewVal;
@@ -3745,7 +3744,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 
 	public void  makeHeader(ArrayList alHeaderList, ArrayList dataTypeList, String sTableName, int count, boolean bMain, ArrayList displayTypeList) //P_Enh_Excel_Numeric_Value
     {
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 	    aliasCount = count;
 	    FieldMappings mappings;
 	    String tableName;
@@ -3836,7 +3835,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                     	} else {
                     		exDisplayName = field.getDisplayName();
                     	}
-                    	if("fim".equals(menuName) && MultiTenancyUtil.getTenantConstants().ENABLE_IN_DEVELOPMENT  && "FRANCHISEE".equals(mappings.getTableName()) && "openingDate".equals(field.getFieldName())) {
+                    	if("fim".equals(menuName) && /*MultiTenancyUtil.getTenantConstants().ENABLE_IN_DEVELOPMENT*/ true  && "FRANCHISEE".equals(mappings.getTableName()) && "openingDate".equals(field.getFieldName())) {
                     		exDisplayName = "Expected Opening / "+exDisplayName;
                         }
                     	if("fim".equals(menuName) && ("isStore".equals(field.getFieldName()) || "isFranchisee".equals(field.getFieldName()))){
@@ -3852,21 +3851,21 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 							continue;
 						}
             			//FIM Export failsDKI ends
-                    	if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && exDisplayName.contains("Activity / Campaign Code") && ("cm".equals(menuName))){//P_CM_B_26948
+                    	/*if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && exDisplayName.contains("Activity / Campaign Code") && ("cm".equals(menuName))){//P_CM_B_26948
                     		continue;
-                    	}
+                    	}*/
                     	if(exDisplayName.contains("How did you hear about us")){
-                    		if(TableAnchors.CM_LEAD_DETAILS.equals(sTableName)){
+                    		/*if(TableAnchors.CM_LEAD_DETAILS.equals(sTableName)){
                     			exDisplayName="How did you hear about us ? (Lead Source)";
                     		}else{
                     			exDisplayName="How did you hear about us ? (Contact Source)"; //ZCUB-20150417-141
-                    		}
+                    		}*/
     					}else if(exDisplayName.contains("Please Specify")){
-    						if(TableAnchors.CM_LEAD_DETAILS.equals(sTableName)){
+    						/*if(TableAnchors.CM_LEAD_DETAILS.equals(sTableName)){
     							exDisplayName="Please Specify (Lead Source Details)"; 
     						}else{
     							exDisplayName="Please Specify (Contact Source Details)"; //ZCUB-20150417-141
-    						}
+    						}*/
     					}
                     	boolean sCustomField = field.isCustomField();
 
@@ -3915,7 +3914,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                         String sDisType= field.getDisplayTypeField();
                         if(sDisType != null && sDisType.equals("Numeric")){	
                     		if(field.getValidationType() != null && "Double".equals(field.getValidationType())) {
-                    			exDisplayName = exDisplayName + "(" + _baseConstants.USER_CURRENCY+ ")";
+                    			exDisplayName = exDisplayName + "(" + Constants.USER_CURRENCY+ ")";
 							} else if(field.getValidationType() != null && "Percentage".equals(field.getValidationType())) {
 								exDisplayName = exDisplayName + "(" + Constants.LBL_PERCENTAGE + ")";
 							} 
@@ -3937,25 +3936,26 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	    					}
 	    				}*/
                         
-                        if("1".equals(MultiTenancyUtil.getTenantConstants().IS_FDD_BRAND_CONFIGURED)) {
+                        if("1".equals("1")) {
         					if("brandMapping".equals(sTableName) || "fimBrandMapping".equals(sTableName) || "fsLeadDivisionMapping".equals(sTableName) || "locationDivisionMapping".equals(sTableName)) {
-        						exDisplayName = MultiTenancyUtil.getTenantConstants().DIVISION_LABEL + " Name";
+        						exDisplayName = /*MultiTenancyUtil.getTenantConstants().DIVISION_LABEL + */"Division Name";
         					}
         				} else{
         					if("brandMapping".equals(sTableName) || "fimBrandMapping".equals(sTableName)) 
         					{
-        						if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) || "0".equals(MultiTenancyUtil.getTenantConstants().IS_FDD_BRAND_CONFIGURED)) {
+        						if("Y".equals("Y") || "0".equals("0")) {
         							String brandLabel = "Brand";
-        							if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && "B".equals(MultiTenancyUtil.getTenantConstants().DIVISION_BASED_ON))  {
-        								brandLabel = MultiTenancyUtil.getTenantConstants().DIVISION_LABEL;
+        							if("Y".equals("Y") && "B".equals("B"))  {
+        								brandLabel = "Divsion";
         							}
         							exDisplayName = brandLabel + " Name";
         						}
         					}else if("fsLeadDivisionMapping".equals(sTableName) || "locationDivisionMapping".equals(sTableName))
         					{
-        						if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && "G".equals(MultiTenancyUtil.getTenantConstants().DIVISION_BASED_ON)) {
+        						/*if("Y".equals(MultiTenancyUtil.getTenantConstants().IS_DIVISION_CONFIGURED) && "G".equals(MultiTenancyUtil.getTenantConstants().DIVISION_BASED_ON)) {
         							exDisplayName = MultiTenancyUtil.getTenantConstants().DIVISION_LABEL + " Name";
-        						}
+        						}*/
+        						exDisplayName = "Divsion Name";
         					}
         				}
                         if (sortable && (request.getParameter("fileType") == null || request.getParameter("fileType").equals("") ||  request.getParameter("fileType").equalsIgnoreCase("view")))
@@ -4191,7 +4191,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	
 	public void  makeMuEntityFranHeader(ArrayList alHeaderList, ArrayList dataTypeList, String sTableName, int count, ArrayList displayTypeList) //P_Enh_Excel_Numeric_Value
     {
-    	BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+    	//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
 	    aliasCount = count;
 	    FieldMappings mappings;
 	    String tableName;
@@ -4279,7 +4279,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                     	} else {
                     		exDisplayName = field.getDisplayName();
                     	}
-                    	if("fim".equals(menuName) && MultiTenancyUtil.getTenantConstants().ENABLE_IN_DEVELOPMENT  && "FRANCHISEE".equals(mappings.getTableName()) && "openingDate".equals(field.getFieldName())) {
+                    	if("fim".equals(menuName) && /*MultiTenancyUtil.getTenantConstants().ENABLE_IN_DEVELOPMENT*/ true && "FRANCHISEE".equals(mappings.getTableName()) && "openingDate".equals(field.getFieldName())) {
                     		exDisplayName = "Expected Opening / "+exDisplayName;
                         }
                     	if("fim".equals(menuName) && ("isStore".equals(field.getFieldName()) || "isFranchisee".equals(field.getFieldName()))){
@@ -4290,9 +4290,9 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
             				continue;
             			}
             			//P_B_57374 ends
-                    	if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && exDisplayName.contains("Activity / Campaign Code") && ("cm".equals(menuName))){//P_CM_B_26948
+                    	/*if((!ModuleUtil.zcubatorImplemented() || !"Y".equals(_baseConstants.CM_PILOT_ENABLED)) && exDisplayName.contains("Activity / Campaign Code") && ("cm".equals(menuName))){//P_CM_B_26948
                     		continue;
-                    	}
+                    	}*/
                     	if(exDisplayName.contains("How did you hear about us")){
     						exDisplayName="How did you hear about us ? (Contact Source)"; //ZCUB-20150417-141
     					}else if(exDisplayName.contains("Please Specify")){
@@ -4342,7 +4342,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                         String sDisType= field.getDisplayTypeField();
                         if(sDisType != null && sDisType.equals("Numeric")){	
                     		if(field.getValidationType() != null && "Double".equals(field.getValidationType())) {
-                    			exDisplayName = exDisplayName + "(" + _baseConstants.USER_CURRENCY+ ")";
+                    			exDisplayName = exDisplayName + "(" + Constants.USER_CURRENCY+ ")";
 							} else if(field.getValidationType() != null && "Percentage".equals(field.getValidationType())) {
 								exDisplayName = exDisplayName + "(" + Constants.LBL_PERCENTAGE + ")";
 							} 
@@ -4651,7 +4651,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 	}
 	public void  makeNewHeader(ArrayList alHeaderList, ArrayList dataTypeList, String sTableName, int count, boolean bMain, String dashBoard,HeaderField hFld,FieldMappings parentMappings,String headerName, ArrayList displayTypeList) //P_Enh_Excel_Numeric_Value
 	{
-		BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
+		//BaseConstants _baseConstants=	MultiTenancyUtil.getTenantConstants();
     	logger.info("aliasCount when creating header === "+aliasCount);
     	logger.info("count when creating header === "+count);
 	    aliasCount = count;
@@ -4815,7 +4815,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
                         String sDisType= field.getDisplayTypeField();
                         if(sDisType != null && sDisType.equals("Numeric")){	
                     		if(field.getValidationType() != null && "Double".equals(field.getValidationType())) {
-                    			tempVal1 = tempVal1 + "(" + _baseConstants.USER_CURRENCY+ ")";
+                    			tempVal1 = tempVal1 + "(" + Constants.USER_CURRENCY+ ")";
         					} else if(field.getValidationType() != null && "Percentage".equals(field.getValidationType())) {
         						tempVal1 = tempVal1 + "(" + Constants.LBL_PERCENTAGE + ")";
         					} 
@@ -5101,7 +5101,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 				        	}
 		        			if(tempSummryVal != null && !"null".equals(tempSummryVal)) {
 		        				if(!"".equals(tempSummryVal.trim())) {
-					        		alHeaderList.add("SUM:"+tempSummryVal.trim()+" ("+_baseConstants.USER_CURRENCY+")");
+					        		alHeaderList.add("SUM:"+tempSummryVal.trim()+" ("+Constants.USER_CURRENCY+")");
 					        		dataTypeList.add("text");
 		        				} else {
                        				alHeaderList.add("SUM:"+sSrcDisplayName);
@@ -5115,7 +5115,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 				        	}
 		        			if(tempSummryVal != null && !"null".equals(tempSummryVal)) {
 		        				if(!"".equals(tempSummryVal.trim())) {
-					        		alHeaderList.add("AVG:"+tempSummryVal.trim()+" ("+_baseConstants.USER_CURRENCY+")");
+					        		alHeaderList.add("AVG:"+tempSummryVal.trim()+" ("+Constants.USER_CURRENCY+")");
 					        		dataTypeList.add("text");
 		        				} else {
                        				alHeaderList.add("AVG:"+sSrcDisplayName);
@@ -5129,7 +5129,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 				        	}
 		        			if(tempSummryVal != null && !"null".equals(tempSummryVal)) {
 		        				if(!"".equals(tempSummryVal.trim())) {
-					        		alHeaderList.add("MAX:"+tempSummryVal.trim()+" ("+_baseConstants.USER_CURRENCY+")");
+					        		alHeaderList.add("MAX:"+tempSummryVal.trim()+" ("+Constants.USER_CURRENCY+")");
 					        		dataTypeList.add("text");
 		        				} else {
 					        		alHeaderList.add("MAX:"+sSrcDisplayName);
@@ -5143,7 +5143,7 @@ public void init(HttpServletRequest request, String sMainTable,String fileType){
 				        	}
 		        			if(tempSummryVal != null && !"null".equals(tempSummryVal)) {
 		        				if(!"".equals(tempSummryVal.trim())) {
-					        		alHeaderList.add("MIN:"+tempSummryVal.trim()+" ("+_baseConstants.USER_CURRENCY+")");
+					        		alHeaderList.add("MIN:"+tempSummryVal.trim()+" ("+Constants.USER_CURRENCY+")");
 					        		dataTypeList.add("text");
 		        				} else {
 					        		alHeaderList.add("MIN:"+sSrcDisplayName);
@@ -6755,7 +6755,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 		return count;
 	}
 	public void getFranList(ArrayList list , String sTableName , boolean bMain){
-		int count = (Integer)ParamResolver.getResolver().get("franListCount");
+		int count = 0;//(Integer)ParamResolver.getResolver().get("franListCount");
 		
 		SequenceMap smForeignTables		= null;
 		HttpSession session = StrutsUtil.getHttpSession();
@@ -6775,7 +6775,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 					continue;
 				}
 				getFranOrderedList(list , foreignTable.getName() ,false);
-				count = (Integer)ParamResolver.getResolver().get("franListCount");
+				count = 0;//(Integer)ParamResolver.getResolver().get("franListCount");
 				//P_E_Fields-20130905-035 starts
 				if(PortalUtils.hasDependentAddressTable(foreignTable.getName(),request)){
 					FieldMappings tempMappings = DBUtil.getInstance().getFieldMappings(foreignTable.getName());
@@ -6790,7 +6790,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 								dTable =  dependenTables[ds];
 								if(dTable!=null && "address".equals(dTable.getTableAnchor())){
 									count = count+1;
-									ParamResolver.getResolver().put("franListCount",count);
+									//ParamResolver.getResolver().put("franListCount",count);
 								}
 							}
 						}
@@ -6804,7 +6804,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 	
 	
 	public void getFranOrderedList(ArrayList list , String sTableName , boolean bMain){
-		int count = (Integer)ParamResolver.getResolver().get("franListCount");
+		int count = 0;//(Integer)ParamResolver.getResolver().get("franListCount");
 		FieldMappings mappings		= null;
 		mappings					= DBUtil.getInstance().getFieldMappings(sTableName);
 		int size=0;
@@ -6905,7 +6905,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 		if(incluedinlist && size!=0){
 		list.add(sTableName+count);
 		}
-		ParamResolver.getResolver().put("franListCount",++count);
+		//ParamResolver.getResolver().put("franListCount",++count);
 		//get the FieldMapping object for the module's main table
 		HttpSession session = StrutsUtil.getHttpSession();
 		if (bMain && "fim".equals(menuName) && ( "3".equals(session.getAttribute("fimFlag")))) {
@@ -6922,7 +6922,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 						dTable =  dependenTables[ds];
 						if(dTable!=null && "address".equals(dTable.getTableAnchor())){
 							count = count+1;
-							ParamResolver.getResolver().put("franListCount",count);
+							//ParamResolver.getResolver().put("franListCount",count);
 						}
 					}
 				}
@@ -6954,7 +6954,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 					continue;
 				}
 				getFranOrderedList(list , foreignTable.getName() , false);
-				count = (Integer)ParamResolver.getResolver().get("franListCount");
+				count = 0;//(Integer)ParamResolver.getResolver().get("franListCount");
 				//P_E_Fields-20130905-035 starts
 				if(PortalUtils.hasDependentAddressTable(foreignTable.getName(),request)){
 					FieldMappings tempMappings = DBUtil.getInstance().getFieldMappings(foreignTable.getName());
@@ -6969,7 +6969,7 @@ public SequenceMap getStackMap(SequenceMap resultData, String dashBoard,boolean 
 								dTable =  dependenTables[ds];
 								if(dTable!=null && "address".equals(dTable.getTableAnchor())){
 									count = count+1;
-									ParamResolver.getResolver().put("franListCount",count);
+									//ParamResolver.getResolver().put("franListCount",count);
 								}
 							}
 						}

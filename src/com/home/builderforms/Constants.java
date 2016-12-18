@@ -1392,4 +1392,7 @@ public class Constants
 	    public  static final String DISPLAY_FORMAT_HMA = "hh:mm a";
 	    public  static final String DISPLAY_FORMAT_HM = "hh:mm";
 	    public static String USER_TIME_ZONE = "";
+	    public static final String MAX_ROUNDED_DIGITS = "2";
+	    public static final String DEFAULT_TIME_ZONE = "US/Eastern";
+	    public static final String USER_CURRENCY = "$";
 }

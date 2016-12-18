@@ -4,11 +4,9 @@ import java.io.File;
 
 import org.apache.commons.digester.Digester;
 
-import com.appnetix.app.control.web.ParamResolver;
-import com.appnetix.app.control.web.multitenancy.util.MultiTenancyUtil;
 import com.home.builderforms.SequenceMap;
 import com.home.builderforms.StringUtil;
-import com.home.builderforms.tabs.TabGroup;
+import com.home.builderforms.TabGroup;
 
 public class TabXMLDAO
 {
@@ -22,11 +20,11 @@ public class TabXMLDAO
 
 	public SequenceMap getTabGroups()
 	{
-		SequenceMap tabGroups = (SequenceMap)ParamResolver.getResolver().get("tabGroupsMap");
+		SequenceMap tabGroups = null;//(SequenceMap)ParamResolver.getResolver().get("tabGroupsMap");
 		if(tabGroups == null)
 		{
 			tabGroups = new SequenceMap();
-			ParamResolver.getResolver().put("tabGroupsMap", tabGroups);
+			//ParamResolver.getResolver().put("tabGroupsMap", tabGroups);
 		}
 
 		return tabGroups;
@@ -34,35 +32,35 @@ public class TabXMLDAO
 
 	public void setTabGroups(SequenceMap tabGroups)
 	{
-		ParamResolver.getResolver().put("tabGroupsMap", tabGroups);
+		//ParamResolver.getResolver().put("tabGroupsMap", tabGroups);
 	}
 
 	// TAB_LOADING_ISSUE starts
 	public String getModule()
 	{
-		String module = (String) ParamResolver.getResolver().get("module");
+		String module = null;//(String) ParamResolver.getResolver().get("module");
 		if(!StringUtil.isValid(module))
 		{
 			module = "";
-			ParamResolver.getResolver().put("module", module);
+			//ParamResolver.getResolver().put("module", module);
 		}
 		return module;
 	}
 
 	public void setModule(String module)
 	{
-		ParamResolver.getResolver().put("module", module);
+		//ParamResolver.getResolver().put("module", module);
 	}
 
 	// TAB_LOADING_ISSUE neds
 
 	public SequenceMap getLastModifiedMap()
 	{
-		SequenceMap lastModifiedMap = (SequenceMap) ParamResolver.getResolver().get("lastModifiedMap");
+		SequenceMap lastModifiedMap = null;//(SequenceMap) ParamResolver.getResolver().get("lastModifiedMap");
 		if(lastModifiedMap == null)
 		{
 			lastModifiedMap = new SequenceMap();
-			ParamResolver.getResolver().put("lastModifiedMap", lastModifiedMap);
+			//ParamResolver.getResolver().put("lastModifiedMap", lastModifiedMap);
 		}
 		return lastModifiedMap;
 
@@ -70,7 +68,7 @@ public class TabXMLDAO
 
 	public void setLastModifiedMap(SequenceMap lastModifiedMap)
 	{
-		ParamResolver.getResolver().put("lastModifiedMap", lastModifiedMap);
+		//ParamResolver.getResolver().put("lastModifiedMap", lastModifiedMap);
 	}
 
 	public static TabXMLDAO newInstance()
@@ -124,7 +122,7 @@ public class TabXMLDAO
 
 	private File getTabConfig()
 	{
-		StringBuffer configPath = new StringBuffer(MultiTenancyUtil.getTenantConstants().XML_DIRECTORY).append("/tabs/").append(getModule()).append("Tabs.xml");// TAB_LOADING_ISSUE
+		StringBuffer configPath = new StringBuffer(Constants.XML_DIRECTORY).append("/tabs/").append(getModule()).append("Tabs.xml");// TAB_LOADING_ISSUE
 		return new File(configPath.toString());
 	}
 

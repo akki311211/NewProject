@@ -543,7 +543,7 @@ public class QueryUtil {
 
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
 
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
 
         PreparedStatement stmt = null;
 
@@ -609,7 +609,7 @@ public class QueryUtil {
     public static void preparedStatementsBatchUpdate(String[] query, Map<String,List<String[]>> batchMap,boolean throwException) throws AppException 
     {
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         PreparedStatement pstmt=null;
         boolean exception = false;
         try 
@@ -710,7 +710,7 @@ public class QueryUtil {
 
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
 
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         
         Statement stmt = null;
         String fetchQuery=null;
@@ -772,7 +772,7 @@ public class QueryUtil {
 
      */
 
-    public static DisplayData getDisplayData(ArrayList fields, ResultSet result) {
+    /*public static DisplayData getDisplayData(ArrayList fields, ResultSet result) {
 
         DisplayData displayData = new DisplayData(fields);
 
@@ -799,7 +799,7 @@ public class QueryUtil {
 
         return displayData;
 
-    }
+    }*/
 
 
 
@@ -821,11 +821,11 @@ public class QueryUtil {
 
      */
 
-    public static DisplayData getDisplayData(ArrayList fields, String sqlQuery, String[] params) {
+   /* public static DisplayData getDisplayData(ArrayList fields, String sqlQuery, String[] params) {
 
         return getDisplayData(fields, getResult(sqlQuery, params));
 
-    }
+    }*/
 
 
 
@@ -913,7 +913,7 @@ public class QueryUtil {
     public static int executeInsert(String sSqlQuery)
 	{
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         Statement stmt = null;
         PreparedStatement stmtId = null;
 		ResultSet result=null;
@@ -927,7 +927,7 @@ public class QueryUtil {
 			stmtId = connection.prepareStatement("SELECT LAST_INSERT_ID()");
 			result=new ResultSet(stmtId.executeQuery());
 			if(result.next()){
-				MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
+				//MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
 			}
         }
 		catch (Exception e)
@@ -972,7 +972,7 @@ public class QueryUtil {
  */
 public static int executeInsert(String sSqlQuery,String[] params) {
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         
 		PreparedStatement stmt = null;
 		PreparedStatement stmtId = null;
@@ -996,7 +996,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			stmtId = connection.prepareStatement("SELECT LAST_INSERT_ID()");
 			result=new ResultSet(stmtId.executeQuery());
 			if(result.next()){
-				MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
+				//MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
 			}
         }
 		catch (Exception e)
@@ -1037,7 +1037,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 	 public static String executeInsertAndReturnIds(String sSqlQuery)
 	{
         DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
         Statement stmt = null;
         PreparedStatement stmtId = null;
 		ResultSet result=null;
@@ -1062,7 +1062,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 			stmtId = connection.prepareStatement("SELECT LAST_INSERT_ID()");
 			result=new ResultSet(stmtId.executeQuery());
 			if(result.next()){
-				MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
+				//MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
 			}
         }
 		catch (Exception e)
@@ -1105,7 +1105,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 	 public static String executeInsertAndReturnIds(String sSqlQuery,String[] params)
 		{
 	        DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-	        Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+	        Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
 	        PreparedStatement stmt = null;
 	        PreparedStatement stmtId = null;
 			ResultSet result=null;
@@ -1135,7 +1135,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 				stmtId = connection.prepareStatement("SELECT LAST_INSERT_ID()");
 				result=new ResultSet(stmtId.executeQuery());
 				if(result.next()){
-					MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
+					//MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID =result.getString(1);
 				}
 	        }
 			catch (Exception e)
@@ -1186,11 +1186,11 @@ public static int executeInsert(String sSqlQuery,String[] params) {
 	 public static int alterDBTable(String sqlQuery) throws AppException {
 		 DBConnectionManager connectionManager = DBConnectionManager.getInstance();
 		 try {
-			   	connectionManager.releaseConnections(MultiTenancyUtil.getTenantName());
+			   	connectionManager.releaseConnections(Constants.TENANT_NAME);
 		 } catch(Exception e) {
 		 }
 		 
-		 Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+		 Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
 		 PreparedStatement stmt = null;
 		 int result = -1;
 		 try {
@@ -1216,7 +1216,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
  * @return string value
  */
 	public static String getLastInsertId(){
-		return MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID;
+		return "";//MultiTenancyUtil.getTenantConstants().LAST_INSERTED_ID;
 	}
 /**
  * @author Balvinder Mehla
@@ -1303,7 +1303,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
     public static String getPrimaryColumn(String tableName)
     {
     	DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-    	Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+    	Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
     	String columnName = null;
     	java.sql.ResultSet result = null;	//P_OPT_CONNECTIONS
     	try{
@@ -1334,7 +1334,7 @@ public static int executeInsert(String sSqlQuery,String[] params) {
     public static Info getColumnMetaData(String TableName,String ColumnName) 
     {
 	DBConnectionManager connectionManager = DBConnectionManager.getInstance();
-	Connection connection = connectionManager.getConnection(MultiTenancyUtil.getTenantName());
+	Connection connection = connectionManager.getConnection(Constants.TENANT_NAME);
     Info info=null;
     java.sql.ResultSet rs = null;	//P_OPT_CONNECTIONS
     try{
